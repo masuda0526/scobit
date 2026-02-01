@@ -1,0 +1,31 @@
+{
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "common",
+    "types"
+  ],
+  "scripts": {
+    "build": "npm run build -ws",
+    "dev": "npm run dev -w frontend"
+  },
+  "name": "scobit",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/masuda0526/scobit#readme",
+  "bugs": {
+    "url": "https://github.com/masuda0526/scobit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masuda0526/scobit.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
