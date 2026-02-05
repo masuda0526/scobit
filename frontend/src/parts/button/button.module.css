@@ -1,0 +1,46 @@
+.button{
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: inset -2px -2px 4px rgba(255, 255, 255, 0.3);
+}
+.button:hover{
+    opacity: 0.8;
+}
+
+.primary{
+    background-color: var(--color-primary);
+    color: white;
+}
+.secondary{
+    background-color: #6c757d;
+    color: white;
+}
+.danger{
+    background-color: #dc3545;
+    color: white;
+}
+
+.sm{
+    padding: 5px 10px;
+    font-size: small
+}
+.sm.isRadius{
+    border-radius: 15px;
+}
+
+.md{
+    padding: 10px 20px;
+    font-size: medium
+}
+.md.isRadius{
+    border-radius: 22px;
+}
+
+.lg{
+    padding: 15px 30px;
+    font-size: larger
+}
+.lg.isRadius{
+    border-radius: 29px;
+}

@@ -1,0 +1,162 @@
+.member{
+    background-color: #f0fffd;
+    width: 100%;
+    padding: 10px;
+    border: solid 1px #eee;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+.member_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name_block {
+    font-size: small;
+    display: flex;
+    justify-content: space-evenly;
+    width: 62px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 5px #bbb;
+}
+
+.abilities {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.ability_parts {
+    width: 40px;
+    text-align: center;
+}
+
+.ability_label {
+    font-size: small;
+    font-weight: bold;
+}
+
+.ablitiy_value {
+    font-size: medium;
+    font-weight: bold;
+}
+
+.score{
+    font-size: small;
+    text-align: right;
+}
+
+
+/* 以下、能力値およびポジションの色分け */
+
+.ability_s {
+    color: var(--color-S);
+}
+
+.ability_a {
+    color: var(--color-A);
+}
+
+.ability_b {
+    color: var(--color-B);
+}
+
+.ability_c {
+    color: var(--color-C);
+}
+
+.ability_d {
+    color: var(--color-D);
+}
+
+.ability_e {
+    color: var(--color-E);
+}
+
+.ability_f {
+    color: var(--color-F);
+}
+
+.ability_g {
+    color: var(--color-G);
+}
+
+.pos_p{
+    background: var(--color-pittier)
+}
+.pos_c{
+    background: var(--color-catcher);
+}
+.pos_i{
+    background: var(--color-infielder);
+}
+.pos_o{
+    background: var(--color-outfielder);
+}
+
+.pos_pc{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 50%,
+            var(--color-catcher) 50% 100%
+        );
+}
+.pos_pi{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 50%,
+            var(--color-infielder) 50% 100%
+        );
+}
+.pos_po{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 50%,
+            var(--color-outfielder) 50% 100%
+        );
+}
+.pos_pci{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 33%,
+            var(--color-catcher) 33% 67%,
+            var(--color-infielder) 67% 100%
+        );
+}
+.pos_pco{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 33%,
+            var(--color-catcher) 33% 67%,
+            var(--color-outfielder) 67% 100%
+        );
+}
+.pos_pcio{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 25%,
+            var(--color-catcher) 25% 50%,
+            var(--color-infielder) 50% 75%,
+            var(--color-outfielder) 75% 100%
+        );
+}
+.pos_ci{
+    background: linear-gradient(120deg,
+            var(--color-catcher) 0% 50%,
+            var(--color-infielder) 50% 100%
+        );
+}
+.pos_co{
+    background: linear-gradient(120deg,
+            var(--color-catcher) 0% 50%,
+            var(--color-outfielder) 50% 100%
+        );
+}
+.pos_cio{
+    background: linear-gradient(120deg,
+            var(--color-catcher) 0% 33%,
+            var(--color-infielder) 33% 67%,
+            var(--color-outfielder) 67% 100%
+        );
+}
+.pos_io{
+    background: linear-gradient(120deg,
+            var(--color-infielder) 0% 50%,
+            var(--color-outfielder) 50% 100%
+        );
+}

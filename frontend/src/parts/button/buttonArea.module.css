@@ -1,0 +1,24 @@
+.buttonArea{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px 0;
+}
+.left{
+    justify-content: left;
+}
+.center{
+    justify-content: center;
+}
+.right{
+    justify-content: right;
+}
+.between{
+    justify-content: space-between;
+}
+.around{
+    justify-content: space-around;
+}
+.evenly{
+    justify-content: space-evenly;
+}
