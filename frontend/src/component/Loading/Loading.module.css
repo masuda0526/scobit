@@ -13,7 +13,7 @@
     color: #000;
     background-color: #fff;
     position: absolute;
-    width: 50%;
+    max-width: 80%;
     border-radius: 5px;
     text-align: center;
     box-shadow: inset -2px -2px 5px #333;
@@ -30,6 +30,10 @@
     border-radius: 20px;
     border-bottom: #46b5d1 solid 5px;
     animation: spinner-rotation 0.8s ease-out infinite;
+}
+
+.message{
+    max-width: calc(100% - 60px);
 }
 
 @keyframes spinner-rotation {
