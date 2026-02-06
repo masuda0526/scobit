@@ -18,7 +18,7 @@ export const UserAbility: React.FC<{player:PlayerWithAbility}> = ({player}) => {
                     <AbilityContainer label="守備力" value={getDefenseAlp(player.err_per_game)} />
                 </div>
             </div>
-            <div className={styles.score}>打率：{Math.floor(player.avr*1000)/100}　本：{player.hr}本　盗：{player.steal}</div>
+            <div className={styles.score}>打率：{(Math.floor(player.avr*1000)/100).toFixed(2)}　本：{player.hr}本　盗：{player.steal}</div>
         </div>
     );
 }
