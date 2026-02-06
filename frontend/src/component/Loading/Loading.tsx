@@ -2,7 +2,7 @@ import type React from "react";
 import styles from "./Loading.module.css"
 
 export const Loading: React.FC = () => {
-    const isShow = true;
+    const isShow = false;
     return (
         <>
             {isShow ? (
