@@ -9,8 +9,8 @@ type Props = {
 export const MemberLabel: React.FC<Props> = (props) => {
     return (
         <div className={[styles.name_block, styles[getLabelColorClassName(props.positions)]].join(' ')}>
-            {props.name.split("").map(char => {
-                return <p>{char}</p>
+            {props.name.split("").map((char,idx) => {
+                return <p key={idx}>{char}</p>
             })}
         </div>
     );
