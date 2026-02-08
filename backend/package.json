@@ -1,13 +1,13 @@
 {
-  "name": "lambda_guntsule",
+  "name": "backend",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "node build.mjs",
-    "build": "node --loader ts-node/esm scripts/buildLambda.ts"
+    "build": "node --loader ts-node/esm scripts/buildLambda.ts",
+    "test": "node ./scripts/build.ts"
   },
   "author": "",
   "license": "ISC",
@@ -17,11 +17,11 @@
     "@aws-sdk/lib-dynamodb": "^3.913.0",
     "@types/archiver": "^7.0.0",
     "@types/aws-lambda": "^8.10.156",
-    "@types/node": "^24.10.9",
+    "@types/node": "^24.10.12",
     "@types/uuid": "^11.0.0",
     "archiver": "^7.0.1",
     "crypto": "^1.0.1",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.25.12",
     "fs": "^0.0.1-security",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
