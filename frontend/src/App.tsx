@@ -4,6 +4,7 @@ import { Header } from './common/Header/Header'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Members } from './pages/Members/Members'
 import { Loading } from './component/Loading/Loading'
+import { Member } from './pages/Member/Member'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path='/games' element={<GameList />} />
           <Route path='/members' element={<Members />} />
+          <Route path='/member' element={<Member/>}/>
         </Routes>
       </HashRouter>
       </div>

@@ -1,0 +1,26 @@
+.ground{
+    width: 100%;
+    position: relative;
+}
+
+.groundImg{
+    width: 100%;
+}
+
+.btn{
+    font-size: small;
+    min-width: 80px;
+    border-radius: 3px;
+    box-shadow: inset -1px -1px 3px #444;
+    padding: 1px 2px;
+    color: #000;
+    background-color: rgba(172, 172, 172, 0.5);
+    /* border: solid 0.5px #000; */
+    border:none;
+    position: absolute;
+}
+.isOn{
+    box-shadow: inset 1px 1px 3px #444;
+    background-color: rgba(227, 255, 72, 0.9);
+}
+
