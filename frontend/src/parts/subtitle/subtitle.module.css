@@ -1,0 +1,6 @@
+.subtitle{
+    font-size: larger;
+    padding-left: 10px;
+    border-left: 5px solid var(--color-primary);
+    margin-bottom: 15px;
+}

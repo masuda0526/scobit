@@ -1,0 +1,31 @@
+.label{
+    margin-bottom: 10px;
+    display: block;
+}
+.label:last-child{
+    margin-bottom: 0;
+}
+
+.labelText{
+    font-size: small;
+}
+
+.input{
+    font-size: medium;
+    padding: 10px;
+}
+
+
+
+
+
+/* 幅 */
+.w100{
+    width: 100%;
+}
+.w50{
+    width: 50%;
+}
+.w30{
+    width: 30%;
+}
