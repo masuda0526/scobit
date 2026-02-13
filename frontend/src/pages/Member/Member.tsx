@@ -48,8 +48,9 @@ export const Member: React.FC = () => {
 
             <ContentBox>
                 <SubTitle text="プロフィール"/>
-                <Input label="氏名" isEditMode={isEditMode} value={"あああ"}></Input>
-                <Input label="選手" isEditMode={isEditMode} value={"いいい"}></Input>
+                <Input label="氏名" isEditMode={isEditMode} value={data.name}></Input>
+                <Input label="表示名" isEditMode={isEditMode} value={data.disp_name}></Input>
+                <Input label="遠投距離(m)" isEditMode={isEditMode} value={data.throw_distance}></Input>
                 <ButtonArea>
                     <Button 
                         label={isEditMode?"変更する":"編集する"} 
