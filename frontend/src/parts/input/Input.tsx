@@ -6,24 +6,15 @@ type WidthProps = "w100"|"w50"|"w30";
 
 type InputProps = {
     label:string
-    isEditMode:boolean
+    isEditMode?:boolean
     w?:WidthProps
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export const Input : React.FC <InputProps> = ({
-    isEditMode = false,
+    isEditMode = true,
     w = "w100",
     ...props
 }) => {
-
-    const [val, setVal] = useState(props.value);
-    
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-        if(isEditMode){
-            setVal(e.target.value);
-        }
-    }
-
 
     return (
         <label className={styles.label}>
@@ -31,10 +22,10 @@ export const Input : React.FC <InputProps> = ({
                 {props.label}
             </p>
             <input 
+                {...props}
                 className={`${styles.input} ${styles[w]}`}
                 disabled={!isEditMode}
-                value={val}
-                onChange={handleChange}
+                value={props.value}
             />
         </label>
     )
