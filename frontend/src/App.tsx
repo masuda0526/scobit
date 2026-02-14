@@ -6,6 +6,7 @@ import { Members } from './pages/Members/Members'
 import { Loading } from './component/Loading/Loading'
 import { Member } from './pages/Member/Member'
 import { Login } from './pages/Login/Login'
+import { NewTeam } from './pages/NewTeam/NewTeam'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/members' element={<Members />} />
           <Route path='/member' element={<Member/>}/>
           <Route path='/login' element={<Login/>}/>
+          <Route path='/new-team' element={<NewTeam/>}/>
         </Routes>
       </HashRouter>
       </div>

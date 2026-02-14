@@ -4,12 +4,19 @@ import { testPlayers } from "../../testdatas/members";
 import { Title } from "../../parts/title/title";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { Button } from "../../parts/button/button";
+import { useEffect } from "react";
+import { useLoading } from "../../component/Loading/LoadingContext";
 
 export const Members: React.FC = () => {
     const members = testPlayers;
+    const loading = useLoading();
     const handleClick = () => {
         console.log('click')
     }
+
+    useEffect(() => {
+        loading.stopLoading();
+    }, [])
     return (
         <>
             <Title text="選手一覧"/>
