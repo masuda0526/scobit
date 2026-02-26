@@ -1,0 +1,16 @@
+.content{
+    width: 100%;
+    padding: 5px;
+}
+.box{
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: cadetblue;
+    height: 50px;
+}
+
+@media (min-width:768px) {
+    .content{
+        display: none;
+    }
+}

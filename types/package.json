@@ -6,8 +6,11 @@
   "license": "ISC",
   "author": "",
   "types": "dist/index.d.ts",
-  "main": "dist/index.d.ts",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
   }
 }

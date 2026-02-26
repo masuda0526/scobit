@@ -1,8 +1,11 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true,
+    "module": "esnext",
+    "target": "es2020",
+    "moduleResolution": "bundler"
   },
   "include": ["src"]
 }

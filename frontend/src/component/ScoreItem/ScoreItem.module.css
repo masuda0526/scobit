@@ -1,0 +1,62 @@
+.item{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 0.5px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+.info{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.date{
+    font-size: small;
+}
+.opponent{
+    font-size: small;
+    font-weight: 700;
+    color: #237494;
+}
+.data{
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+}
+.box{
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    flex: 1;
+    border-radius: 5px;
+    padding: 10px 0;
+    gap: 10px;
+}
+.label{
+    text-align: center;
+    font-size: small;
+}
+.value{
+    text-align: center;
+    font-size: larger;
+    font-weight: 700;
+}
+.noturn{
+    font-size: medium;
+    text-align: center;
+    height: 72px;
+    flex: 1;
+    line-height: 72px;
+}
+.haserr{
+    color: #b60808;
+}
+.black{
+    color:#000
+}
+.notZero{
+    color: #237494;
+}

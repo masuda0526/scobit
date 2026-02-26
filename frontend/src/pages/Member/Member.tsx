@@ -9,9 +9,13 @@ import { ContentBox } from "../../parts/content/contentBox";
 import { Input } from "../../parts/input/Input";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { Button } from "../../parts/button/button";
+import { testScores } from "../../testdatas/scores";
+import type { Score } from "@scobit/types";
+import { ScoreItem } from "../../component/ScoreItem/ScoreItem";
 
 export const Member: React.FC = () => {
     const data = testPlayers[0]
+    const scores:Score[] = testScores.slice(0, 5);
 
     const [positions, setPositions] = useState<string[]>(data.pos.split(""));
     const [isEditMode, setEditFlg] = useState<boolean>(false)
@@ -58,6 +62,16 @@ export const Member: React.FC = () => {
                         isRadius={'isRadius'} 
                         size={'md'}
                     />
+                </ButtonArea>
+            </ContentBox>
+
+            <ContentBox>
+                <SubTitle text="試合結果"/>
+                {scores.map(score => {
+                    return(<ScoreItem key={score.g_id} {...score}></ScoreItem>)
+                })}
+                <ButtonArea position="right">
+                    <a href="#/member/games">一覧を見る</a>
                 </ButtonArea>
             </ContentBox>
 

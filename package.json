@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "npm run build -ws",
+    "build:type": "npm run build -w types",
     "dev": "npm run dev -w frontend",
     "test": "npm run test -w backend"
   },

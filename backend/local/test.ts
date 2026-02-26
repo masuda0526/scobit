@@ -1,19 +1,13 @@
 import dotenv from "dotenv";
-import {login} from '../src/functions/login/index.js'
+import {handler} from '../src/functions/NewTeam/index.js'
+import { event } from "./events/newTeamEvent.js";
 
 dotenv.config({ path: ".env.local" });
-
-const event = {
-  body: JSON.stringify({
-    userId: "test001",
-    password: "1234"
-  })
-} as any;
 
 (async () => {
   console.log("=== ローカルテスト開始 ===");
 
-  const res = await login(event);
+  const res = await handler(event);
 
   console.log("=== レスポンス ===");
   console.log(res);
