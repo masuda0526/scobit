@@ -1,10 +1,10 @@
 export const getMeetAlp = (avr:number): string => {
-    if (avr < 0.15) return "G";
-    if (avr < 0.20) return "F";
-    if (avr < 0.23) return "E";
-    if (avr < 0.26) return "D";
-    if (avr < 0.29) return "C";
-    if (avr < 0.32) return "B";
+    if (avr < 0.05) return "G";
+    if (avr < 0.10) return "F";
+    if (avr < 0.15) return "E";
+    if (avr < 0.20) return "D";
+    if (avr < 0.25) return "C";
+    if (avr < 0.30) return "B";
     if (avr < 0.35) return "A";
     return "S";
 }
