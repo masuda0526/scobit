@@ -2,14 +2,15 @@ import { AbilityContainer } from "./AbilityContainer";
 import styles from "./Ability.module.css"
 import { getDefenseAlp, getLongThrowAlp, getMeetAlp, getPowerAlp, getSpeedAlp } from "../../Util/AbilityUtil/AbilityUtil";
 import { MemberLabel } from "./MemberLabel";
-import type { PlayerWithAbility } from "@scobit/types";
+import type { Ability,  } from "@scobit/types";
 
-export const UserAbility: React.FC<{player:PlayerWithAbility}> = ({player}) => {
+export const UserAbility: React.FC<{player:Ability}> = ({player}) => {
+    console.log(player)
 
     return (
         <div className={styles.member}>
             <div className={styles.member_box}>
-                <MemberLabel name={player.disp_name} positions={player.pos} />
+                <MemberLabel name={player.dispName} positions={player.positions} />
                 <div className={styles.abilities}>
                     <AbilityContainer label="ミート" value={getMeetAlp(player.avr)} />
                     <AbilityContainer label="パワー" value={getPowerAlp(player.hr_per_game)} />

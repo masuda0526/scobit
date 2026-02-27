@@ -1,14 +1,15 @@
 import type React from "react";
 import { UserAbility } from "../../component/UserAbility/UserAbility";
-import { testPlayers } from "../../testdatas/members";
 import { Title } from "../../parts/title/title";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { Button } from "../../parts/button/button";
 import { useEffect } from "react";
 import { useLoading } from "../../component/Loading/LoadingContext";
+import { generateMembersForm } from "../../testdatas/testDataCreater";
 
 export const Members: React.FC = () => {
-    const members = testPlayers;
+    const data = generateMembersForm();
+    const members = data.members
     const loading = useLoading();
     const handleClick = () => {
         console.log('click')

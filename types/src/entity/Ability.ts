@@ -7,7 +7,13 @@ export const AbilitySchema = z.object({
   steal_per_game: z.number(),      // 1試合あたり盗塁数
   err_per_game: z.number(),        // 1試合あたり失策数
   throw_distance: z.number(),      // 遠投距離（m）
-  sprint_sec: z.number()           // 50m走（秒）
+  sprint_sec: z.number(),           // 50m走（秒）
+  hr:z.number(),
+  steal:z.number(),
+  u_id:z.uuid(),
+  dispName: z.string(),
+  userName: z.string(),
+  positions: z.string()
 }) 
 
 export type Ability = z.infer<typeof AbilitySchema>

@@ -30,5 +30,6 @@ function getLabelColorClassName(positions:string){
     if(positions.includes('7') || positions.includes('8') || positions.includes('9')){
         cls +='o'
     }
+    console.log(`pos_${cls}`)
     return `pos_${cls}`
 }

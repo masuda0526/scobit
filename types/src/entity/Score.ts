@@ -17,7 +17,10 @@ export const ScoreSchema = z.object({
         `${v.slice(0,4)}-${v.slice(4,6)}-${v.slice(6,8)}`
     )), "存在しない日付です。"), // yyyymmdd形式
     seq: z.number().int().min(1).default(1), // 一日に複数試合があった場合増加
-    opponent: z.string().min(1)
+    opponent: z.string().min(1),
+    // 選手表示用
+    disp_name:z.string().min(1).max(4),
+    positions:z.string().min(1).max(9)
 }).superRefine((data, ctx) => {
     // 出番があった場合は以下のバリデーションを構築
     if (data.isTurn) {

@@ -130,6 +130,13 @@
             var(--color-outfielder) 67% 100%
         );
 }
+.pos_pio{
+    background: linear-gradient(120deg,
+            var(--color-pittier) 0% 33%,
+            var(--color-infielder) 33% 67%,
+            var(--color-outfielder) 67% 100%
+        );
+}
 .pos_pcio{
     background: linear-gradient(120deg,
             var(--color-pittier) 0% 25%,

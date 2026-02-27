@@ -1,19 +1,18 @@
 import type React from "react";
 import { Title } from "../../parts/title/title";
-import type { Game, Team } from "@scobit/types";
-import { testTeams } from "../../testdatas/teams";
 import { SubTitle } from "../../parts/subtitle/subtitle";
 import { ContentBox } from "../../parts/content/contentBox";
 import { Info } from "../../component/Info/info";
 import { perseActiveStatus } from "../../Util/ActiveStatusUtil/ActiveStatusUtil";
 import { dispDate } from "../../Util/DateUtil/DateUtil";
-import { testGames } from "../../testdatas/games";
 import { GameItem } from "../../component/GameItem/GameItem";
 import { ButtonArea } from "../../parts/button/buttonArea";
+import { generateTeamForms } from "../../testdatas/testDataCreater";
 
 export const TeamPage: React.FC = () => {
-    const team: Team = testTeams[0]
-    const games: Game[] = testGames.slice(0, 5);
+    const data = generateTeamForms();
+    const team = data.info;
+    const games = data.games;
     return (
         <>
             <Title text="チームTOP" />
