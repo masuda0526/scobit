@@ -25,7 +25,7 @@ export const GameItem: React.FC<{ game: Game }> = ({ game }) => {
       </div>
 
       {/* 右：矢印リンク */}
-      <div className={style.link}>{"›"}</div>
+      <a href="/#/game" className={style.link}>{"›"}</a>
     </div>
   );
 };
