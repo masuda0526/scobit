@@ -1,0 +1,11 @@
+.container{
+  display: block;
+}
+.list{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.item{
+  text-decoration: none;
+}

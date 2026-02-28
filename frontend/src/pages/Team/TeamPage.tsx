@@ -8,11 +8,13 @@ import { dispDate } from "../../Util/DateUtil/DateUtil";
 import { GameItem } from "../../component/GameItem/GameItem";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { generateTeamForms } from "../../testdatas/testDataCreater";
+import { MemberLabelList } from "../../component/MemberLabelList/MemberLabelList";
 
 export const TeamPage: React.FC = () => {
     const data = generateTeamForms();
     const team = data.info;
     const games = data.games;
+    const members = data.members;
     return (
         <>
             <Title text="チームTOP" />
@@ -33,6 +35,13 @@ export const TeamPage: React.FC = () => {
                 })}
                 <ButtonArea position={'right'}>
                     <a href="#/games">一覧を見る</a>
+                </ButtonArea>
+            </ContentBox>
+            <ContentBox>
+                <SubTitle text="選手一覧" />
+                <MemberLabelList members={members}/>
+                <ButtonArea position="right">
+                    <a href="#/members">詳細を一覧で表示</a>
                 </ButtonArea>
             </ContentBox>
         </>
