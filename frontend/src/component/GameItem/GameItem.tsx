@@ -32,7 +32,7 @@ export const GameItem: React.FC<{ game: Game }> = ({ game }) => {
 
 function translateResult(game: Game): string {
   if (game.my_point > game.op_point) return "○";
-  if (game.my_point < game.op_point) return "●";
+  if (game.my_point < game.op_point) return "×";
   return "△";
 }
 

@@ -138,7 +138,6 @@
 /* ===== MemberLabel wrapper ===== */
 .memberLabelWrapper {
   flex-shrink: 0; /* 選手名エリアは縮まないように固定 */
-  width: 70px;
 }
 
 
