@@ -9,7 +9,7 @@ export const GameScore: React.FC<{ score: Score }> = ({ score }) => {
             <div className={styles.cardInner}>
                 {/* 選手名 + ポジション */}
                 <div className={styles.memberLabelWrapper}>
-                    <MemberLabel name="テスト" positions={"38"} />
+                    <MemberLabel name={score.disp_name} positions={score.positions} />
                 </div>
 
                 {/* 出番なし or 成績グリッド */}

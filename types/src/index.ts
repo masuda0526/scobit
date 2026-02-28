@@ -8,3 +8,7 @@ export * from "./dto/PlayerWithAbility";
 export * from "./dto/NewTeamPageForm";
 export * from "./dto/TeamTopForm";
 export * from "./dto/MembersForm";
+export * from "./dto/MemberForm";
+export * from "./dto/MemberGamesForm";
+export * from "./dto/GamesForm";
+export * from "./dto/GameDetail";

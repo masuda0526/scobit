@@ -5,7 +5,6 @@ import { MemberLabel } from "./MemberLabel";
 import type { Ability,  } from "@scobit/types";
 
 export const UserAbility: React.FC<{player:Ability}> = ({player}) => {
-    console.log(player)
 
     return (
         <div className={styles.member}>

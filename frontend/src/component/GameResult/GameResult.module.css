@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative;
+}
+.date{
+    font-size: small;
+}
+.box{
+    display: flex;
+    align-items: center;
+}
+.opponent{
+    font-size: medium;
+    font-weight: bold;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+.score{
+    font-size: large;
+    flex: 0 0 70px;
+    text-align: center;
+}
+
+.win{
+    background-color: #e6fcff;
+    border: #0051ff solid 1px;
+}
+.lose{
+    background-color: #ffdede;
+    border: #ff5151 solid 1px;
+}
+.draw{
+    background-color: #e4ffde;
+    border: #267a04 solid 1px;
+}
+.win::after, .lose::after, .draw::after{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    border-radius: 25px;
+    position: absolute;
+    right: -10px;
+    top: -25px;
+    transform: rotate(0.3rad);
+}
+.win::after{
+    content: 'WIN';
+    background-color: #0051ff;
+}
+.lose::after{
+    content: 'LOSE';
+    background-color: #ff5151;
+}
+.draw::after{
+    content: 'DRAW';
+    background-color: #267a04;
+}

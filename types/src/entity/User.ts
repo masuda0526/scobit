@@ -17,18 +17,4 @@ export const UserSchema = z.object({
     join_at: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
 })
 
-export type User = {
-    u_id: string;
-    t_id: string;
-    name: string;
-    disp_name: string;
-    throw_distance: number;
-    sprint_sec: number;
-    pos: string;
-    status: string;
-    delflg: boolean;
-    renkei_id: string;
-    auth: string;
-    created_at: Date;
-    updated_at: Date;
-}
+export type User = z.infer<typeof UserSchema>
