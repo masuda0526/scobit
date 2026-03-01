@@ -16,5 +16,10 @@ export const UserSchema = z.object({
     updated_at: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
     join_at: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
 })
-
 export type User = z.infer<typeof UserSchema>
+
+export const UserDbSchema = UserSchema.extend({
+    pk:string(), // u_id
+    sk:string()  // INFO
+})
+export type UserDb = z.infer<typeof UserDbSchema>

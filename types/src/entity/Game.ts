@@ -17,3 +17,9 @@ export const GameSchema = z.object({
 })
 
 export type Game = z.infer<typeof GameSchema>
+
+export const GameDbSchema = GameSchema.extend({
+    pk:z.string(), // t_id
+    sk:z.string()  // GAME#{yyyymmdd}#{seq}
+})
+export type GameDb = z.infer<typeof GameDbSchema>

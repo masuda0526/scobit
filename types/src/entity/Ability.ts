@@ -17,3 +17,9 @@ export const AbilitySchema = z.object({
 }) 
 
 export type Ability = z.infer<typeof AbilitySchema>
+
+export const AbilityDbSchema = AbilitySchema.extend({
+  pk:z.string(), // t_id or u_id
+  sk:z.string()  // MEMBER#{u_id} or ABILITY
+})
+export type AbilityDb = z.infer<typeof AbilityDbSchema>

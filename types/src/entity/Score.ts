@@ -44,8 +44,8 @@ export const ScoreSchema = z.object({
 export type Score = z.infer<typeof ScoreSchema>
 
 export const ScoreDbSchema = ScoreSchema.extend({
-    pk:z.string(),
-    sk:z.string()
+    pk:z.string(), // g_id or u_id
+    sk:z.string()  // SCORE#{u_id} or SCORE#{yyyymmdd}#n
 })
 
 export type ScoreDb = z.infer<typeof ScoreDbSchema>

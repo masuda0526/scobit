@@ -92,3 +92,9 @@ const isInclude = (interval:IntervalKey, items:string[]) => {
     const targets = ActiveInfo[interval].map(obj => obj.val);
     return items.every(v => targets.includes(v));
 }
+
+export const TeamDbSchema = TeamSchema.extend({
+    pk:z.string(), // t_id
+    sk:z.string() // INFO
+})
+export type TeamDb = z.infer<typeof TeamDbSchema>
