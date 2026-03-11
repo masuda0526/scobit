@@ -1,0 +1,18 @@
+import dotenv from 'dotenv';
+import z from 'zod';
+
+if (process.env.NODE_ENV !== 'production') {
+  const env = process.env.NODE_ENV || 'local';
+  dotenv.config({ path: `.env.${env}` });
+}
+
+const EnvSchema = z.object({
+  STAGE: z.enum(['local', 'dev', 'product', 'test']),
+  LOG_LEVEL: z.enum(['DEBUG', 'INFO', 'WARN', 'ERROR']),
+  JWT_SECRET_KEY: z.string().min(10),
+  DB_TABLE:z.string(),
+  AWS_REGION:z.string(),
+  DYNAMO_ENDPOINT:z.string()
+})
+
+export const env = EnvSchema.parse(process.env);

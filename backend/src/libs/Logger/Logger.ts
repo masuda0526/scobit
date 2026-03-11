@@ -1,6 +1,8 @@
+import { env } from "../EnvPropertyUtil/Env.js";
+
 class Logger {
 
-    private level:string = process.env.LOG_LEVEL ?? "DEBUG";
+    private level:string = env.LOG_LEVEL;
 
     debug(msg:string){
         if(this.level === "DEBUG"){

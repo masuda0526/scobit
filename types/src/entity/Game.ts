@@ -1,11 +1,13 @@
 import {z} from "zod";
+import { AbstractEntitySchema } from "./Base/AbstractEntity";
+import { TransactionEntitySchema } from "./Base/TransactionEntity";
 
 // export type GameResultType = 'win' | 'lose' | 'draw' | 'nogame' | 'cold'
 // export const GameResultConsts = [
 //     'win', 'lose', 'draw', 'nogame', 'cold'
 // ] as const
 
-export const GameSchema = z.object({
+export const GameSchema = TransactionEntitySchema.extend({
     g_id:z.uuid(),
     t_id:z.uuid(),
     seq: z.number().int(),

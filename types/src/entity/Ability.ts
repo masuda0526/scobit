@@ -1,5 +1,6 @@
 import {z} from 'zod'
-export const AbilitySchema = z.object({
+import { AbstractEntitySchema } from './Base/AbstractEntity'
+export const AbilitySchema = AbstractEntitySchema.extend({
   a_id: z.uuid(),                  // 能力ID
   t_id: z.uuid(),                  // ユーザーID
   avr: z.number().min(0).max(1),   // 打率
@@ -11,8 +12,8 @@ export const AbilitySchema = z.object({
   hr:z.number(),
   steal:z.number(),
   u_id:z.uuid(),
-  dispName: z.string(),
-  userName: z.string(),
+  disp_name: z.string(),
+  user_name: z.string(),
   positions: z.string()
 }) 
 

@@ -1,77 +1,57 @@
-import { APIGatewayProxyResult } from "aws-lambda";
-import { ErrorInfo, ResponseFormat } from "./ResponseFormat.js";
+import { ErrorInfo, ResponseFormat } from "@scobit/types";
 
-export class ResponseBuilder {
-  response: ResponseFormat;
-  header = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "*",
-    "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
+export class ResponseBuilder<T extends Record<string, any> = Record<string, any>>{
+
+  private isSuccess:boolean;
+  private isRedirect:boolean = false;
+  private redirectUrl:string = '';
+  private flashMsgs:string[] = [];
+  private errors:ErrorInfo[] = [];
+  private data:T = {} as T;
+
+  constructor(isSuccess:boolean = true){
+    this.isSuccess = isSuccess;
   }
 
-  constructor() {
-    this.response = {
-      isSuccess: true,
-      isRedirect: false,
-      errors: [],
-    }
-  }
-
-  ok() {
-    this.response = {
-      isSuccess: true,
-      isRedirect: false,
-      errors: [],
-      headers:this.header
-    }
-  }
-
-  error() {
-    this.response = {
-      isSuccess: false,
-      isRedirect: false,
-      errors: [],
-      headers:this.header
-    }
-  }
-
-  addErrorMsg(field: string, msg: string) {
-    if (!this.response.errors) {
-      this.response.errors = []
-    }
-    this.response.errors.push({ field: field, message: msg });
-  }
-
-  setErrorMsg(errors: ErrorInfo[]) {
-    if (!this.response.errors) {
-      this.response.errors = [];
-    }
-    this.response.errors = [...this.response.errors, ...errors];
-  }
-
-  setFlashMsg(msg: string) {
-    if (!this.response.flashMsgs) {
-      this.response.flashMsgs = []
-    }
-    this.response.flashMsgs.push(msg);
-  }
-
-  getResponse(): ResponseFormat {
-    return this.response
-  }
-
-  getProxyResponse(): APIGatewayProxyResult {
+  toResponse():ResponseFormat<T>{    
     return {
-      statusCode: 200,
-      headers: this.header,
-      body: JSON.stringify(this.response)
+      isSuccess:this.isSuccess,
+      isRedirect:this.isRedirect,
+      redirectUrl:this.redirectUrl,
+      flashMsgs:this.flashMsgs,
+      errors:this.errors,
+      data:this.data
     }
   }
 
-  putData(key: string, data: any) {
-    if (!this.response.data) {
-      this.response.data = {};
-    }
-    this.response.data[key] = data;
+  setRedirect(isRedirect:boolean){
+    this.isRedirect = isRedirect;
+    return this;
   }
+
+  redirectTo(url:string){
+    this.redirectUrl = url
+    return this;
+  }
+
+  addFlash(message:string){
+    this.flashMsgs.push(message);
+    return this;
+  }
+
+  addError(field:string, message:string){
+    this.errors.push({field, message});
+    return this;
+  }
+
+  putData<K extends keyof T>(key:K, value:T[K]){
+    this.data[key] = value;
+    return this;
+  }
+
+  setData(data:T){
+    this.data = {...this.data, ...data}
+    return this;
+  }
+
 }

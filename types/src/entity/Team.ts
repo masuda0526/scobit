@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { AbstractEntitySchema } from './Base/AbstractEntity';
+import { TransactionEntitySchema } from './Base/TransactionEntity';
 
 export type IntervalKey = "WEEK" | "MONTH" | "YEAR" | "OTHER"
 export type IntervalItem = {
@@ -64,13 +66,12 @@ export const ActiveInfo:Record<IntervalKey, ActiveInfoItem[]>  = {
         {val:'other', label:'その他'}
     ]
 }
-export const TeamSchema = z.object({
+export const TeamSchema = TransactionEntitySchema.extend({
     t_id: z.uuid(),
     teamName: z.string().min(1).max(30),
     area:z.string().min(1).max(50),
     interval:z.enum(intervalValues),
     activeInfo:z.array(z.string()),
-    createdDt: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
     registeredDt: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
     description: z.string().max(100).optional(),
     payMode: z.number().int().min(0).max(2).default(0),

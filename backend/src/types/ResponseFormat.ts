@@ -2,9 +2,7 @@ export interface ResponseFormat {
   isSuccess:boolean,
   isRedirect:boolean,
   redirectUrl:string,
-  erros:ErrorInfo[],
-  Project:object,
-  settings:object,
+  errors:ErrorInfo[],
   others:object
 }
 
