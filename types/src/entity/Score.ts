@@ -1,11 +1,10 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './Base/AbstractEntity';
-import { TransactionEntitySchema } from './Base/TransactionEntity';
 
-export const ScoreSchema = TransactionEntitySchema.extend({
+export const ScoreSchema = AbstractEntitySchema.extend({
     // インデックス用
-    t_id: z.string().min(5).max(10),
-    u_id: z.uuid(),
+    s_id: z.uuid(),
+    p_id: z.uuid(),
     g_id: z.uuid().optional(), // バックエンドで付与。更新の場合はフロントからくる
     // 成績
     isTurn: z.boolean(),
@@ -15,14 +14,14 @@ export const ScoreSchema = TransactionEntitySchema.extend({
     steal: z.number().int().min(0).default(0),
     err: z.number().int().min(0).default(0),
     // 試合情報
-    g_dt: z.string().regex(/^\d{8}$/, "yyyymmdd形式で入力してください。").refine(v => !isNaN(Date.parse(
-        `${v.slice(0,4)}-${v.slice(4,6)}-${v.slice(6,8)}`
-    )), "存在しない日付です。"), // yyyymmdd形式
-    seq: z.number().int().min(1).default(1), // 一日に複数試合があった場合増加
-    opponent: z.string().min(1),
-    // 選手表示用
-    disp_name:z.string().min(1).max(4),
-    positions:z.string().min(1).max(9)
+    // g_dt: z.string().regex(/^\d{8}$/, "yyyymmdd形式で入力してください。").refine(v => !isNaN(Date.parse(
+    //     `${v.slice(0,4)}-${v.slice(4,6)}-${v.slice(6,8)}`
+    // )), "存在しない日付です。"), // yyyymmdd形式
+    // seq: z.number().int().min(1).default(1), // 一日に複数試合があった場合増加
+    // opponent: z.string().min(1),
+    // // 選手表示用
+    // disp_name:z.string().min(1).max(4),
+    // positions:z.string().min(1).max(9)
 }).superRefine((data, ctx) => {
     // 出番があった場合は以下のバリデーションを構築
     if (data.isTurn) {
