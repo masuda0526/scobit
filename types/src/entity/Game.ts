@@ -2,27 +2,26 @@ import {z} from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity";
 
 // export type GameResultType = 'win' | 'lose' | 'draw' | 'nogame' | 'cold'
-// export const GameResultConsts = [
-//     'win', 'lose', 'draw', 'nogame', 'cold'
-// ] as const
+export const GameResultConsts = [
+    'win', 'lose', 'draw', 'no-game'
+] as const
 
 export const GameSchema = AbstractEntitySchema.extend({
-    g_id:z.uuid(),
-    t_id:z.uuid(),
+    game_id:z.uuid(),
+    team_id:z.uuid(),
     seq: z.number().int(),
     tournament_id: z.uuid(),
-    opponent: z.string(),
+    opponent: z.string().min(1).max(50),
     my_point: z.number().int().min(0),
     op_point: z.number().int().min(0),
-    // result: z.enum(GameResultConsts),
-    result: z.number().min(0).max(3),
-    g_dt:z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
+    result: z.enum(GameResultConsts),
+    game_dt:z.coerce.date(),
 })
 
 export type Game = z.infer<typeof GameSchema>
 
 export const GameDbSchema = GameSchema.extend({
-    pk:z.string(), // t_id
+    pk:z.string(), // team_id
     sk:z.string()  // GAME#{yyyymmdd}#{seq}
 })
 export type GameDb = z.infer<typeof GameDbSchema>

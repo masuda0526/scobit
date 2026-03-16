@@ -5,6 +5,7 @@ export * from "./entity/Player";
 export * from "./entity/Players_Teams";
 export * from "./entity/Game";
 export * from "./entity/Team";
+export { prefArray } from "./entity/Team";
 export * from "./entity/Score";
 export * from "./entity/Tournament";
 // export * from "./entity/User";

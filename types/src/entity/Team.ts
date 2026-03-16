@@ -124,12 +124,12 @@ export const prefArray = [
 //     ]
 // }
 export const TeamSchema = AbstractEntitySchema.extend({
-    t_id: z.uuid(),
+    team_id: z.uuid(),
     public_id: z.string().min(5).max(20).regex(/^[a-zA-Z][0-9a-zA-Z_-]+$/),
-    team_name: z.string().min(1).max(30),
+    team_name: z.string().min(1).max(50),
     // interval:z.enum(intervalValues),
     // activeInfo:z.array(z.string()),
-    regist_at: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
+    regist_at: z.coerce.date(),
     description: z.string().max(100).optional(),
     leader_id:z.uuid(),
     icon: z.string().optional(),
@@ -154,7 +154,7 @@ export type Team = z.infer<typeof TeamSchema>;
 // }
 
 export const TeamDbSchema = TeamSchema.extend({
-    pk:z.string(), // t_id
+    pk:z.string(), // team_id
     sk:z.string() // INFO
 })
 export type TeamDb = z.infer<typeof TeamDbSchema>

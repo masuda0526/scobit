@@ -4,7 +4,7 @@ import { TransactionEntitySchema } from "./Base/TransactionEntity";
 
 export const SlugSchema = TransactionEntitySchema.extend({
   alias_id: z.string().min(5).max(20),
-  t_id: z.uuid()
+  team_id: z.uuid()
 })
 
 export type Slug = z.infer<typeof SlugSchema>

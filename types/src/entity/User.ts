@@ -4,7 +4,7 @@ import { TransactionEntitySchema } from "./Base/TransactionEntity";
 
 export const UserSchema = TransactionEntitySchema.extend({
     u_id: z.uuid(),
-    t_id: uuid(),
+    team_id: uuid(),
     name: z.string().min(1),
     disp_name: z.string().min(1).max(4),
     throw_distance: z.number().int().min(0),

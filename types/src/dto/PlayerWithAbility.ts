@@ -1,5 +1,5 @@
 export type PlayerWithAbility = {
-  t_id: string;
+  team_id: string;
   u_id: string;
   name: string;
   disp_name: string;

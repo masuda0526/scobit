@@ -1,18 +1,20 @@
 import z from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity";
 
-const TournamentType = [
+export const TournamentType = [
   'official',
   'league',
   'tournament',
   'practice',
   'intrasquad' //紅白戦
 ] as const;
-const TournamentSchema = AbstractEntitySchema.extend({
+export const TournamentSchema = AbstractEntitySchema.extend({
   tournament_id: z.uuid(),
-  t_id: z.uuid(),
-  tournament_name: z.string().min(1).max(20),
+  team_id: z.uuid(),
+  name: z.string().min(1).max(30),
   type: z.enum(TournamentType),
-  start_dt: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
-  end_dt: z.string().regex(/^\d{8}$/, 'yyyymmdd形式で入力してください。').refine(v => !isNaN(Date.parse(`${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`))),
+  start_dt: z.coerce.date(),
+  end_dt: z.coerce.date(),
 })
+
+export type Tournament = z.infer<typeof TournamentSchema>
