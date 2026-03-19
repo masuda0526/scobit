@@ -1,16 +1,16 @@
-import type { Ability } from "@scobit/types";
 import type React from "react";
 import { MemberLabel } from "../UserAbility/MemberLabel";
 import styles from "./MemberLabelList.module.css"
+import type { PlayerForm } from "@scobit/types";
 
-export const MemberLabelList: React.FC<{ members: Ability[] }> = ({ members }) => {
+export const MemberLabelList: React.FC<{ players: PlayerForm[] }> = ({ players }) => {
   return (
     <div className={styles.container}>
       <div className={styles.list} >
-        {(members.map(member => {
+        {(players.map(player => {
           return (
             <a href="/#/member" className={styles.item}>
-              <MemberLabel name={member.dispName} positions={member.positions} />
+              <MemberLabel name={player.disp_name} positions={player.positions} />
             </a>
           )
         }))}

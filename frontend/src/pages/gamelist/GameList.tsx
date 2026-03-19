@@ -1,4 +1,4 @@
-import type { Game, Team } from "@scobit/types";
+import type { GameForm, TeamForm } from "@scobit/types";
 import type React from "react";
 import { GameItem } from "../../component/GameItem/GameItem";
 import { Title } from "../../parts/title/title";
@@ -10,8 +10,8 @@ import { SubTitle } from "../../parts/subtitle/subtitle";
 
 export const GameList: React.FC = () => {
     const data = generateGamesForm();
-    const games: Game[] = data.games;
-    const team:Team = data.team;
+    const games: GameForm[] = data.games;
+    const team:TeamForm = data.team;
     const addGame = () => {
         console.log("add game");
     }
@@ -20,7 +20,7 @@ export const GameList: React.FC = () => {
         <div>
             <Title text="試合結果一覧" />
             <ContentBox>
-                <SubTitle text={`${team.teamName}`} />
+                <SubTitle text={`${team.team_name}`} />
                 <ButtonArea
                     position="right"
                 >
@@ -33,7 +33,7 @@ export const GameList: React.FC = () => {
                 </ButtonArea>
                 {games.map((game) => (
                     <GameItem
-                        key={game.g_id}
+                        key={game.game_id}
                         game={game}
                     >
                     </GameItem>

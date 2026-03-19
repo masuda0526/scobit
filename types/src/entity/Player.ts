@@ -10,3 +10,9 @@ export const PlayerSchema = AbstractEntitySchema.extend({
 })
 
 export type Player = z.infer<typeof PlayerSchema>
+
+export const PlayerFormSchema = PlayerSchema.omit({
+  updated_at:true,
+  created_at:true
+})
+export type PlayerForm = z.infer<typeof PlayerFormSchema>

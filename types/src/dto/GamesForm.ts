@@ -1,7 +1,7 @@
-import { Game } from "../entity/Game"
-import { Team } from "../entity/Team"
+import { GameForm } from "../entity/Game"
+import { TeamForm } from "../entity/Team"
 
-export type GammesForm = {
-    team:Team
-    games:Game[]
+export type GamesForm = {
+    team:TeamForm
+    games:GameForm[]
 }

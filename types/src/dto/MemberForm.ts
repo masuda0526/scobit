@@ -1,9 +1,7 @@
 import { Ability } from "../entity/Ability"
-import { Score } from "../entity/Score"
-import { User } from "../entity/User"
+import { ScoreItemDto } from "../entity/Score"
 
 export type MemberForm = {
-    info:User,
-    ability:Ability,
-    scores:Score[]
+    info:Ability,
+    scores:ScoreItemDto[]
 }

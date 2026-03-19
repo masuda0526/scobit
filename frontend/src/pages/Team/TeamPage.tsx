@@ -3,8 +3,7 @@ import { Title } from "../../parts/title/title";
 import { SubTitle } from "../../parts/subtitle/subtitle";
 import { ContentBox } from "../../parts/content/contentBox";
 import { Info } from "../../component/Info/info";
-import { perseActiveStatus } from "../../Util/ActiveStatusUtil/ActiveStatusUtil";
-import { dispDate } from "../../Util/DateUtil/DateUtil";
+import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 import { GameItem } from "../../component/GameItem/GameItem";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { generateTeamForms } from "../../testdatas/testDataCreater";
@@ -14,18 +13,18 @@ export const TeamPage: React.FC = () => {
     const data = generateTeamForms();
     const team = data.info;
     const games = data.games;
-    const members = data.members;
+    const players = data.players;
     return (
         <>
             <Title text="チームTOP" />
 
             <ContentBox>
                 <SubTitle text="チーム情報" />
-                <Info label="チーム名" info={team.teamName} />
-                <Info label="代表者" info={team.leaderName} />
-                <Info label="活動状況" info={perseActiveStatus(team.interval, team.activeInfo)} />
+                <Info label="チーム名" info={team.team_name} />
+                {/* <Info label="代表者" info={team.leaderName} /> */}
+                <Info label="都道府県" info={team.pref} />
                 <Info label="活動地域" info={team.area} />
-                <Info label="設立日" info={dispDate(team.createdDt)} />
+                <Info label="設立日" info={dispDateFromDate(team.created_at)} />
             </ContentBox>
 
             <ContentBox>
@@ -39,7 +38,7 @@ export const TeamPage: React.FC = () => {
             </ContentBox>
             <ContentBox>
                 <SubTitle text="選手一覧" />
-                <MemberLabelList members={members}/>
+                <MemberLabelList players={players}/>
                 <ButtonArea position="right">
                     <a href="#/members">詳細を一覧で表示</a>
                 </ButtonArea>

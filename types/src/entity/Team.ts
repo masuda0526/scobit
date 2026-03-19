@@ -153,6 +153,20 @@ export type Team = z.infer<typeof TeamSchema>;
 //     return items.every(v => targets.includes(v));
 // }
 
+export const TeamFormSchema = TeamSchema.pick({
+  team_id:true,
+  team_name:true,
+  description:true,
+  pref:true,
+  area:true,
+  created_at:true,
+})
+export type TeamForm = z.infer<typeof TeamFormSchema>
+
+export const TeamAbilitySchema = TeamSchema.pick({
+  team_id:true
+})
+
 export const TeamDbSchema = TeamSchema.extend({
     pk:z.string(), // team_id
     sk:z.string() // INFO

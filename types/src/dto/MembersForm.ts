@@ -1,7 +1,7 @@
 import { Ability } from "../entity/Ability"
-import { Team } from "../entity/Team"
+import { TeamForm } from "../entity/Team"
 
 export type MembersForm = {
-    info:Team,
+    info:TeamForm,
     members:Ability[]
 }

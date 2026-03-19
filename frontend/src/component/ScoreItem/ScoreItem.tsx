@@ -1,17 +1,17 @@
-import type { Score } from "@scobit/types";
+import type { Score, ScoreForm, ScoreItemDto } from "@scobit/types";
 import type React from "react";
-import { dispDate } from "../../Util/DateUtil/DateUtil";
+import { dispDate, dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 import styles from "./ScoreItem.module.css";
 
-export const ScoreItem: React.FC<Score> = (score) => {
+export const ScoreItem: React.FC<ScoreItemDto> = (score) => {
     return (
         <div className={styles.item}>
             <div className={styles.info}>
-                <div className={styles.date}>{dispDate(score.gameDt)}</div>
+                <div className={styles.date}>{dispDateFromDate(score.game_dt)}</div>
                 <div className={styles.opponent}>vs {score.opponent}</div>
             </div>
             <div className={styles.data}>
-                {score.isTurn ? (
+                {score.is_turn ? (
                     <>
                         <div className={styles.box}>
                             <div className={styles.label}>打数</div>

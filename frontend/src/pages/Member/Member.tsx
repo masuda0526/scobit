@@ -8,17 +8,16 @@ import { ContentBox } from "../../parts/content/contentBox";
 import { Input } from "../../parts/input/Input";
 import { ButtonArea } from "../../parts/button/buttonArea";
 import { Button } from "../../parts/button/button";
-import type { Score } from "@scobit/types";
+import type { ScoreItemDto } from "@scobit/types";
 import { ScoreItem } from "../../component/ScoreItem/ScoreItem";
 import { generateMemberForm } from "../../testdatas/testDataCreater";
 
 export const Member: React.FC = () => {
     const data = generateMemberForm();
-    const scores:Score[] = data.scores;
-    const member = data.info;
-    const ablity = data.ability;
+    const scores:ScoreItemDto[] = data.scores;
+    const player = data.info;
 
-    const [positions, setPositions] = useState<string[]>(member.pos.split(""));
+    const [positions, setPositions] = useState<string[]>(player.positions.split(""));
     const [isEditMode, setEditFlg] = useState<boolean>(false)
     
     const positionToggle = (position: string) => {
@@ -40,7 +39,7 @@ export const Member: React.FC = () => {
             <Title text="選手詳細" />
             <ContentBox>
                 <SubTitle text="能力値" />
-                <UserAbility player={ablity}></UserAbility>
+                <UserAbility player={player}></UserAbility>
             </ContentBox>
 
             <ContentBox>
@@ -53,9 +52,9 @@ export const Member: React.FC = () => {
 
             <ContentBox>
                 <SubTitle text="プロフィール"/>
-                <Input label="氏名" isEditMode={isEditMode} value={member.name}></Input>
-                <Input label="表示名" isEditMode={isEditMode} value={member.disp_name}></Input>
-                <Input label="遠投距離(m)" isEditMode={isEditMode} value={member.throw_distance}></Input>
+                <Input label="氏名" isEditMode={isEditMode} value={player.name}></Input>
+                <Input label="表示名" isEditMode={isEditMode} value={player.disp_name}></Input>
+                <Input label="遠投距離(m)" isEditMode={isEditMode} value={player.throw_distance}></Input>
                 <ButtonArea>
                     <Button 
                         label={isEditMode?"変更する":"編集する"} 
@@ -69,7 +68,7 @@ export const Member: React.FC = () => {
             <ContentBox>
                 <SubTitle text="試合結果"/>
                 {scores.map(score => {
-                    return(<ScoreItem key={score.g_id} {...score}></ScoreItem>)
+                    return(<ScoreItem key={score.game_id} {...score}></ScoreItem>)
                 })}
                 <ButtonArea position="right">
                     <a href="#/member/games">一覧を見る</a>

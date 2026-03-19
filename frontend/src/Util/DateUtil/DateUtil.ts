@@ -13,3 +13,10 @@ export const dispDate = (dtText: string, format:DateFormat = 'dot') => {
 
     return dtText
 }
+
+export const dispDateFromDate = (date:Date, format:DateFormat = 'dot') => {
+    const y = date.getFullYear().toString().padStart(4, '0');
+    const m = date.getMonth().toString().padStart(2, '0');
+    const d = date.getDate().toString().padStart(2, '0');
+    return dispDate(`${y}${m}${d}`, format)
+}

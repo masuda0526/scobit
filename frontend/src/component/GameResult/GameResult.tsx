@@ -1,14 +1,14 @@
-import type { Game } from "@scobit/types";
+import type { GameForm } from "@scobit/types";
 import type React from "react";
 import styles from "./GameResult.module.css"
-import { dispDate } from "../../Util/DateUtil/DateUtil";
+import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 
-export const GameResult: React.FC<{ game: Game }> = ({ game }) => {
+export const GameResult: React.FC<{ game: GameForm }> = ({ game }) => {
 
     return (
         <>
             <div className={getClassName(game.my_point, game.op_point)}>
-                <div className={styles.date}>{dispDate(game.g_dt, 'jp')}</div>
+                <div className={styles.date}>{dispDateFromDate(game.game_dt, 'jp')}</div>
                 <div className={styles.box}>
                     <div className={styles.score}>{game.my_point} - {game.op_point}</div>
                     <div className={styles.opponent}>

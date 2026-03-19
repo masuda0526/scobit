@@ -1,9 +1,9 @@
-import { Team } from "../entity/Team";
-import { Game } from "../entity/Game";
-import { Ability } from "../entity/Ability";
+import { TeamForm } from "../entity/Team";
+import { GameForm } from "../entity/Game";
+import { Player, PlayerForm } from "../entity/Player";
 
 export type TeamTopForm = {
-    info:Team;
-    games:Game[];
-    members:Ability[]
+    info:TeamForm;
+    games:GameForm[];
+    players:PlayerForm[]
 }

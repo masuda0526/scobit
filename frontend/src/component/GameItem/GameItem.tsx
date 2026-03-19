@@ -1,14 +1,14 @@
 import type React from "react";
-import type { Game } from "@scobit/types";
+import type { GameForm } from "@scobit/types";
 import style from "./GameItem.module.css";
-import { dispDate } from "../../Util/DateUtil/DateUtil";
+import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 
-export const GameItem: React.FC<{ game: Game }> = ({ game }) => {
+export const GameItem: React.FC<{ game: GameForm }> = ({ game }) => {
   return (
     <div className={style.gameItem}>
       {/* 左：日付 */}
       <div className={style.gameDate}>
-        {dispDate(game.g_dt, "dot")}
+        {dispDateFromDate(game.game_dt, "dot")}
       </div>
 
       {/* 中央：結果バッジ + スコア + 対戦相手 */}
@@ -30,13 +30,13 @@ export const GameItem: React.FC<{ game: Game }> = ({ game }) => {
   );
 };
 
-function translateResult(game: Game): string {
+function translateResult(game: GameForm): string {
   if (game.my_point > game.op_point) return "○";
   if (game.my_point < game.op_point) return "×";
   return "△";
 }
 
-function resultClass(game: Game): string {
+function resultClass(game: GameForm): string {
   if (game.my_point > game.op_point) return "win";
   if (game.my_point < game.op_point) return "lose";
   return "draw";

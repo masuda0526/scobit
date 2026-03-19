@@ -1,9 +1,9 @@
 import type React from "react";
 import styles from "./GameItem.module.css";
-import type { Score } from "@scobit/types";
+import type { ScorePerPlayer } from "@scobit/types";
 import { MemberLabel } from "../UserAbility/MemberLabel";
 
-export const GameScore: React.FC<{ score: Score }> = ({ score }) => {
+export const GameScore: React.FC<{ score: ScorePerPlayer }> = ({ score }) => {
     return (
         <div className={styles.card}>
             <div className={styles.cardInner}>
@@ -13,7 +13,7 @@ export const GameScore: React.FC<{ score: Score }> = ({ score }) => {
                 </div>
 
                 {/* 出番なし or 成績グリッド */}
-                {!score.isTurn ? (
+                {!score.is_turn ? (
                     <div className={styles.noPlay}>出番なし</div>
                 ) : (
                     <div className={styles.statsGrid}>

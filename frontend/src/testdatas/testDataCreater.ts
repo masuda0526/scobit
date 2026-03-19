@@ -1,4 +1,4 @@
-import { type Ability, type Game, type GameDetail, type GammesForm, type MemberForm, type MemberGamesForm, type MembersForm, type Score, type Team, type TeamTopForm, type User } from "@scobit/types";
+import { GameResultConsts, prefArray, type Ability, type GameDetail, type GameForm, type GamesForm, type MemberForm, type MemberGamesForm, type MembersForm, type PlayerForm, type ScoreForm, type ScoreItemDto, type TeamForm, type TeamTopForm } from "@scobit/types";
 
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 const randInt = (min: number, max: number) => Math.floor(rand(min, max));
@@ -14,71 +14,58 @@ const randomPositions = () => {
 
 const randomDate = () => {
     const y = 2025;
-    const m = randInt(1, 12).toString().padStart(2, "0");
-    const d = randInt(1, 28).toString().padStart(2, "0");
-    return `${y}${m}${d}`;
+    const m = randInt(1, 12);
+    const d = randInt(1, 28);
+    return new Date(y, m, d);
 };
 
-const makeTeam = (t_id:string):Team => {
+const makeTeam = (team_id:string):TeamForm => {
     return {
-            t_id,
-            teamName: `テストチーム${randInt(1000, 9999)}`,
-            area: '大阪',
-            interval: 'WEEK',
-            activeInfo: ['sun'],
-            createdDt: randomDate(),
-            registeredDt: randomDate(),
-            payMode: randInt(1, 2),
-            leaderName: ['青木', '石田', '上田', '榎田', '岡田'][randInt(0, 4)],
-            icon: ''
+            team_id,
+            team_name: `テストチーム${randInt(1000, 9999)}`,
+            pref:prefArray[randInt(0, 47)],
+            area: 'テスト地域',
+            created_at: randomDate(),
         }
 }
 
-const makeAbility = (t_id:string):Ability => {
+const makeAbility = ():Ability => {
     return {
-            a_id: crypto.randomUUID(),
-            t_id,
+            team_id:crypto.randomUUID(),
             avr: Number(rand(0, 1).toFixed(3)),
-            hr_per_game: Number(rand(0, 1).toFixed(2)),
+            hr_per_box: Number(rand(0, 1).toFixed(2)),
             steal_per_game: Number(rand(0, 1).toFixed(2)),
             err_per_game: Number(rand(0, 0.5).toFixed(2)),
             throw_distance: randInt(70, 100),
-            sprint_sec: Number(rand(5.5, 7.5).toFixed(2)),
-            u_id:crypto.randomUUID(),
+            player_id:crypto.randomUUID(),
             hr:randInt(0, 100),
             steal:randInt(0, 100),
-            dispName: `選手${randInt(1, 99)}`,
-            userName: `テスト　太郎${randInt(1, 99)}`,
+            disp_name: `選手${randInt(1, 99)}`,
+            name: `テスト　太郎${randInt(1, 99)}`,
             positions: randomPositions()
         }
 }
 
-const makeUser = (t_id:string):User => {
+const makePlayer = ():PlayerForm => {
     return {
-        u_id:crypto.randomUUID(),
-        t_id,
+        player_id:crypto.randomUUID(),
         name:`テスト　太郎${randInt(0,99)}`,
         disp_name:`選手${randInt(0,99)}`,
         throw_distance:randInt(20, 150),
-        sprint_sec:rand(5, 10),
-        pos:randomPositions(),
-        status:'',
-        delflg:false,
-        created_at:randomDate(),
-        updated_at:randomDate(),
-        join_at:randomDate(),
+        positions:randomPositions(),
     }
 }
 
-const makeGame = (t_id:string, index:number = 1):Game => {
+const makeGame = ():GameForm => {
     return {
-        t_id,
-        g_id:crypto.randomUUID(),
-        seq:index,
+        game_id:crypto.randomUUID(),
+        seq:1,
+        tournament_id:crypto.randomUUID(),
         opponent:`対戦相手${randInt(1, 99)}`,
         my_point:randInt(0, 20),
         op_point:randInt(0, 20),
-        g_dt:randomDate()
+        result:GameResultConsts[randInt(0, 4)],
+        game_dt:randomDate()
     }
 }
 
@@ -87,35 +74,48 @@ export const generateTeamForms = (): TeamTopForm => {
 
     return {
         info: makeTeam(t_id),
-        games: Array.from({ length: 5 }).map((_, i) => ({
-            g_id: crypto.randomUUID(),
-            t_id,
-            seq: i,
+        games: Array.from({ length: 5 }).map((_) => ({
+            game_id: crypto.randomUUID(),
+            seq: 1,
+            tournament_id: crypto.randomUUID(),
             opponent: `テスト相手${randInt(0, 100)}`,
             my_point: randInt(0, 99),
             op_point: randInt(0, 99),
-            g_dt: randomDate()
+            result:GameResultConsts[randInt(0, 4)],
+            game_dt: randomDate()
         })),
-        members: Array.from({ length: rand(9, 20) }).map((_) => (makeAbility(t_id)))
+        players: Array.from({ length: rand(9, 20) }).map((_) => {
+            const idx = randInt(0, 99);
+            return {
+                disp_name:`太郎${idx}`,
+                player_id:crypto.randomUUID(),
+                positions:randomPositions(),
+                throw_distance:randInt(40, 150),
+                name:`テスト　太郎${idx}`
+            }
+        })
     }
 }
 
-const makeScores = (t_id:string, u_id:string, index = 1):Score => {
-    const isTurn = [true, false, false][randInt(0,2)];
-    const box = isTurn?randInt(1, 10):0;
-    const hit = isTurn?randInt(0, box):0;
+const makeScores = ():ScoreForm => {
+    const is_turn = [true, false, false][randInt(0,2)];
+    const box = is_turn?randInt(1, 10):0;
+    const hit = is_turn?randInt(0, box):0;
 
     return {
-        t_id,u_id,isTurn,box,hit,
-        hr:isTurn?randInt(0, hit):0,
-        steal:isTurn?randInt(0, 5):0,
-        err:isTurn?randInt(0, 5):0,
-        gameDt:randomDate(),
-        seq:index,
-        opponent:`テスト相手${randInt(1, 99)}`,
-        disp_name:`選手${randInt(0,99)}`,
-        positions:randomPositions(),
-        g_id:crypto.randomUUID()
+        player_id:crypto.randomUUID(),
+        score_id:crypto.randomUUID(),
+        box,hit,is_turn,
+        hr:is_turn?randInt(0, hit):0,
+        steal:is_turn?randInt(0, 5):0,
+        err:is_turn?randInt(0, 5):0,
+    }
+}
+
+const makeScoreItem = ():ScoreItemDto => {
+    return {
+        ...makeScores(),
+        ...makeGame()
     }
 }
 
@@ -124,53 +124,40 @@ export const generateMembersForm = ():MembersForm => {
 
     return {
         info:makeTeam(t_id),
-        members: Array.from({ length: rand(9, 40) }).map((_) => (makeAbility(t_id)))
+        members: Array.from({ length: rand(9, 40) }).map((_) => (makeAbility()))
     }
 }
 
-export const generateMemberForm = ():MemberForm => {
-    const t_id = crypto.randomUUID();
-    const throw_distance = randInt(10, 150);
-    const dispName = `選手${randInt(0,99)}`;
-    const sprint_sec = rand(5, 10);
-    const u_id = crypto.randomUUID();
-    const name = `テスト　太郎${randInt(0,99)}`;
-    const positions = randomPositions();
-    
+export const generateMemberForm = ():MemberForm => {    
     return {
-        info:{...makeUser(t_id), throw_distance, disp_name:dispName, sprint_sec, u_id, name, pos:positions},
-        ability:{...makeAbility(t_id), throw_distance, dispName, sprint_sec, u_id, userName:name, positions},
-        scores: Array.from({length:randInt(1, 10)}).map((_, i) => ({...makeScores(t_id, u_id, i), disp_name:dispName, positions}))
+        info:makeAbility(),
+        scores: Array.from({length:randInt(1, 10)}).map((_) => ({...makeScoreItem()}))
     }
 }
 
 export const generateMemberGamesForm = ():MemberGamesForm => {
-    const t_id = crypto.randomUUID();
-    const throw_distance = randInt(10, 150);
-    const dispName = `選手${randInt(0,99)}`;
-    const sprint_sec = rand(5, 10);
-    const u_id = crypto.randomUUID();
-    const name = `テスト　太郎${randInt(0,99)}`;
-    const positions = randomPositions();
-    const g_id = crypto.randomUUID();
-
     return {
-        info:{...makeUser(t_id), u_id, disp_name:dispName, throw_distance, sprint_sec, name, pos:positions},
-        scores:Array.from({length:randInt(0, 50)}).map((_, i) => ({...makeScores(t_id, u_id, i), disp_name:dispName, positions, g_id}))
+        info:{...makePlayer()},
+        scores:Array.from({length:randInt(0, 50)}).map((_) => ({...makeScoreItem()}))
     }
 }
 
-export const generateGamesForm = ():GammesForm => {
+export const generateGamesForm = ():GamesForm => {
     const t_id = crypto.randomUUID();
     return {
         team:makeTeam(t_id),
-        games:Array.from({length:randInt(0, 100)}).map((_, i) => ({...makeGame(t_id, i)}))
+        games:Array.from({length:randInt(0, 100)}).map((_) => ({...makeGame()}))
     }
 }
 export const generateGameDetailForm = ():GameDetail => {
-    const t_id = crypto.randomUUID();
     return {
-        game:makeGame(t_id),
-        scores:Array.from({length:randInt(0, 30)}).map((_, i) => ({...makeScores(t_id, crypto.randomUUID())}))
+        game:makeGame(),
+        scores:Array.from({length:randInt(0, 30)}).map((_) => {
+            return {
+                ...makeScores(),
+                disp_name:`太郎${randInt(0, 99).toString()}`,
+                positions:randomPositions()
+            }
+        })
     }
 }

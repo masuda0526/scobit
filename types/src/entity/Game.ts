@@ -1,4 +1,4 @@
-import {z} from "zod";
+import {exactOptional, z} from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity";
 
 // export type GameResultType = 'win' | 'lose' | 'draw' | 'nogame' | 'cold'
@@ -17,8 +17,14 @@ export const GameSchema = AbstractEntitySchema.extend({
     result: z.enum(GameResultConsts),
     game_dt:z.coerce.date(),
 })
-
 export type Game = z.infer<typeof GameSchema>
+
+export const GameFormSchema = GameSchema.omit({
+    team_id: true,
+    created_at:true,
+    updated_at:true
+})
+export type GameForm = z.infer<typeof GameFormSchema>
 
 export const GameDbSchema = GameSchema.extend({
     pk:z.string(), // team_id

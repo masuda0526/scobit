@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './Base/AbstractEntity';
-
-export const ScoreSchema = AbstractEntitySchema.extend({
+import { GameFormSchema } from './Game';
+export const ScoreBaseSchema = AbstractEntitySchema.extend({
     // インデックス用
     score_id: z.uuid(),
     player_id: z.uuid(),
@@ -22,7 +22,8 @@ export const ScoreSchema = AbstractEntitySchema.extend({
     // // 選手表示用
     // disp_name:z.string().min(1).max(4),
     // positions:z.string().min(1).max(9)
-}).superRefine((data, ctx) => {
+})
+export const ScoreSchema = ScoreBaseSchema.superRefine((data, ctx) => {
     // 出番があった場合は以下のバリデーションを構築
     if (data.is_turn) {
         if (data.box < data.hit) {
@@ -41,8 +42,18 @@ export const ScoreSchema = AbstractEntitySchema.extend({
         }
     }
 });
-
 export type Score = z.infer<typeof ScoreSchema>
+
+export const ScoreFormSchema = ScoreBaseSchema.omit({
+    updated_at:true,
+    created_at:true,
+})
+export type ScoreForm = z.infer<typeof ScoreFormSchema>
+
+export const ScoreItemDtoSchema = ScoreFormSchema.extend({
+    ...GameFormSchema.shape
+}) 
+export type ScoreItemDto = z.infer<typeof ScoreItemDtoSchema>
 
 export const ScoreDbSchema = ScoreSchema.extend({
     pk:z.string(), // game_id or u_id
