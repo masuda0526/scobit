@@ -24,7 +24,6 @@ export const getTeam = async (event: APIGatewayProxyEvent): Promise<ResponseBody
     return ResponseUtil.error().addError('public_id', 'チームが存在しません。')
   }
   logger.info('チーム情報取得');
-  logger.debugObj(info);
 
   const [games, players] = await Promise.all([
     findGamesByPublicId(info.team_id, pool),
