@@ -1,6 +1,6 @@
 import {string, uuid, z} from "zod";
-import { AbstractEntitySchema } from "./Base/AbstractEntity";
-import { TransactionEntitySchema } from "./Base/TransactionEntity";
+import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
+import { TransactionEntitySchema } from "./Base/TransactionEntity.js";
 
 export const UserSchema = TransactionEntitySchema.extend({
     u_id: z.uuid(),

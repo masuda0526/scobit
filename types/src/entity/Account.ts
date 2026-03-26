@@ -1,5 +1,5 @@
 import z from "zod";
-import { AbstractEntitySchema } from "./Base/AbstractEntity";
+import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 export const AccountSchema = AbstractEntitySchema.extend({
   account_id: z.uuid(),

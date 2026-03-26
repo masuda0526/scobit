@@ -1,5 +1,5 @@
-import { GameForm } from "../entity/Game"
-import { TeamForm } from "../entity/Team"
+import { GameForm } from "../entity/Game.js"
+import { TeamForm } from "../entity/Team.js"
 
 export type GamesForm = {
     team:TeamForm

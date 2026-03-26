@@ -1,5 +1,5 @@
 import {exactOptional, z} from "zod";
-import { AbstractEntitySchema } from "./Base/AbstractEntity";
+import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 // export type GameResultType = 'win' | 'lose' | 'draw' | 'nogame' | 'cold'
 export const GameResultConsts = [

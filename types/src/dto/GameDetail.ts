@@ -1,7 +1,7 @@
 import z from "zod"
-import { GameForm } from "../entity/Game"
-import { PlayerFormSchema } from "../entity/Player"
-import { ScoreFormSchema } from "../entity/Score"
+import { GameForm } from "../entity/Game.js"
+import { PlayerFormSchema } from "../entity/Player.js"
+import { ScoreFormSchema } from "../entity/Score.js"
 
 export type GameDetail = {
     game:GameForm,

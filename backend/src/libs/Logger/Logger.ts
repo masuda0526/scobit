@@ -20,8 +20,15 @@ class Logger {
         console.error(`[ERROR] ${this.prefix()} ${msg}`);
     }
 
+    debugObj(data:any){
+        if(this.level === "DEBUG"){
+            console.log(`[DEBUG_OBJECT] ${this.prefix()} `);
+            console.debug(data)
+        }
+    }
+
     private prefix():string{
-        return new Date().toISOString();
+        return new Date().toLocaleString();
     }
 }
 

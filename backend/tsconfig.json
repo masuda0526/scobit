@@ -17,5 +17,5 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src/**/*.ts", "scripts/**/*.ts", "seeder/**/*.ts"]
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "seeder/**/*.ts", "local/**/*.ts"]
 }

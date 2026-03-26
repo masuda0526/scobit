@@ -1,5 +1,5 @@
-import { Ability } from "../entity/Ability"
-import { ScoreItemDto } from "../entity/Score"
+import { Ability } from "../entity/Ability.js"
+import { ScoreItemDto } from "../entity/Score.js"
 
 export type MemberForm = {
     info:Ability,

@@ -1,6 +1,6 @@
 import z, { uuid } from "zod";
-import { AbstractEntitySchema } from "./Base/AbstractEntity";
-import { TransactionEntitySchema } from "./Base/TransactionEntity";
+import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
+import { TransactionEntitySchema } from "./Base/TransactionEntity.js";
 
 export const SlugSchema = TransactionEntitySchema.extend({
   alias_id: z.string().min(5).max(20),

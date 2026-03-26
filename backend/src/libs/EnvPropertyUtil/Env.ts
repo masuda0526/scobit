@@ -10,6 +10,11 @@ const EnvSchema = z.object({
   STAGE: z.enum(['local', 'dev', 'product', 'test']),
   LOG_LEVEL: z.enum(['DEBUG', 'INFO', 'WARN', 'ERROR']),
   JWT_SECRET_KEY: z.string().min(10),
+  RDB_NAME:z.string(),
+  RDB_HOST:z.string(),
+  RDB_PORT:z.string(),
+  RDB_USER:z.string(),
+  RDB_PASS:z.string(),
   DB_TABLE:z.string(),
   AWS_REGION:z.string(),
   DYNAMO_ENDPOINT:z.string()

@@ -1,21 +1,21 @@
-import { METHODS } from "http";
-import z from "zod";
+import { APIGatewayProxyEvent } from "aws-lambda";
+import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 
 type Route = {
   method:'GET'|'POST';
   path:string;
-  handler:Function;
+  execFunc:(event: APIGatewayProxyEvent) => Promise<ResponseBodyBuilder>;
 }
 
 export class Router {
   private routes: Route[] = [];
 
-  get(path:string, handler:Function){
-    this.routes.push({method:'GET', path ,handler});
+  get(path:string, execFunc:(body:any) => Promise<ResponseBodyBuilder>){
+    this.routes.push({method:'GET', path ,execFunc});
   }
 
-  post(path:string, handler:Function){
-    this.routes.push({method:'POST', path, handler});
+  post(path:string, execFunc:(body:any) => Promise<ResponseBodyBuilder>){
+    this.routes.push({method:'POST', path, execFunc});
   }
 
   find(method: string, path: string){

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { AbstractEntitySchema } from './Base/AbstractEntity';
-import { GameFormSchema } from './Game';
+import { AbstractEntitySchema } from './Base/AbstractEntity.js';
+import { GameFormSchema } from './Game.js';
 export const ScoreBaseSchema = AbstractEntitySchema.extend({
     // インデックス用
     score_id: z.uuid(),

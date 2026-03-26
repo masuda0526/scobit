@@ -1,6 +1,6 @@
 import { ErrorInfo, ResponseFormat } from "@scobit/types";
 
-export class ResponseBuilder<T extends Record<string, any> = Record<string, any>>{
+export class ResponseBodyBuilder<T extends Record<string, any> = Record<string, any>>{
 
   private isSuccess:boolean;
   private isRedirect:boolean = false;
@@ -52,6 +52,10 @@ export class ResponseBuilder<T extends Record<string, any> = Record<string, any>
   setData(data:T){
     this.data = {...this.data, ...data}
     return this;
+  }
+
+  isError(){
+    return !this.isSuccess;
   }
 
 }

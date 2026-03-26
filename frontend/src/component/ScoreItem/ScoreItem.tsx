@@ -1,6 +1,6 @@
-import type { Score, ScoreForm, ScoreItemDto } from "@scobit/types";
+import type { ScoreItemDto } from "@scobit/types";
 import type React from "react";
-import { dispDate, dispDateFromDate } from "../../Util/DateUtil/DateUtil";
+import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 import styles from "./ScoreItem.module.css";
 
 export const ScoreItem: React.FC<ScoreItemDto> = (score) => {

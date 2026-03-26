@@ -1,6 +1,6 @@
 import {z} from 'zod'
-import { PlayerFormSchema } from './Player'
-import { TeamAbilitySchema } from './Team'
+import { PlayerFormSchema } from './Player.js'
+import { TeamAbilitySchema } from './Team.js'
 
 export const AbilitySchema = z.object({
   avr: z.number().min(0).max(1),   // 打率

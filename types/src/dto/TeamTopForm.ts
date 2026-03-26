@@ -1,6 +1,6 @@
-import { TeamForm } from "../entity/Team";
-import { GameForm } from "../entity/Game";
-import { Player, PlayerForm } from "../entity/Player";
+import { TeamForm } from "../entity/Team.js";
+import { GameForm } from "../entity/Game.js";
+import { Player, PlayerForm } from "../entity/Player.js";
 
 export type TeamTopForm = {
     info:TeamForm;

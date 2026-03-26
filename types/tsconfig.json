@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "declaration": true,
-    "module": "esnext",
+    "module": "nodenext",
     "target": "es2020",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
   },
   "include": ["src"]
 }

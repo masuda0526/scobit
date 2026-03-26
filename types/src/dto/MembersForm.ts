@@ -1,5 +1,5 @@
-import { Ability } from "../entity/Ability"
-import { TeamForm } from "../entity/Team"
+import { Ability } from "../entity/Ability.js"
+import { TeamForm } from "../entity/Team.js"
 
 export type MembersForm = {
     info:TeamForm,
