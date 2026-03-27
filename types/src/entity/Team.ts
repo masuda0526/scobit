@@ -160,6 +160,7 @@ export const TeamFormSchema = TeamSchema.pick({
   pref:true,
   area:true,
   created_at:true,
+  public_id:true,
 })
 export type TeamForm = z.infer<typeof TeamFormSchema>
 
