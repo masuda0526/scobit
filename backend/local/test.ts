@@ -7,11 +7,10 @@ dotenv.config({ path: ".env.local" });
 
 const event:APIGatewayProxyEvent = createEvent({
   httpMethod:'GET',
-  path:'/member/game',
-  resource:'/member/game',
+  path:'/games',
+  resource:'/games',
   pathParameters:{
     public_id:'n340v',
-    player_id:'7d795853-a301-4837-b933-a677275e8993'
   }
 });
 
