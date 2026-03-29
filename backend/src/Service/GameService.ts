@@ -27,3 +27,24 @@ export const findGamesByTeamId = async (team_id:string, pool:Pool, limit?:number
   )
   return result.rows
 }
+
+export const findGameByGameId = async (game_id:string, pool:Pool):Promise<GameForm> => {
+  const result = await pool.query(
+    `
+      select
+        g.game_id, 
+        g.seq ,
+        g.tournament_id ,
+        g.opponent ,
+        g.my_point ,
+        g.op_point ,
+        g."result" ,
+        g.game_dt 
+      from games g 
+      where g.game_id = $1
+      ;
+    `,
+    [game_id]
+  )
+  return result.rows[0];
+}

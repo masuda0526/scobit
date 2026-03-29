@@ -1,3 +1,4 @@
+import { gameDetailPage } from "@func/game/index.js";
 import { gamesPage } from "@func/games/index.js";
 import { memberPage } from "@func/member/index.js";
 import { memberGamesPage } from "@func/memberGames/index.js";
@@ -11,4 +12,5 @@ router.get('/team', getTeam);
 router.get('/members', membersPage);
 router.get('/member', memberPage);
 router.get('/member/game', memberGamesPage);
-router.get('/games', gamesPage)
+router.get('/games', gamesPage);
+router.get('/game/score', gameDetailPage);
