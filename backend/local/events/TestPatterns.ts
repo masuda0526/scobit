@@ -1,5 +1,11 @@
 import { APIGatewayProxyEvent } from "aws-lambda"
-import { GameDetailPatterns } from "./GameDetail.js"
+import { GameDetailPatterns } from "./GameDetailPageTest.js"
+import { GamesPatterns } from "./GamesPageTest.js"
+import { MemberPatterns } from "./memberPageTest.js"
+import { memberGamesPage } from "@func/memberGames/index.js"
+import { MemberGamesPatterns } from "./MemberGamesPageTest.js"
+import { MembersPattern } from "./MembersPageTest.js"
+import { TeamPattern } from "./TeamPageTest.js"
 
 export type SearchOption = {
   api_id:string,
@@ -11,7 +17,12 @@ export type TestPattern = SearchOption & {
 }
 
 export const allPatterns:TestPattern[] = [
-  ...GameDetailPatterns
+  ...GameDetailPatterns,
+  ...GamesPatterns,
+  ...MemberPatterns,
+  ...MemberGamesPatterns,
+  ...MembersPattern,
+  ...TeamPattern,
 ]
 
 export const findTestPattern = (api_id:string, test_case:string) => {
