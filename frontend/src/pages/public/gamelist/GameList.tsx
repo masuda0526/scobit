@@ -1,12 +1,12 @@
 import type { GameForm, TeamForm } from "@scobit/types";
 import type React from "react";
-import { GameItem } from "../../component/GameItem/GameItem";
-import { Title } from "../../parts/title/title";
-import { Button } from "../../parts/button/button";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { generateGamesForm } from "../../testdatas/testDataCreater";
-import { ContentBox } from "../../parts/content/contentBox";
-import { SubTitle } from "../../parts/subtitle/subtitle";
+import { GameItem } from "../../../component/GameItem/GameItem";
+import { Title } from "../../../parts/title/title";
+import { Button } from "../../../parts/button/button";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { generateGamesForm } from "../../../testdatas/testDataCreater";
+import { ContentBox } from "../../../parts/content/contentBox";
+import { SubTitle } from "../../../parts/subtitle/subtitle";
 
 export const GameList: React.FC = () => {
     const data = generateGamesForm();

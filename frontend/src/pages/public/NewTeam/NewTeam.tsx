@@ -1,12 +1,12 @@
 import type React from "react";
-import { Title } from "../../parts/title/title";
-import { ContentBox } from "../../parts/content/contentBox";
-import { SubTitle } from "../../parts/subtitle/subtitle";
-import { Input } from "../../parts/input/Input";
+import { Title } from "../../../parts/title/title";
+import { ContentBox } from "../../../parts/content/contentBox";
+import { SubTitle } from "../../../parts/subtitle/subtitle";
+import { Input } from "../../../parts/input/Input";
 import { useState } from "react";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { Button } from "../../parts/button/button";
-import { useLoading } from "../../component/Loading/LoadingContext";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { Button } from "../../../parts/button/button";
+import { useLoading } from "../../../component/Loading/LoadingContext";
 import type { NewTeamPageForm } from "@scobit/types";
 
 export const NewTeam : React.FC = () => {

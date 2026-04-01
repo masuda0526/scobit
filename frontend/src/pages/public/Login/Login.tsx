@@ -1,11 +1,11 @@
 import type React from "react";
-import { Input } from "../../parts/input/Input";
+import { Input } from "../../../parts/input/Input";
 import { useEffect, useState } from "react";
-import { Title } from "../../parts/title/title";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { Button } from "../../parts/button/button";
-import { ContentBox } from "../../parts/content/contentBox";
-import { useLoading } from "../../component/Loading/LoadingContext";
+import { Title } from "../../../parts/title/title";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { Button } from "../../../parts/button/button";
+import { ContentBox } from "../../../parts/content/contentBox";
+import { useLoading } from "../../../component/Loading/LoadingContext";
 
 export const Login: React.FC = () => {
     const [info, setInfo] = useState<string>('');

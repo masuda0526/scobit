@@ -1,16 +1,16 @@
 import type React from "react";
-import { Title } from "../../parts/title/title";
-import { UserAbility } from "../../component/UserAbility/UserAbility";
-import { GroundPosition } from "../../component/GroundPosition/GroundPosition";
+import { Title } from "../../../parts/title/title";
+import { UserAbility } from "../../../component/UserAbility/UserAbility";
+import { GroundPosition } from "../../../component/GroundPosition/GroundPosition";
 import { useState } from "react";
-import { SubTitle } from "../../parts/subtitle/subtitle";
-import { ContentBox } from "../../parts/content/contentBox";
-import { Input } from "../../parts/input/Input";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { Button } from "../../parts/button/button";
+import { SubTitle } from "../../../parts/subtitle/subtitle";
+import { ContentBox } from "../../../parts/content/contentBox";
+import { Input } from "../../../parts/input/Input";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { Button } from "../../../parts/button/button";
 import type { ScoreItemDto } from "@scobit/types";
-import { ScoreItem } from "../../component/ScoreItem/ScoreItem";
-import { generateMemberForm } from "../../testdatas/testDataCreater";
+import { ScoreItem } from "../../../component/ScoreItem/ScoreItem";
+import { generateMemberForm } from "../../../testdatas/testDataCreater";
 
 export const Member: React.FC = () => {
     const data = generateMemberForm();

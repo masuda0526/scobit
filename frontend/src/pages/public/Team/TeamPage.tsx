@@ -1,13 +1,13 @@
 import type React from "react";
-import { Title } from "../../parts/title/title";
-import { SubTitle } from "../../parts/subtitle/subtitle";
-import { ContentBox } from "../../parts/content/contentBox";
-import { Info } from "../../component/Info/info";
-import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
-import { GameItem } from "../../component/GameItem/GameItem";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { generateTeamForms } from "../../testdatas/testDataCreater";
-import { MemberLabelList } from "../../component/MemberLabelList/MemberLabelList";
+import { Title } from "../../../parts/title/title";
+import { SubTitle } from "../../../parts/subtitle/subtitle";
+import { ContentBox } from "../../../parts/content/contentBox";
+import { Info } from "../../../component/Info/info";
+import { dispDateFromDate } from "../../../Util/DateUtil/DateUtil";
+import { GameItem } from "../../../component/GameItem/GameItem";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { generateTeamForms } from "../../../testdatas/testDataCreater";
+import { MemberLabelList } from "../../../component/MemberLabelList/MemberLabelList";
 
 export const TeamPage: React.FC = () => {
     const data = generateTeamForms();

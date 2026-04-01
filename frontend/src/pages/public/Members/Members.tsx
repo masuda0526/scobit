@@ -1,11 +1,11 @@
 import type React from "react";
-import { UserAbility } from "../../component/UserAbility/UserAbility";
-import { Title } from "../../parts/title/title";
-import { ButtonArea } from "../../parts/button/buttonArea";
-import { Button } from "../../parts/button/button";
+import { UserAbility } from "../../../component/UserAbility/UserAbility";
+import { Title } from "../../../parts/title/title";
+import { ButtonArea } from "../../../parts/button/buttonArea";
+import { Button } from "../../../parts/button/button";
 import { useEffect } from "react";
-import { useLoading } from "../../component/Loading/LoadingContext";
-import { generateMembersForm } from "../../testdatas/testDataCreater";
+import { useLoading } from "../../../component/Loading/LoadingContext";
+import { generateMembersForm } from "../../../testdatas/testDataCreater";
 
 export const Members: React.FC = () => {
     const data = generateMembersForm();
@@ -22,7 +22,7 @@ export const Members: React.FC = () => {
         <>
             <Title text="選手一覧"/>
             {members.map(member => {
-                return <UserAbility key={member.u_id} player={member} />
+                return <UserAbility key={member.player_id} player={member} />
             })}
             <ButtonArea position="center">
                 <Button 
