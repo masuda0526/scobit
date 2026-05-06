@@ -1,0 +1,19 @@
+.box {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-size: small;
+}
+
+.select {
+  font-size: medium;
+  width: 100%;
+  padding: 10px;
+}
+
+.isError {
+  background-color: #ffebeb;
+  border: 1px solid #ff7676;
+}

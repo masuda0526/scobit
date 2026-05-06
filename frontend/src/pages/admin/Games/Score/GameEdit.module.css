@@ -1,0 +1,77 @@
+/*
+* 試合結果
+*/
+.game{
+  display: flex;
+  flex-direction: column;
+}
+.info{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+}
+.date{
+  font-size: medium;
+}
+.opponent{
+  font-weight: bold;
+  color: rgb(52, 70, 172);
+}
+.result{
+  padding-left: 1rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+/*
+* スコア
+*/
+.list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.formbox{
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+.formitem{
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.label{
+  font-size: x-small;
+  text-align: center;
+}
+.form{
+  padding: 5px;
+  text-align: center;
+  font-size: medium;
+}
+/*
+* エラー
+*/
+.err{
+  list-style-position: inside;
+  font-size: small;
+  color: #ff5353;
+}

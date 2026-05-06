@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 export const TournamentType = [

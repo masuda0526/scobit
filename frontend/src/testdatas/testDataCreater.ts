@@ -1,5 +1,4 @@
-import { GameResultConsts, prefArray, type Ability, type GameDetail, type GameForm, type GamesForm, type MemberForm, type MemberGamesForm, type MembersForm, type PlayerForm, type ScoreForm, type ScoreItemDto, type TeamForm, type TeamTopForm } from "@scobit/types";
-
+import { GameResultConsts, prefArray, TournamentType, type Ability, type AccountForm, type AdminGameEditForm, type AdminGamesForms, type GameDetail, type GameForm, type GamesForm, type MemberForm, type MemberGamesForm, type MembersForm, type MypageFormOfIndividualUser, type MypageFormOfTeams, type PlayerForm, type ScoreForm, type ScoreItemDto, type TeamForm, type TeamTopForm, type Tournament } from "@scobit/types";
 const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 const randInt = (min: number, max: number) => Math.floor(rand(min, max));
 
@@ -22,10 +21,12 @@ const randomDate = () => {
 const makeTeam = (team_id:string):TeamForm => {
     return {
             team_id,
+            public_id: `pub_id-${randInt(1, 100)}`,
             team_name: `テストチーム${randInt(1000, 9999)}`,
             pref:prefArray[randInt(0, 47)],
             area: 'テスト地域',
             created_at: randomDate(),
+            description:'あいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえお'
         }
 }
 
@@ -44,6 +45,20 @@ const makeAbility = ():Ability => {
             name: `テスト　太郎${randInt(1, 99)}`,
             positions: randomPositions()
         }
+}
+
+const makeTournament = (team:TeamForm):Tournament => {
+  const now = new Date();
+  return {
+    tournament_id:crypto.randomUUID(),
+    team_id:team.team_id,
+    name:`テスト用大会${randInt(0, 100)}`,
+    type:TournamentType[randInt(0,4)],
+    start_dt:now,
+    end_dt:now,
+    created_at:now,
+    updated_at:now,
+  }
 }
 
 const makePlayer = ():PlayerForm => {
@@ -149,6 +164,13 @@ export const generateGamesForm = ():GamesForm => {
         games:Array.from({length:randInt(0, 100)}).map((_) => ({...makeGame()}))
     }
 }
+export const generateAdminGamesForm = ():AdminGamesForms => {
+    const obj = generateGamesForm();
+    return {
+        ...obj,
+        tournaments:Array.from({length:randInt(3, 10)}).map((_)=> makeTournament(obj.team))
+    }
+}
 export const generateGameDetailForm = ():GameDetail => {
     return {
         game:makeGame(),
@@ -160,4 +182,30 @@ export const generateGameDetailForm = ():GameDetail => {
             }
         })
     }
+}
+export const generateAdminGameEditForm = ():AdminGameEditForm => {
+    const team_id = crypto.randomUUID();
+    const game:GameForm = makeGame();
+    const team:TeamForm = makeTeam(team_id);
+    const members:PlayerForm[] = Array.from({length:randInt(10, 30)}).map((_) => makePlayer());
+    const scores:ScoreForm[] = Array.from({length:members.length}).map((_, i) => {
+        return {
+            ...makeScores(),
+            player_id:members[i].player_id,
+            game_id:game.game_id
+        }
+    })
+    const tournaments:Tournament[] = Array.from({length:randInt(3, 10)}).map((_)=> makeTournament(team))
+    return {game, members, scores, tournaments}
+}
+
+export const generateAdminMypageFetchTeams = ():MypageFormOfTeams => {
+    return {teams:Array.from({length:randInt(0, 5)}).map((_) => makeTeam(crypto.randomUUID()))}
+}
+
+export const generateAdminMypageFetchKojinAccount = ():MypageFormOfIndividualUser => {
+    const ability = makeAbility();
+    const scores = Array.from({length:randInt(0, 50)}).map((_) => makeScoreItem());
+    const account:AccountForm = {email:'teat@test.com', account_pub_id:'testPublicId001'}
+    return {ability, account, scores}
 }

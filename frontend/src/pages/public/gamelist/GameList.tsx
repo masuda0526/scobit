@@ -2,35 +2,27 @@ import type { GameForm, TeamForm } from "@scobit/types";
 import type React from "react";
 import { GameItem } from "../../../component/GameItem/GameItem";
 import { Title } from "../../../parts/title/title";
-import { Button } from "../../../parts/button/button";
-import { ButtonArea } from "../../../parts/button/buttonArea";
 import { generateGamesForm } from "../../../testdatas/testDataCreater";
 import { ContentBox } from "../../../parts/content/contentBox";
 import { SubTitle } from "../../../parts/subtitle/subtitle";
+import { useEffect, useState } from "react";
 
 export const GameList: React.FC = () => {
-    const data = generateGamesForm();
-    const games: GameForm[] = data.games;
-    const team:TeamForm = data.team;
-    const addGame = () => {
-        console.log("add game");
-    }
+    const [games, setGames] = useState<GameForm[]>([]);
+    const [team, setTeam] = useState<TeamForm|null>(null);
+    useEffect(() => {
+        const data = generateGamesForm();
+        setTeam(data.team);
+        setGames(data.games);
+    }, [])
 
     return (
         <div>
             <Title text="試合結果一覧" />
             <ContentBox>
-                <SubTitle text={`${team.team_name}`} />
-                <ButtonArea
-                    position="right"
-                >
-                    <Button
-                        label="試合結果を追加"
-                        size="sm"
-                        isRadius="isRadius"
-                        onClick={addGame}
-                    ></Button>
-                </ButtonArea>
+                {team?(
+                    <SubTitle text={`${team.team_name}`} />
+                ):''}
                 {games.map((game) => (
                     <GameItem
                         key={game.game_id}

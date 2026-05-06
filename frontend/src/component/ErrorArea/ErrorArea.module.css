@@ -1,0 +1,12 @@
+.errorArea{
+  font-size: small;
+  background-color: #ffe9e9;
+  padding: 20px 5px 20px 1rem;
+  border-left: 3px solid #ff6161;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.msg{
+  color: #ff6161;
+}

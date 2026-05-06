@@ -1,13 +1,14 @@
 import type React from "react";
 import styles from "./Input.module.css"
-import { useState } from "react";
+import { useErrorArea } from "../../component/ErrorArea/ErrorAreaContext";
 
 type WidthProps = "w100"|"w50"|"w30";
 
 type InputProps = {
-    label:string
-    isEditMode?:boolean
-    w?:WidthProps
+    label:string;
+    attr:string;
+    isEditMode?:boolean;
+    w?:WidthProps;
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 export const Input : React.FC <InputProps> = ({
@@ -15,6 +16,8 @@ export const Input : React.FC <InputProps> = ({
     w = "w100",
     ...props
 }) => {
+    const errorCtx = useErrorArea();
+
 
     return (
         <label className={styles.label}>
@@ -23,7 +26,7 @@ export const Input : React.FC <InputProps> = ({
             </p>
             <input 
                 {...props}
-                className={`${styles.input} ${styles[w]}`}
+                className={`${styles.input} ${styles[w]} ${errorCtx.hasError(props.attr)?styles.isError:''}` }
                 disabled={!isEditMode}
                 value={props.value}
             />

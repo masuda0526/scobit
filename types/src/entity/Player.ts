@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 export const PlayerSchema = AbstractEntitySchema.extend({
@@ -16,3 +16,12 @@ export const PlayerFormSchema = PlayerSchema.omit({
   created_at:true
 })
 export type PlayerForm = z.infer<typeof PlayerFormSchema>
+
+export const PlayerInputSchema = z.object({
+  throw_distance:z.string().max(3).min(1).default('0'),
+  ...PlayerFormSchema.omit({
+    throw_distance:true,
+    player_id:true
+  }).shape
+})
+export type PlayerInput = z.infer<typeof PlayerInputSchema>

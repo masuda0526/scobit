@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 
 export const PlayerRoleType = ['guest', 'member', 'admin'] as const
 export const StatusType = ['active', 'rest'] as const

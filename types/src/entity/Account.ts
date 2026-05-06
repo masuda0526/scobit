@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 export const AccountSchema = AbstractEntitySchema.extend({
@@ -9,3 +9,10 @@ export const AccountSchema = AbstractEntitySchema.extend({
 })
 
 export type Account = z.infer<typeof AccountSchema>
+
+export const AccountFormSchema = AccountSchema.pick({
+  account_pub_id:true,
+  email:true
+})
+
+export type AccountForm = z.infer<typeof AccountFormSchema>

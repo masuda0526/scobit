@@ -1,0 +1,31 @@
+.toggle{
+
+}
+.bar{
+  background-color: #888;
+  width: 40px;
+  height: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+.bar.isOn{
+  background-color: #6edb60;
+}
+.point{
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: #888 1px solid;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto 0;
+  transition: all 0.5s;
+}
+.point.isOn{
+  transform: translateX(20px);
+  transition: all 0.5s;
+  right: 0;
+}

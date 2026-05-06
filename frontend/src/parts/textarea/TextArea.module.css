@@ -1,0 +1,16 @@
+.box{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label{
+  font-size: small;
+}
+
+.textarea{
+  width: 100%;
+  font-size: medium;
+  min-height: 150px;
+  padding: 10px;
+}

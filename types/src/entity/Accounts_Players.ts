@@ -1,4 +1,4 @@
-import z from "zod";
+import {z} from "zod";
 
 export const AccountsPlayersSchema = z.object({
   account_id: z.uuid(),

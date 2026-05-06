@@ -5,14 +5,13 @@ import type { CSSProperties } from "react";
 
 type Props = {
     positions:string[];
-    clickToggle:(position:string) => void;
+    clickToggle?:(position:string) => void;
 }
 
 export const GroundPosition : React.FC<Props> = ({
     positions,
-    clickToggle,
+    clickToggle = ()=>{},
 }) => {
-    console.log(`GroundPosition:${positions.join(',')}`)
     return (
         <div className={styles.ground}>
             <PositionToggleBtn isOn={positions.includes("1")} label="ピッチャー" clickToggle={()=>clickToggle("1")} style={POSITION_STYLE["1"]}/>

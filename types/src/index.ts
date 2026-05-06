@@ -20,3 +20,6 @@ export * from "./dto/MemberGamesForm.js";
 export * from "./dto/GamesForm.js";
 export * from "./dto/GameDetail.js";
 export * from "./dto/LabelProp.js";
+export * from "./dto/admin/AdminGamesForm.js";
+export * from "./dto/admin/AdminGameEditForm.js";
+export * from "./dto/admin/AdminMypageForm.js";

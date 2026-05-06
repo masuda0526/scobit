@@ -1,4 +1,4 @@
-import { localDbConfig } from "./00_init_setting.ts";
+import { localDbConfig } from "./00_init_setting.js";
 import { Account, AccountsPlayers, Game, Player, PlayersTeams, Score, Team, Tournament } from "@scobit/types";
 import { Pool } from "pg";
 import { randInt } from "./seeder_functions/util.js";

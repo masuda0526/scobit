@@ -15,7 +15,10 @@
     padding: 10px;
 }
 
-
+.isError{
+    background-color: #ffebeb;
+    border: 1px solid #ff7676;
+}
 
 
 

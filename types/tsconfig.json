@@ -3,9 +3,11 @@
   "compilerOptions": {
     "outDir": "dist",
     "declaration": true,
+    // "emitDeclarationOnly": true,
     "module": "nodenext",
     "target": "es2020",
     "moduleResolution": "nodenext",
+    "declarationMap": true
   },
   "include": ["src"]
 }
