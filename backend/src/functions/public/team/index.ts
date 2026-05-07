@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { ResponseBodyBuilder } from "../../libs/ResponseUtil/ResponseBuilder.js";
+import { ResponseBodyBuilder } from "../../../libs/ResponseUtil/ResponseBuilder.js";
 import { logger } from "src/libs/Logger/Logger.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";

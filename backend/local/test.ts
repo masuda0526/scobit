@@ -1,16 +1,18 @@
 import dotenv from "dotenv";
-import { handler } from "src/LambdaHandler/index.js";
+import { handler } from "src/LambdaHandler/public/index.js";
 import { findTestPatterns, TestPattern } from "./events/TestPatterns.js";
 
 dotenv.config({ path: ".env.local" });
 
 const testPatterns = findTestPatterns([
-  {api_id:'team', test_case:'ok'},
-  {api_id:'members', test_case:'ok'},
-  {api_id:'member', test_case:'ok'},
-  {api_id:'member_games', test_case:'ok'},
-  {api_id:'games', test_case:'ok'},
-  {api_id:'gameDetail', test_case:'ok'},
+  // {api_id:'team', test_case:'ok'},
+  // {api_id:'members', test_case:'ok'},
+  // {api_id:'member', test_case:'ok'},
+  // {api_id:'member_games', test_case:'ok'},
+  // {api_id:'games', test_case:'ok'},
+  // {api_id:'gameDetail', test_case:'ok'},
+  {api_id:'login', test_case:'pass_nomatch'},
+  {api_id:'login', test_case:'pass_ok'}
 ]);
 
 const testOne = async (pattern:TestPattern, testNum:number) => {

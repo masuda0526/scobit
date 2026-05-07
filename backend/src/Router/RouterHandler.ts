@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { router } from "src/LambdaHandler/router.js";
+import { router } from "src/LambdaHandler/public/router.js";
 import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 

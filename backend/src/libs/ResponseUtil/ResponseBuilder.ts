@@ -44,6 +44,11 @@ export class ResponseBodyBuilder<T extends Record<string, any> = Record<string, 
     return this;
   }
 
+  addErrors(errors:ErrorInfo[]){
+    this.errors = [...this.errors, ...errors];
+    return this;
+  }
+
   putData<K extends keyof T>(key:K, value:T[K]){
     this.data[key] = value;
     return this;

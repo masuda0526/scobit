@@ -30,11 +30,13 @@ export const Login: React.FC = () => {
                 <Title text="ログイン" />
                 <Input 
                     label="メールアドレス" 
+                    attr="email"
                     value={info} 
                     onChange={(e:React.ChangeEvent<HTMLInputElement>) => setInfo(e.target.value)} 
                 />
                 <Input 
                     label="パスワード" 
+                    attr="pass"
                     value={pass} 
                     onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPass(e.target.value)} 
                 />
