@@ -14,5 +14,13 @@ export const AccountFormSchema = AccountSchema.pick({
   account_pub_id:true,
   email:true
 })
-
 export type AccountForm = z.infer<typeof AccountFormSchema>
+
+export const AccountNewFormSchema = z.object({
+  ...AccountSchema.pick({
+    account_pub_id: true,
+    email: true
+  }).shape,
+  pass:z.string().min(8).max(20)
+})
+export type AccountNewForm = z.infer<typeof AccountNewFormSchema>

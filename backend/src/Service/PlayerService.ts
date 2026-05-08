@@ -1,5 +1,5 @@
-import { Ability } from "@scobit/types";
-import { Pool } from "pg";
+import { Ability, Player } from "@scobit/types";
+import { Pool, PoolClient } from "pg";
 
 export const findPlayersAbilittyByTeamId = async (team_id:string, pool:Pool):Promise<Ability[]> => {
   const result = await pool.query(
@@ -69,4 +69,17 @@ const buildAblitySql = (player_id?:string) => {
       ;
     `
   return sql;
+}
+
+export const saveNewPlayer = async (player:Player, pool:PoolClient) => {
+  const result = await pool.query(
+    `
+      insert into players (
+        player_id, name, disp_name, throw_distance, positions, created_at, updated_at
+      ) values (
+        $1, $2, $3, $4, $5, $6, $7 
+      );
+    `,
+    [player.player_id, player.name, player.disp_name, player.throw_distance, player.positions, player.created_at, player.updated_at]
+  )
 }

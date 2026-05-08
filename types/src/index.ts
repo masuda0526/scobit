@@ -23,3 +23,4 @@ export * from "./dto/LabelProp.js";
 export * from "./dto/admin/AdminGamesForm.js";
 export * from "./dto/admin/AdminGameEditForm.js";
 export * from "./dto/admin/AdminMypageForm.js";
+export * from "./dto/admin/AdminNewAccountDto.js";

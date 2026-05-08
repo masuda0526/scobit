@@ -1,4 +1,4 @@
-import { AccountFormSchema, PlayerInputSchema, type AccountForm, type PlayerInput } from "@scobit/types";
+import { AccountFormSchema, PlayerInputSchema, type AccountNewForm, type NewAccountDto, type PlayerInput } from "@scobit/types";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { ContentBox } from "../../../parts/content/contentBox";
@@ -23,12 +23,12 @@ export const Account: React.FC = () => {
   const loading = useLoading();
 
   // 状態管理
-  const initAccount = (): AccountForm => { return { account_pub_id: '', email: '' } };
+  const initAccount = (): AccountNewForm => { return { account_pub_id: '', email: '', pass:'' } };
   const initPlayer = (): PlayerInput => { return { name: '', disp_name: '', throw_distance: '0', positions: '' } }
-  const [account, setAccount] = useState<AccountForm>(initAccount())
+  const [account, setAccount] = useState<AccountNewForm>(initAccount())
   const [player, setPlayer] = useState<PlayerInput>(initPlayer());
 
-  const updateAccount = (key: keyof AccountForm, val: string) => {
+  const updateAccount = (key: keyof AccountNewForm, val: string) => {
     setAccount(prev => ({ ...prev, [key]: val }));
   }
 
@@ -53,7 +53,7 @@ export const Account: React.FC = () => {
     loading.startLoading(); 
     if (tmpId) {
       console.log(`tmpIdあり`);
-      setAccount({ account_pub_id: 'aaaaaaa', email: 'test@test.com' })
+      setAccount({ account_pub_id: 'aaaaaaa', email: 'test@test.com', pass:''});
       setPlayer({ name: 'テスト', disp_name: 'テスト１', throw_distance: '85', positions: '46789' })
     }
     loading.stopLoading();
@@ -83,6 +83,8 @@ export const Account: React.FC = () => {
     }
 
     // 登録処理
+    const data:NewAccountDto = {...account, ...player};
+
     
     loading.stopLoading();
   }
@@ -95,6 +97,7 @@ export const Account: React.FC = () => {
         <SubTitle text="アカウント情報" />
         <Input label="ユーザーID" attr="account_pub_id" value={account.account_pub_id} onChange={(e) => updateAccount('account_pub_id', e.target.value)} />
         <Input label="メールアドレス" attr="email" value={account.email} onChange={(e) => updateAccount('email', e.target.value)} />
+        <Input label="パスワード" attr="pass" value={account.pass} onChange={(e) => updateAccount('pass', e.target.value)} />
       </ContentBox>
 
       <ContentBox>

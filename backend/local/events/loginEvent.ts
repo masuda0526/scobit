@@ -9,8 +9,8 @@ const baseEvent = createEvent({
   path:'/login',
   resource:'/login',
   body:JSON.stringify({
-    email:'mail_cb9aeh30uy@test.com',
-    pass:'test1234'
+    email:'test_59@test.com',
+    pass:'testpass1234'
   })
 })
 
