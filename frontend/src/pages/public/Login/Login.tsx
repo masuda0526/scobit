@@ -6,6 +6,7 @@ import { ButtonArea } from "../../../parts/button/buttonArea";
 import { Button } from "../../../parts/button/button";
 import { ContentBox } from "../../../parts/content/contentBox";
 import { useLoading } from "../../../component/Loading/LoadingContext";
+import { AccessTokenUtil } from "../../../Util/TokenUtil/AccessTokenUtil";
 
 export const Login: React.FC = () => {
     const [info, setInfo] = useState<string>('');
@@ -16,7 +17,7 @@ export const Login: React.FC = () => {
         loading.startLoading('ログイン中...');
         await sleep(2000);
         const accessToken = 'test-access-token';
-        localStorage.setItem('accessToken', accessToken);
+        AccessTokenUtil.setToken(accessToken);
         window.location.href = '/#/members'
     }
 

@@ -9,6 +9,7 @@ import z, { email } from "zod";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from "src/libs/EnvPropertyUtil/Env.js";
+import { JwtUtil } from "src/libs/JwtUtil/JwtUtil.js";
 
 
 export const login = async (event:APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
@@ -41,11 +42,7 @@ export const login = async (event:APIGatewayProxyEvent): Promise<ResponseBodyBui
   }
   logger.info(`パスワード一致。`);
 
-  const payload = {
-    user_id:account.account_id
-  };
-  const token = jwt.sign(payload, env.JWT_SECRET_KEY, {expiresIn: '15m'});
-  logger.info(`JWT作成完了　jwt:${token}`);
+  const token = JwtUtil.createAccessTokenBeforeSelectTeam(account.account_id);
 
   return ResponseUtil.success().putData('token', token);
 
