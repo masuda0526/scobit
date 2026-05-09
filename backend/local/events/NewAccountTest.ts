@@ -26,11 +26,31 @@ const baseEvent = createEvent({
   body:JSON.stringify(createNewDto())
 })
 
+const createExtendDto = (key:keyof NewAccountDto, val:string):NewAccountDto => {
+  return {
+    ...createNewDto(), [key]:val
+  }
+} ;
+const dup_id_event:NewAccountDto = createExtendDto('account_pub_id', 'd6hvwuqc1cspj');
+const dup_mail_event:NewAccountDto = createExtendDto('email', 'test_59@test.com');
+
 export const NewAccountPattern:TestPattern[] = [
   {
     api_id:'new_account',
     test_case:'ok',
     name:`${testName} 成功パターン`,
     event:{...baseEvent}
-  }
+  },
+  {
+    api_id:'new_account',
+    test_case:'dup_id',
+    name:`${testName} ユーザーID重複パターン`,
+    event:{...baseEvent, body:JSON.stringify(dup_id_event)}
+  },
+  {
+    api_id:'new_account',
+    test_case:'dup_mail',
+    name:`${testName} メールアドレス重複パターン`,
+    event:{...baseEvent, body:JSON.stringify(dup_mail_event)}
+  },
 ]

@@ -8,7 +8,7 @@ import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil.js";
 import { saveNewAccountPlayerLink } from "src/Service/AccountPlayerLinkService.js";
-import { isDupulicatePublicId, saveNewAccount } from "src/Service/AccountService.js";
+import { isDupulicateMail, isDupulicatePublicId, saveNewAccount } from "src/Service/AccountService.js";
 import { saveNewPlayer } from "src/Service/PlayerService.js";
 
 export const registAccount = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
@@ -37,6 +37,12 @@ export const registAccount = async (event: APIGatewayProxyEvent): Promise<Respon
     return ResponseUtil.error().addErrors([checkDupulicate.errorInfo]);
   }
   logger.info(`バリデーションOK（ユーザーID重複チェック）`);
+
+  const checkMail = await isDupulicateMail(dto.email, pool);
+  if(!checkMail.isOk){
+    return ResponseUtil.error().addErrors([checkMail.errorInfo]);
+  }
+  logger.info(`バリデーションOK(メールアドレス重複チェック)`);
 
   const client = await pool.connect();
   try {

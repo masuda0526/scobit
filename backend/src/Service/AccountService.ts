@@ -34,6 +34,16 @@ export const isDupulicatePublicId = async(accountPublicId:string, pool:Pool):Pro
     errorInfo:isOk?{field:'dummy', message:'dummy'}:{field:'account_pub_id', message:'ユーザーIDは使用できません。'}
   }
 }
+export const isDupulicateMail = async(email:string, pool:Pool):Promise<DupulicateCheckResult> => {
+  const result = await pool.query(
+    `select a.email from account a where a.email = $1; `, [email]
+  )
+  const isOk = result.rows.length === 0;
+  return {
+    isOk,
+    errorInfo:isOk?{field:'dummy', message:'dummy'}:{field:'email', message:'メールアドレスは使用できません。'}
+  }
+}
 
 export const saveNewAccount = async (account:Account, pool:PoolClient) => {
   const result = await pool.query(
