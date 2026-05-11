@@ -11,7 +11,7 @@ export type ScobitJwtObject = {
 }
 export type JwtCheckResult = {
   isOk:boolean,
-  error?:ErrorInfo,
+  error:ErrorInfo,
   payload?:ScobitJwtObject
 }
 
@@ -21,7 +21,7 @@ export class JwtUtil {
   static TOKEN_LIMIT = 30;
 
   static createAccessTokenBeforeSelectTeam(account_id:string){
-    logger.debug(`JWT作成処理`);
+    logger.info(`JWT作成処理`);
     const payload:ScobitJwtObject = {
       sub:account_id,
     }
@@ -29,6 +29,17 @@ export class JwtUtil {
     logger.debugObj(payload);
     logger.debug(`JWT：${token}`);
     return token
+  }
+
+  static createAccessTokenSelectTeam(account_id:string, team_id:string, role:string){
+    logger.info('JWT作成処理（チーム選択後）');
+    const payload:ScobitJwtObject = {
+      sub:account_id, team_id, role
+    }
+    const token = jwt.sign(payload, env.JWT_SECRET_KEY, {expiresIn:this.TOKEN_LIMIT});
+    logger.debugObj(payload);
+    logger.debug(`JWT:${token}`);
+    return token;
   }
 
   static pickJwt(authString:string|undefined){
@@ -44,11 +55,32 @@ export class JwtUtil {
   }
 
   static pickJwtFromEvent(event:APIGatewayProxyEvent){
+    logger.debugObj(event.headers);
     const authString = event.headers.authorization;
     return this.pickJwt(authString);
   }
 
-  static checkJwt(token:string):JwtCheckResult{
+  static checkJwtAndGetPayload(event:APIGatewayProxyEvent):ScobitJwtObject{
+    const token = this.pickJwtFromEvent(event);
+    if(!token){
+      logger.info('トークン情報がありません。');
+      throw new Error('トークン情報がありません。');
+    }
+
+    const result = this.checkToken(token);
+    if(!result.isOk){
+      logger.info('トークンチェックエラー。')
+      throw new Error('トークンチェックエラー。');
+    }
+
+    if(!result.payload){
+      logger.info('トークンにペイロードが含まれていません。');
+      throw new Error()
+    }
+    return result.payload;
+  }
+
+  static checkToken(token:string):JwtCheckResult{
     try {
       logger.debug(`jwtチェック処理　token=${token}`);
       const decoded = jwt.verify(token, env.JWT_SECRET_KEY);
@@ -63,6 +95,7 @@ export class JwtUtil {
       logger.debug('トークンチェックOK');
       return {
         isOk:true,
+        error:{field:'dummy', message:'dummy'},
         payload:decoded as ScobitJwtObject
       }
 
@@ -84,6 +117,5 @@ export class JwtUtil {
       }
     }
   }
-
 
 }

@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { router } from "src/LambdaHandler/public/router.js";
+import { adminRouter } from "src/LambdaHandler/admin/router.js";
 import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 
@@ -7,7 +8,16 @@ export async function routerHandler(event:APIGatewayProxyEvent):Promise<APIGatew
     const method = event.httpMethod;
     const path = event.resource;
 
-    const route = router.find(method, path);
+    const publicRoute = router.find(method, path);
+    const adminRoute = adminRouter.find(method, path);
+
+    let route = null;
+    if(publicRoute){
+      route = publicRoute
+    }
+    if(adminRoute){
+      route = adminRoute
+    }
 
     // パスの検証
     if(!route){

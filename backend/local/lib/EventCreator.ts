@@ -17,3 +17,7 @@ export const createEvent = (
   requestContext: {} as any, // ←ここは無視でOK（ローカルなら）
   ...overrides,
 });
+
+export const createBody = (obj:any) => {
+  return JSON.stringify(obj);
+}

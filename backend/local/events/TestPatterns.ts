@@ -8,6 +8,7 @@ import { MembersPattern } from "./MembersPageTest.js"
 import { TeamPattern } from "./TeamPageTest.js"
 import { LoginPattern } from "./loginEvent.js"
 import { NewAccountPattern } from "./NewAccountTest.js"
+import { MypagePatterns } from "./MypageTest.js"
 
 export type SearchOption = {
   api_id:string,
@@ -26,7 +27,8 @@ export const allPatterns:TestPattern[] = [
   ...MembersPattern,
   ...TeamPattern,
   ...LoginPattern,
-  ...NewAccountPattern
+  ...NewAccountPattern,
+  ...MypagePatterns
 ]
 
 export const findTestPattern = (api_id:string, test_case:string) => {
