@@ -53,8 +53,16 @@ export class PlayerService {
     )
     return result.rows[0];
   }
-}
 
+  static async findPlayersAbilittyByTeamId(team_id:string, pool:PoolClient):Promise<Ability[]>{
+    const result = await pool.query(
+      buildAblitySql(),
+      [team_id]
+    )
+    return result.rows;
+  }
+
+}
 export const findPlayersAbilittyByTeamId = async (team_id:string, pool:Pool):Promise<Ability[]> => {
   const result = await pool.query(
     buildAblitySql(),
@@ -63,7 +71,8 @@ export const findPlayersAbilittyByTeamId = async (team_id:string, pool:Pool):Pro
   return result.rows;
 }
 
-export const findPlayerAbilitty = async (team_id:string, player_id:string, pool:Pool):Promise<Ability> => {
+
+export const findPlayerAbilitty = async (team_id:string, player_id:string, pool:PoolClient):Promise<Ability> => {
   const result = await pool.query(
     buildAblitySql(player_id),
     [team_id, player_id]

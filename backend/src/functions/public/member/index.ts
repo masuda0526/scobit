@@ -6,7 +6,7 @@ import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { findPlayerAbilitty } from "src/Service/PlayerService.js";
 import { findScoresByPlayerId } from "src/Service/ScoreSercice.js";
-import { findTeamByPublicId } from "src/Service/TeamService.js";
+import { TeamService } from "src/Service/TeamService.js";
 import z from "zod";
 import { da } from "zod/locales";
 
@@ -24,8 +24,8 @@ export const memberPage = async (event: APIGatewayProxyEvent): Promise<ResponseB
 
   
   // 選手情報取得処理開始
-  const pool = getPool();
-  const team = await findTeamByPublicId(public_id!, pool);
+  const pool = await getPool().connect();
+  const team = await TeamService.findTeamByPublicId(public_id!, pool);
   if(!team){
     return ResponseUtil.error().addError('public_id', 'チーム情報が存在しません。');
   }

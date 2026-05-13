@@ -18,7 +18,9 @@ const testPatterns = findTestPatterns([
   // {api_id:'new_account', test_case:'dup_mail'},
   // {api_id:'mypage_fetch_teams', test_case:'ok'},
   // {api_id:'mypage_select_team', test_case:'ok'},
-  {api_id:'mypage_kojin', test_case:'ok'},
+  // {api_id:'mypage_kojin', test_case:'ok'},
+  // {api_id:'team_init', test_case:'ok'},
+  {api_id:'team_update', test_case:'ok'},
 ]);
 
 const testOne = async (pattern:TestPattern, testNum:number) => {

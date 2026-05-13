@@ -1,8 +1,9 @@
 import { GameForm } from "@scobit/types";
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
 
-export const findGamesByTeamId = async (team_id:string, pool:Pool, limit?:number):Promise<GameForm[]> => {
-  let limitSql = ''
+export class GameService {
+  static async findGamesByTeamId(team_id:string, pool:PoolClient, limit?:number):Promise<GameForm[]>{
+    let limitSql = ''
   if(limit){
     limitSql = `limit $2 `
   }
@@ -26,9 +27,10 @@ export const findGamesByTeamId = async (team_id:string, pool:Pool, limit?:number
     [team_id, limit]
   )
   return result.rows
+  }
 }
 
-export const findGameByGameId = async (game_id:string, pool:Pool):Promise<GameForm> => {
+export const findGameByGameId = async (game_id:string, pool:PoolClient):Promise<GameForm> => {
   const result = await pool.query(
     `
       select

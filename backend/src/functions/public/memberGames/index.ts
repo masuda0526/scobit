@@ -4,9 +4,9 @@ import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
-import { findPlayerAbilitty, findPlayersAbilittyByTeamId } from "src/Service/PlayerService.js";
+import { findPlayerAbilitty } from "src/Service/PlayerService.js";
 import { findScoresByPlayerId } from "src/Service/ScoreSercice.js";
-import { findTeamByPublicId } from "src/Service/TeamService.js";
+import { TeamService } from "src/Service/TeamService.js";
 import z from "zod";
 
 export const memberGamesPage = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
@@ -23,8 +23,8 @@ export const memberGamesPage = async (event:APIGatewayProxyEvent):Promise<Respon
   }
   logger.info('バリデーションOK');
 
-  const pool = getPool();
-  const team = await findTeamByPublicId(public_id!, pool)
+  const pool = await getPool().connect();
+  const team = await TeamService.findTeamByPublicId(public_id!, pool)
 
   if(!team){
     return ResponseUtil.error().addError('public_id', '該当するチーム情報がありません。');

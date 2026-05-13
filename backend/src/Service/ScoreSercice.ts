@@ -31,7 +31,7 @@ export class ScoreService{
   }
 }
 
-export const findScoresByPlayerId = async (player_id:string, pool:Pool, limit?:number):Promise<ScoreItemDto[]> => {
+export const findScoresByPlayerId = async (player_id:string, pool:PoolClient, limit?:number):Promise<ScoreItemDto[]> => {
   const result = await pool.query(
     createSql(limit),
     [player_id, limit]
@@ -39,7 +39,7 @@ export const findScoresByPlayerId = async (player_id:string, pool:Pool, limit?:n
   return result.rows;
 }
 
-export const findScoresByGameId = async (game_id:string, pool:Pool):Promise<ScorePerPlayer[]> =>{
+export const findScoresByGameId = async (game_id:string, pool:PoolClient):Promise<ScorePerPlayer[]> =>{
   const result = await pool.query(
     `
       select
