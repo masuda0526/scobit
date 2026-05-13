@@ -1,7 +1,25 @@
 import { Account, AccountForm, ErrorInfo } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 
-export const findAccountByEmail = async (email:string, pool:Pool):Promise<Account[]> => {
+export class AccountService {
+  static async findAccountFormByAccountId(accountId: string, client: PoolClient): Promise<AccountForm> {
+    const result = await client.query(
+      `
+        select
+          a.account_pub_id,
+          a.email,
+        from account a
+        where
+          a.account_id = $1
+      `,[accountId]
+    )
+    return result.rows[0];
+  }
+
+}
+
+
+export const findAccountByEmail = async (email: string, pool: Pool): Promise<Account[]> => {
   const result = await pool.query(
     `
       select
@@ -21,31 +39,31 @@ export const findAccountByEmail = async (email:string, pool:Pool):Promise<Accoun
 }
 
 export type DupulicateCheckResult = {
-  isOk:boolean,
-  errorInfo:ErrorInfo
+  isOk: boolean,
+  errorInfo: ErrorInfo
 }
-export const isDupulicatePublicId = async(accountPublicId:string, pool:Pool):Promise<DupulicateCheckResult> => {
+export const isDupulicatePublicId = async (accountPublicId: string, pool: Pool): Promise<DupulicateCheckResult> => {
   const result = await pool.query(
     `select a.account_pub_id from account a where a.account_pub_id = $1; `, [accountPublicId]
   )
   const isOk = result.rows.length === 0;
   return {
     isOk,
-    errorInfo:isOk?{field:'dummy', message:'dummy'}:{field:'account_pub_id', message:'ユーザーIDは使用できません。'}
+    errorInfo: isOk ? { field: 'dummy', message: 'dummy' } : { field: 'account_pub_id', message: 'ユーザーIDは使用できません。' }
   }
 }
-export const isDupulicateMail = async(email:string, pool:Pool):Promise<DupulicateCheckResult> => {
+export const isDupulicateMail = async (email: string, pool: Pool): Promise<DupulicateCheckResult> => {
   const result = await pool.query(
     `select a.email from account a where a.email = $1; `, [email]
   )
   const isOk = result.rows.length === 0;
   return {
     isOk,
-    errorInfo:isOk?{field:'dummy', message:'dummy'}:{field:'email', message:'メールアドレスは使用できません。'}
+    errorInfo: isOk ? { field: 'dummy', message: 'dummy' } : { field: 'email', message: 'メールアドレスは使用できません。' }
   }
 }
 
-export const saveNewAccount = async (account:Account, pool:PoolClient) => {
+export const saveNewAccount = async (account: Account, pool: PoolClient) => {
   const result = await pool.query(
     `
       insert into account (

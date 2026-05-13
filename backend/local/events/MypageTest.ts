@@ -4,6 +4,7 @@ import { JwtCreator } from "local/lib/JwtCreator.js";
 
 const testName = 'マイページAPI'
 const testNameSelect = 'マイページAPI（チーム選択）'
+const testNameKojin = 'マイページAPI（個人アカウント）'
 const baseEvent = createEvent({
   httpMethod:'POST',
   path:'/mypage/teams',
@@ -23,6 +24,14 @@ const baseSelectEvent = createEvent({
     authorization:`Bearer ${JwtCreator.create()}`
   }
 })
+const baseKojinEvent = createEvent({
+  httpMethod:'POST',
+  path: '/mypage/kojin',
+  resource:'/mypage/kojin',
+  headers:{
+    authorization:`Bearer ${JwtCreator.create()}`
+  }
+})
 
 export const MypagePatterns:TestPattern[] = [
   {
@@ -36,5 +45,11 @@ export const MypagePatterns:TestPattern[] = [
     test_case:'ok',
     name: `${testNameSelect} 正常系`,
     event:{...baseSelectEvent}
+  },
+  {
+    api_id:'mypage_kojin',
+    test_case:'ok',
+    name: `${testNameKojin} 正常系`,
+    event:{...baseKojinEvent}
   }
 ]

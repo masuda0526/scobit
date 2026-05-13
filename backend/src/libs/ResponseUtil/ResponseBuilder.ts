@@ -8,6 +8,7 @@ export class ResponseBodyBuilder<T extends Record<string, any> = Record<string, 
   private flashMsgs:string[] = [];
   private errors:ErrorInfo[] = [];
   private data:T = {} as T;
+  private SERVER_ERROR_MESSAGE = '予期せぬエラーが発生しました。';
 
   constructor(isSuccess:boolean = true){
     this.isSuccess = isSuccess;
@@ -61,6 +62,11 @@ export class ResponseBodyBuilder<T extends Record<string, any> = Record<string, 
 
   isError(){
     return !this.isSuccess;
+  }
+
+  isServerError(){
+    this.addError('server', this.SERVER_ERROR_MESSAGE);
+    return this;
   }
 
 }
