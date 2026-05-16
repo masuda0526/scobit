@@ -1,4 +1,4 @@
-import { Account, AccountsPlayers, NewAccountDto, NewAccountDtoSchema, Player } from "@scobit/types";
+import { Account, AccountsPlayers, NewAccountDto, NewAccountDtoSchema, Player, PlayerForm } from "@scobit/types";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { hashSync } from "bcrypt";
 import { Pool, PoolClient } from "pg";
@@ -9,7 +9,7 @@ import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil.js";
 import { saveNewAccountPlayerLink } from "src/Service/AccountPlayerLinkService.js";
 import { isDupulicateMail, isDupulicatePublicId, saveNewAccount } from "src/Service/AccountService.js";
-import { saveNewPlayer } from "src/Service/PlayerService.js";
+import { PlayerService } from "src/Service/PlayerService.js";
 
 export const registAccount = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
   if (!event.body) {
@@ -85,20 +85,18 @@ async function registNewAccount(dto: NewAccountDto, client: PoolClient) {
   }
   await saveNewAccount(account, client);
 
-  const player: Player = {
+  const player: PlayerForm = {
     player_id: crypto.randomUUID(),
     name: dto.name,
     disp_name: dto.disp_name,
     throw_distance: Number.parseInt(dto.throw_distance),
     positions: dto.positions,
-    created_at: registDt,
-    updated_at: registDt
   }
-  await saveNewPlayer(player, client);
+  const registPlayer = await PlayerService.saveNewPlayer(player, client);
 
   const account_player_link: AccountsPlayers = {
     account_id: account.account_id,
-    player_id: player.player_id
+    player_id: registPlayer.player_id
   };
   await saveNewAccountPlayerLink(account_player_link, client);
 

@@ -4,8 +4,8 @@ import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
-import { findPlayerAbilitty } from "src/Service/PlayerService.js";
-import { findScoresByPlayerId } from "src/Service/ScoreSercice.js";
+import { PlayerService } from "src/Service/PlayerService.js";
+import { ScoreService } from "src/Service/ScoreSercice.js";
 import { TeamService } from "src/Service/TeamService.js";
 import z from "zod";
 
@@ -34,8 +34,8 @@ export const memberGamesPage = async (event:APIGatewayProxyEvent):Promise<Respon
 
   const [info, scores] = await Promise.all(
     [
-      findPlayerAbilitty(team.team_id, player_id!, pool),
-      findScoresByPlayerId(player_id!, pool, SCORE_GET_LIMIT)
+      PlayerService.findPlayerAbilitty(team.team_id, player_id!, pool),
+      ScoreService.findScoresByPlayerId(player_id!, pool, SCORE_GET_LIMIT)
     ]
   )
   if(!info){
