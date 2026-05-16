@@ -13,6 +13,7 @@ import { AdminTeamPattern } from "./AdminTeamTest.js"
 import { AdminMembersInit } from "@func/admin/members/index.js"
 import { AdminMembersPattern } from "./AdminMembersTest.js"
 import { AdminMemberPattern } from "./AdminMemberTest.js"
+import { AdminGamesPatterns } from "./AdminGamesTest.js"
 
 export type SearchOption = {
   api_id:string,
@@ -35,7 +36,8 @@ export const allPatterns:TestPattern[] = [
   ...NewAccountPattern,
   ...MypagePatterns,
   ...AdminMembersPattern,
-  ...AdminMemberPattern
+  ...AdminMemberPattern,
+  ...AdminGamesPatterns
 ]
 
 export const findTestPattern = (api_id:string, test_case:string) => {

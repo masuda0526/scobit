@@ -43,7 +43,7 @@ export class JwtUtil {
   }
 
   static pickJwt(authString:string|undefined){
-    logger.debug(`jwt取得処理 authString:${authString}`);
+    logger.info(`jwt取得処理 authString:${authString}`);
     if(!authString){
       return undefined;
     }
@@ -55,7 +55,6 @@ export class JwtUtil {
   }
 
   static pickJwtFromEvent(event:APIGatewayProxyEvent){
-    logger.debugObj(event.headers);
     const authString = event.headers.authorization;
     return this.pickJwt(authString);
   }
@@ -77,6 +76,9 @@ export class JwtUtil {
       logger.info('トークンにペイロードが含まれていません。');
       throw new Error()
     }
+    logger.info('JWTチェックOK');
+    logger.debugObj(result.payload)
+
     return result.payload;
   }
 
