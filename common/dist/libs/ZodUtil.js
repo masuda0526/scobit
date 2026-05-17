@@ -19,6 +19,9 @@ const findMessage = (issue, labels) => {
             return `${label}は${issue.maximum}以内で入力してください。`;
         }
     }
+    if (issue.code === 'custom') {
+        return issue.message;
+    }
     return `${label}の入力内容を確認してください。`;
 };
 const convertErrorInfo = (issue, labels) => {

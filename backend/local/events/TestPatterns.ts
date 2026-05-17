@@ -37,7 +37,8 @@ export const allPatterns:TestPattern[] = [
   ...MypagePatterns,
   ...AdminMembersPattern,
   ...AdminMemberPattern,
-  ...AdminGamesPatterns
+  ...AdminGamesPatterns,
+  
 ]
 
 export const findTestPattern = (api_id:string, test_case:string) => {

@@ -2,11 +2,11 @@ import { createBody, createEvent } from "local/lib/EventCreator.js";
 import { TestPattern } from "./TestPatterns.js";
 import { JwtCreator } from "local/lib/JwtCreator.js";
 import { TestFunctionUtil } from "local/lib/TestFunctionUtil.js";
-import { PlayerForm } from "@scobit/types";
+import { GameForm } from "@scobit/types";
+import { ScobitFunction } from "@scobit/common";
 
 const TARGET_TEAM_ID = 'f41831c8-04be-4577-b1df-a53e1cf5bf8a';
-// const TARGET_PLAYER_ID = '89de77f5-01a3-4493-83a4-3ea891369b5c';
-const TARGET_PLAYER_ID = '75d64368-a9c8-4b97-a697-9f8a4108d188';
+const TARGET_TOURNAMENT_ID = '4c45b0c1-7575-4e54-baaf-fd4bdfded8a9';
 const testName = '試合結果一覧ページAPI';
 const baseEvent = createEvent({
   httpMethod: 'POST',
@@ -16,23 +16,26 @@ const baseEvent = createEvent({
     authorization: `Bearer ${JwtCreator.create([{ key: 'team_id', val: TARGET_TEAM_ID }])}`
   }
 })
-// const baseUpdateMemberEvent = createEvent({
-//   httpMethod: 'POST',
-//   path: '/member/update',
-//   resource: '/member/update',
-//   headers: {
-//     authorization: `Bearer ${JwtCreator.create([{ key: 'team_id', val: TARGET_TEAM_ID }])}`
-//   }
-// })
+const baseNewGameEvent = createEvent({
+  httpMethod: 'POST',
+  path: '/games/new',
+  resource: '/games/new',
+  headers: {
+    authorization: `Bearer ${JwtCreator.create([{ key: 'team_id', val: TARGET_TEAM_ID }])}`
+  }
+})
 
-const createNewPlayer = ():PlayerForm => {
-  const num = TestFunctionUtil.randInt(0, 99);
+const createNewGame = ():GameForm=> {
+  const my_point = TestFunctionUtil.randInt(0, 20);
+  const op_point = TestFunctionUtil.randInt(0, 20);
   return {
-    player_id:TARGET_PLAYER_ID,
-    name:`テスト　太郎${num.toString()}`,
-    disp_name:`太郎${num.toString()}`,
-    throw_distance:TestFunctionUtil.randInt(50, 120),
-    positions:TestFunctionUtil.randomPositions()
+    game_id:crypto.randomUUID(),
+    seq:TestFunctionUtil.randInt(0, 5),
+    tournament_id:TARGET_TOURNAMENT_ID,
+    opponent:`対戦相手${TestFunctionUtil.randInt(0, 99)}`,
+    my_point, op_point,
+    result:ScobitFunction.getGameResult(my_point, op_point, false),
+    game_dt:TestFunctionUtil.randomDate()
   }
 }
 
@@ -42,6 +45,12 @@ export const AdminGamesPatterns: TestPattern[] = [
     test_case: 'ok',
     name: `${testName}（初期情報取得） 正常系`,
     event: { ...baseEvent }
+  },
+  {
+    api_id: 'games_new',
+    test_case: 'ok',
+    name: `${testName}（新規登録） 正常系`,
+    event: { ...baseNewGameEvent, body:createBody(createNewGame())}
   },
   // {
   //   api_id: 'member_update',

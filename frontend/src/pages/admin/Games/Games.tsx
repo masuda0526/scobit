@@ -1,4 +1,4 @@
-import { GameFormSchema, TeamFormSchema, type GameForm, type TeamForm, type Tournament } from "@scobit/types";
+import { GameFormSchema, type GameForm, type TeamForm, type Tournament } from "@scobit/types";
 import type React from "react";
 import { GameItem } from "../../../component/GameItem/GameItem";
 import { Title } from "../../../parts/title/title";
@@ -14,11 +14,11 @@ import { CornerIcon } from "../../../component/Modal/CornerIcon";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { parseOptionObjects } from "../../../parts/select/SelectBoxUtil";
 import { SelectOfObj } from "../../../parts/select/SelectForObj";
-import { z } from "zod";
 import { parseStringFromDate } from "../../../Util/DateUtil/DateUtil";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
+import { ScobitFunction } from "@scobit/common";
 
 export const AdminGames: React.FC = () => {
     // 初期表示
@@ -69,18 +69,32 @@ export const AdminGames: React.FC = () => {
     const clickAddNewGame = () => {
         err.reset();
         // 追加する処理
-        const valid = schema.safeParse({
-            game_dt, opponent, tournament_id, public_id: 'aaaaaa',
+        const input_my_point = Number.parseInt(my_point);
+        const input_op_point = Number.parseInt(op_point);
+        const result = ScobitFunction.getGameResult(input_my_point, input_op_point);
+        const inputGame:GameForm = {
+            game_id:crypto.randomUUID(),
+            game_dt, opponent, tournament_id,
             seq: Number.parseInt(seq),
-            my_point: Number.parseInt(my_point),
-            op_point: Number.parseInt(op_point),
-        })
+            my_point: input_my_point,
+            op_point: input_op_point,
+            result
+        }
+        const valid = GameFormSchema.safeParse(inputGame);
         if (!valid.success) {
             const errors = convertToErrorInfos(valid.error);
             err.setErrors(errors);
             return;
         }
-        const game:GameForm = {game_dt, game_id:crypto.randomUUID(), tournament_id, opponent, op_point:Number.parseInt(op_point), my_point:Number.parseInt(my_point), result:'win', seq:Number.parseInt(seq)};
+        const game:GameForm = {
+            game_dt, 
+            game_id:crypto.randomUUID(), 
+            tournament_id, opponent, 
+            op_point:Number.parseInt(op_point), 
+            my_point:Number.parseInt(my_point), 
+            result:'win', 
+            seq:Number.parseInt(seq)
+        };
         setGames([game, ...games]);
         closeModal()
     }
@@ -128,17 +142,3 @@ export const AdminGames: React.FC = () => {
         </div>
     );
 }
-
-const schema = z.object({
-    ...GameFormSchema.pick({
-        game_dt: true,
-        opponent: true,
-        my_point: true,
-        op_point: true,
-        seq: true,
-        tournament_id: true
-    }).shape,
-    ...TeamFormSchema.pick({
-        public_id: true
-    }).shape
-})

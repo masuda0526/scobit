@@ -10,4 +10,12 @@ export class TournamentService{
     `, [team_id]);
     return result.rows;
   }
+
+  static async findTournamentByTeamIdandTournamentId(team_id:string, tournament_id:string, client:PoolClient):Promise<Tournament>{
+    const result = await client.query(`
+      select * from tournament 
+      where tournament_id = $1 and team_id = $2 ; 
+    `, [tournament_id, team_id])
+    return result.rows[0];
+  }
 }
