@@ -1,3 +1,4 @@
+import { ScobitFunction } from "@scobit/common";
 import { GameForm } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 import { DateUtil } from "src/libs/DateUtil.js";
@@ -72,6 +73,36 @@ export class GameService {
       returning * ; 
     `, [team_id, tournament_id, game.seq, game.opponent, game.my_point, game.op_point, game.result, game.game_dt])
 
+    return result.rows[0];
+  }
+
+  static async updateGame(game:GameForm, team_id:string, client:PoolClient):Promise<GameForm>{
+    const result = await client.query(`
+      UPDATE games
+      SET team_id=$1, tournament_id=$2, seq=$3, opponent=$4, my_point=$5, op_point=$6, "result"=$7, game_dt=$8, updated_at=now()
+      WHERE team_id=$1 and game_id = $9
+      returning * ;
+    `, [team_id, game.tournament_id, game.seq, game.opponent, game.my_point, game.op_point, ScobitFunction.getGameResult(game.my_point, game.op_point), game.game_dt, game.game_id])
+    return result.rows[0];
+  }
+
+  static async findGameByGameIdAndTeamId(team_id:string, game_id:string, client:PoolClient):Promise<GameForm>{
+    const result = await client.query(`
+      select 
+        g.game_id, 
+        g.seq, 
+        g.tournament_id, 
+        g.opponent, 
+        g.my_point, 
+        g.op_point, 
+        g."result", 
+        g.game_dt
+      from games g 
+      where 
+        g.team_id = $1 and
+        g.game_id = $2 
+      ; 
+    `, [team_id, game_id])
     return result.rows[0];
   }
 

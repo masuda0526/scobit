@@ -2,7 +2,7 @@ import type React from "react";
 import styles from './GameEdit.module.css';
 import { generateAdminGameEditForm } from "../../../../testdatas/testDataCreater";
 import { useEffect, useState } from "react";
-import { type PlayerForm, type ScoreForm, type GameForm, type Tournament, GameFormSchema, TeamFormSchema, type ErrorInfo, ScoreFormSchema } from "@scobit/types";
+import { type PlayerForm, type ScoreForm, type GameForm, type Tournament, GameFormSchema, type ErrorInfo, ScoreFormSchema } from "@scobit/types";
 import { Toggle } from "../../../../parts/toggle/toggle";
 import { MemberLabel } from "../../../../component/UserAbility/MemberLabel";
 import { SubTitle } from "../../../../parts/subtitle/subtitle";
@@ -16,7 +16,6 @@ import { SelectOfObj } from "../../../../parts/select/SelectForObj";
 import { parseOptionObjects } from "../../../../parts/select/SelectBoxUtil";
 import { ButtonArea } from "../../../../parts/button/buttonArea";
 import { Button } from "../../../../parts/button/button";
-import { z } from "zod";
 import { convertToErrorInfos } from "../../../../Util/ZodUtils";
 import { useErrorArea } from "../../../../component/ErrorArea/ErrorAreaContext";
 import { useLoading } from "../../../../component/Loading/LoadingContext";
@@ -90,9 +89,7 @@ export const AdminGameEdit: React.FC = () => {
 
   const clickEditButton = () => {
     loading.startLoading();
-    const valid = gameSchema.safeParse({
-      ...editGame, public_id: 'aaaaaa'
-    })
+    const valid = GameFormSchema.safeParse(editGame)
     if (!valid.success) {
       const errors = convertToErrorInfos(valid.error);
       err.setErrors(errors);
@@ -249,17 +246,3 @@ export const AdminGameEdit: React.FC = () => {
     </>
   )
 }
-
-const gameSchema = z.object({
-  ...GameFormSchema.pick({
-    game_dt: true,
-    opponent: true,
-    my_point: true,
-    op_point: true,
-    seq: true,
-    tournament_id: true
-  }).shape,
-  ...TeamFormSchema.pick({
-    public_id: true
-  }).shape
-})

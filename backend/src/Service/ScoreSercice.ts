@@ -1,4 +1,4 @@
-import { ScoreItemDto, ScorePerPlayer } from "@scobit/types";
+import { ScoreForm, ScoreItemDto, ScorePerPlayer } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 
 export class ScoreService{
@@ -35,6 +35,28 @@ export class ScoreService{
       createSql(limit),
       [player_id, limit]
     )
+    return result.rows;
+  }
+
+  static async findScoresByGameId(game_id:string, client:PoolClient):Promise<ScorePerPlayer[]>{
+    const result = await client.query(`
+      select 
+        s.player_id,
+        s.score_id,
+        s.box,
+        s.hit,
+        s.hr,
+        s.steal,
+        s.err,
+        s.is_turn,
+        s.game_id,
+        p.disp_name,
+        p.positions
+      from scores s
+      inner join players p on p.player_id = s.player_id
+      where s.game_id = $1 
+      ;  
+    `, [game_id]);
     return result.rows;
   }
 

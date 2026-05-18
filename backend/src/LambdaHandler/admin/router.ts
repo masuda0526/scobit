@@ -1,3 +1,5 @@
+import { AdminGameInit } from "@func/admin/game/index.js";
+import { AdminGameEditInit, editGame } from "@func/admin/gameEdit/index.js";
 import { AddNewGame, AdminGamesInit } from "@func/admin/Games/index.js";
 import { AdminMemberInit, updateMember } from "@func/admin/member/index.js";
 import { AdminMembersInit, MembersAddMember } from "@func/admin/members/index.js";
@@ -18,3 +20,6 @@ adminRouter.post('/member/init', AdminMemberInit);
 adminRouter.post('/member/update', updateMember);
 adminRouter.post('/games/init', AdminGamesInit);
 adminRouter.post('/games/new', AddNewGame);
+adminRouter.post('/game/init', AdminGameInit);
+adminRouter.post('/game/edit/init', AdminGameEditInit);
+adminRouter.post('/game/edit/update', editGame)
