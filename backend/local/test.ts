@@ -29,7 +29,8 @@ const testPatterns = findTestPatterns([
   // {api_id:'games_new', test_case:'ok'},
   // {api_id:'game_init', test_case:'ok'},
   // {api_id:'game_edit_init', test_case:'ok'},
-  {api_id:'game_edit_update', test_case:'ok'},
+  // {api_id:'game_edit_update', test_case:'ok'},
+  {api_id:'game_edit_score', test_case:'ok'},
 ]);
 
 const testOne = async (pattern:TestPattern, testNum:number) => {

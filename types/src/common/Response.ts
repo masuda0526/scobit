@@ -12,3 +12,8 @@ export type ErrorInfo = {
   field:string;
   message:string;
 }
+
+export type ScoreValidationResult = {
+  player_id:string,
+  errors:ErrorInfo[]
+}

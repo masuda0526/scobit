@@ -97,6 +97,15 @@ export class PlayerService {
     return result.rows[0];
   }
 
+  static async findPlayersByTeamId(team_id: string, client: PoolClient): Promise<PlayerForm[]> {
+    const result = await client.query(`
+        select p.player_id, p.name, p.disp_name, p.throw_distance, p.positions from players p 
+        join players_teams pt on pt.player_id = p.player_id
+        where pt.team_id = $1 ; 
+      `, [team_id]);
+    return result.rows;
+  }
+
   static async updatePlayer(player: PlayerForm, client: PoolClient): Promise<PlayerForm> {
     const result = await client.query(`
       UPDATE players 

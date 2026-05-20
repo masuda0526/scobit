@@ -2,8 +2,11 @@ import { createBody, createEvent } from "local/lib/EventCreator.js";
 import { TestPattern } from "./TestPatterns.js";
 import { JwtCreator } from "local/lib/JwtCreator.js";
 import { TestFunctionUtil } from "local/lib/TestFunctionUtil.js";
-import { GameForm } from "@scobit/types";
+import { GameForm, ScoreForm } from "@scobit/types";
 import { ScobitFunction } from "@scobit/common";
+import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
+import { PlayerService } from "src/Service/PlayerService.js";
+import { ScoreService } from "src/Service/ScoreSercice.js";
 
 const TARGET_TEAM_ID = 'f41831c8-04be-4577-b1df-a53e1cf5bf8a';
 const TARGET_GAME_ID = '1ecf61a3-7ed5-4437-8355-12a233bde816';
@@ -26,18 +29,26 @@ const baseUpdateGameEvent = createEvent({
     authorization: `Bearer ${JwtCreator.create([{ key: 'team_id', val: TARGET_TEAM_ID }])}`
   }
 })
+const baseUpdateScoreEvent = createEvent({
+  httpMethod: 'POST',
+  path: '/scores/update',
+  resource: '/scores/update',
+  headers: {
+    authorization: `Bearer ${JwtCreator.create([{ key: 'team_id', val: TARGET_TEAM_ID }])}`
+  }
+})
 
-const createUpdateGame = ():GameForm=> {
+const createUpdateGame = (): GameForm => {
   const my_point = TestFunctionUtil.randInt(0, 20);
   const op_point = TestFunctionUtil.randInt(0, 20);
   return {
-    game_id:TARGET_GAME_ID,
-    seq:TestFunctionUtil.randInt(0, 5),
-    tournament_id:TARGET_TOURNAMENT_ID,
-    opponent:`対戦相手${TestFunctionUtil.randInt(0, 99)}`,
+    game_id: TARGET_GAME_ID,
+    seq: TestFunctionUtil.randInt(0, 5),
+    tournament_id: TARGET_TOURNAMENT_ID,
+    opponent: `対戦相手${TestFunctionUtil.randInt(0, 99)}`,
     my_point, op_point,
-    result:ScobitFunction.getGameResult(my_point, op_point, false),
-    game_dt:TestFunctionUtil.randomDate()
+    result: ScobitFunction.getGameResult(my_point, op_point, false),
+    game_dt: TestFunctionUtil.randomDate()
   }
 }
 
@@ -46,18 +57,50 @@ export const AdminGameEditPatterns: TestPattern[] = [
     api_id: 'game_edit_init',
     test_case: 'ok',
     name: `${testName}（初期情報取得） 正常系`,
-    event: { ...baseEvent, body:createBody({game_id:TARGET_GAME_ID}) }
+    event: { ...baseEvent, body: createBody({ game_id: TARGET_GAME_ID }) }
   },
   {
     api_id: 'game_edit_update',
     test_case: 'ok',
     name: `${testName}（試合結果編集） 正常系`,
-    event: { ...baseUpdateGameEvent, body:createBody(createUpdateGame())}
+    event: { ...baseUpdateGameEvent, body: createBody(createUpdateGame()) }
   },
-  // {
-  //   api_id: 'member_update',
-  //   test_case: 'ok',
-  //   name: `${testName}（選手情報更新） 正常系`,
-  //   event: { ...baseUpdateMemberEvent, body:createBody(createNewPlayer()) }
-  // },
+  {
+    api_id: 'game_edit_score',
+    test_case: 'ok',
+    name: `${testName}（成績編集） 正常系`,
+    event: { ...baseUpdateScoreEvent, body: createBody(await prepareData()) }
+  },
 ]
+
+async function prepareData() {
+  const client = await getPool().connect();
+  const players = await PlayerService.findPlayersByTeamId(TARGET_TEAM_ID, client);
+  const scores = await ScoreService.findScoresByGameId(TARGET_GAME_ID, client);
+  const updateScores:ScoreForm[] = [];
+  players.forEach(player => {
+    const score = scores.find(s => s.player_id === player.player_id);
+    if(score){
+      updateScores.push(makeScore(player.player_id, TARGET_GAME_ID, score.score_id));
+    }else{
+      updateScores.push(makeScore(player.player_id, TARGET_GAME_ID, crypto.randomUUID()))
+    }
+  })
+  client.release();
+  return updateScores;
+}
+
+
+function makeScore(player_id: string, game_id: string, score_id:string): ScoreForm {
+  const is_turn = TestFunctionUtil.randInt(0, 2) === 1 ? true : false;
+  const box = is_turn ? TestFunctionUtil.randInt(0, 15) : 0;
+  const hit = is_turn ? TestFunctionUtil.randInt(0, box) : 0;
+  const hr = is_turn ? TestFunctionUtil.randInt(0, hit) : 0;
+  const steal = is_turn ? TestFunctionUtil.randInt(0, 5) : 0;
+  const err = is_turn ? TestFunctionUtil.randInt(0, 5) : 0;
+
+  return {
+    player_id, game_id, score_id,
+    box, hit, hr, steal, err, is_turn
+  }
+}
