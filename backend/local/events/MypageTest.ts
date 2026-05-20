@@ -29,7 +29,7 @@ const baseKojinEvent = createEvent({
   path: '/mypage/kojin',
   resource:'/mypage/kojin',
   headers:{
-    authorization:`Bearer ${JwtCreator.create()}`
+    authorization:`Bearer ${JwtCreator.create([{key:'sub', val:'1484bee9-811b-4f4f-91c0-46612f26e4a7'}])}`
   }
 })
 

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { env } from "src/libs/EnvPropertyUtil/Env.js";
 
 export class JwtCreator{
-  static JWT_LIMIT = 1;
+  static JWT_LIMIT = 99;
 
   static create(objs?:[{key:keyof ScobitJwtObject, val:string}]){
     let payload : ScobitJwtObject = {

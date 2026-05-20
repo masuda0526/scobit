@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "../../../component/Modal/Modal";
 import { Input } from "../../../parts/input/Input";
 import { CornerIcon } from "../../../component/Modal/CornerIcon";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { parseOptionObjects } from "../../../parts/select/SelectBoxUtil";
 import { SelectOfObj } from "../../../parts/select/SelectForObj";
 import { parseStringFromDate } from "../../../Util/DateUtil/DateUtil";
@@ -19,6 +19,7 @@ import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { ScobitFunction } from "@scobit/common";
+import { useNavigate } from "react-router-dom";
 
 export const AdminGames: React.FC = () => {
     // 初期表示
@@ -36,6 +37,7 @@ export const AdminGames: React.FC = () => {
     const tournamentObjs = parseOptionObjects(tournaments, 'tournament_id', 'name');
 
     const err = useErrorArea();
+    const navigator = useNavigate();
 
     // モーダル編集用
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -99,6 +101,10 @@ export const AdminGames: React.FC = () => {
         closeModal()
     }
 
+    const clickMoveGamePage = ()=>{
+        navigator('/admin/game/edit');
+    }
+
     return (
         <div>
             {isEdit ? (
@@ -132,11 +138,14 @@ export const AdminGames: React.FC = () => {
                     ></Button>
                 </ButtonArea>
                 {games.map((game) => (
-                    <GameItem
-                        key={game.game_id}
-                        game={game}
-                    >
-                    </GameItem>
+                    <div style={{position:'relative'}}>
+                        <CornerIcon icon={faChevronRight} y={25} onClick={clickMoveGamePage}/>
+                        <GameItem
+                            key={game.game_id}
+                            game={game}
+                        >
+                        </GameItem>
+                    </div>
                 ))}
             </ContentBox>
         </div>

@@ -4,10 +4,8 @@ import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
-import { findPlayersAbilittyByTeamId, PlayerService } from "src/Service/PlayerService.js";
+import { PlayerService } from "src/Service/PlayerService.js";
 import { TeamService } from "src/Service/TeamService.js";
-import z from "zod";
-
 
 export const membersPage = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
   logger.info(`選手一覧画面表示処理開始`);

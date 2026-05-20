@@ -8,7 +8,7 @@ import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil.js";
 import { saveNewAccountPlayerLink } from "src/Service/AccountPlayerLinkService.js";
-import { isDupulicateMail, isDupulicatePublicId, saveNewAccount } from "src/Service/AccountService.js";
+import { AccountService } from "src/Service/AccountService.js";
 import { PlayerService } from "src/Service/PlayerService.js";
 
 export const registAccount = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
@@ -31,21 +31,20 @@ export const registAccount = async (event: APIGatewayProxyEvent): Promise<Respon
   }
   logger.info(`バリデーションOK（属性・桁数チェック）`);
 
-  const pool = getPool();
-  const checkDupulicate = await isDupulicatePublicId(dto.account_pub_id, pool);
-  if (!checkDupulicate.isOk) {
-    return ResponseUtil.error().addErrors([checkDupulicate.errorInfo]);
-  }
-  logger.info(`バリデーションOK（ユーザーID重複チェック）`);
-
-  const checkMail = await isDupulicateMail(dto.email, pool);
-  if(!checkMail.isOk){
-    return ResponseUtil.error().addErrors([checkMail.errorInfo]);
-  }
-  logger.info(`バリデーションOK(メールアドレス重複チェック)`);
-
-  const client = await pool.connect();
+  const client = await getPool().connect();
   try {
+    const checkDupulicate = await AccountService.isDupulicatePublicId(dto.account_pub_id, client);
+    if (!checkDupulicate.isOk) {
+      return ResponseUtil.error().addErrors([checkDupulicate.errorInfo]);
+    }
+    logger.info(`バリデーションOK（ユーザーID重複チェック）`);
+
+    const checkMail = await AccountService.isDupulicateMail(dto.email, client);
+    if (!checkMail.isOk) {
+      return ResponseUtil.error().addErrors([checkMail.errorInfo]);
+    }
+    logger.info(`バリデーションOK(メールアドレス重複チェック)`);
+
     await client.query('BEGIN');
 
     const { account, player, account_player_link } = await registNewAccount(dto, client);
@@ -83,7 +82,7 @@ async function registNewAccount(dto: NewAccountDto, client: PoolClient) {
     created_at: registDt,
     updated_at: registDt
   }
-  await saveNewAccount(account, client);
+  await AccountService.saveNewAccount(account, client);
 
   const player: PlayerForm = {
     player_id: crypto.randomUUID(),

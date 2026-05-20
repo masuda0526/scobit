@@ -153,30 +153,6 @@ export class ScoreService{
 }
 
 
-export const findScoresByGameId = async (game_id:string, pool:PoolClient):Promise<ScorePerPlayer[]> =>{
-  const result = await pool.query(
-    `
-      select
-        s.score_id ,
-        s.is_turn ,
-        s.box ,
-        s.hit ,
-        s.hr ,
-        s.steal ,
-        s.err ,
-        p.disp_name , 
-        p.positions ,
-        s.game_id 
-      from scores s 
-      join players p on p.player_id = s.player_id
-      where s.game_id = $1
-      ;
-    `,
-    [game_id]
-  )
-  return result.rows
-}
-
 const createSql = (limit?:number) => {
   let limitSql = '';
   if(limit){

@@ -8,7 +8,7 @@ const baseEvent = createEvent({
   resource:'/game/score',
   pathParameters:{
     public_id:'n340v',
-    game_id:'83d43bac-ed05-4ec6-a74a-d242f17c0a17'
+    game_id:'90592b49-e7cb-4525-9dad-4f7290cf18fd'
   }
 })
 

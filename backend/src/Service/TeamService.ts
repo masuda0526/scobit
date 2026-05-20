@@ -57,7 +57,7 @@ export class TeamService {
           t.pref, 
           t.area, 
           t.description,
-          t.public_id ,
+          t.public_id 
         from teams t 
         where 
           t.public_id = $1;
@@ -100,17 +100,4 @@ export class TeamService {
     `, params);
     return result.rows[0];
   }
-}
-
-
-
-export const isExistTeam = async (team_id: string, client: PoolClient) => {
-  const result = await client.query(`
-    select
-      t.team_id
-    from teams t
-    where tt.team_id = $1
-  `, [team_id])
-
-  return result.rows.length > 0;
 }

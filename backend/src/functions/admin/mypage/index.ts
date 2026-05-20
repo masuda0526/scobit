@@ -93,11 +93,10 @@ export const mypageFetchKojinData = async (event:APIGatewayProxyEvent):Promise<R
     }
   
     
-    const [account, ability, scores] = await Promise.all([
-      AccountService.findAccountFormByAccountId(payload.sub, client),
-      PlayerService.findPlayerAbilityByAccountId(payload.sub, client),
-      ScoreService.findScoresByAccountId(payload.sub, INIT_SCORE_COUNT, client)
-    ])
+    const account = await AccountService.findAccountFormByAccountId(payload.sub, client);
+    const ability = await PlayerService.findPlayerAbilityByAccountId(payload.sub, client);
+    const scores = await ScoreService.findScoresByAccountId(payload.sub, INIT_SCORE_COUNT, client);
+
     const dto:MypageFormOfIndividualUser = {account, ability, scores}
     logger.info(`マイページ表示用データ取得完了。`)
     logger.debugObj(dto);

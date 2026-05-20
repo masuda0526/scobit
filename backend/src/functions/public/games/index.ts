@@ -4,7 +4,7 @@ import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
-import { findGamesByTeamId, GameService } from "src/Service/GameService.js";
+import { GameService } from "src/Service/GameService.js";
 import { TeamService } from "src/Service/TeamService.js";
 import z from "zod";
 

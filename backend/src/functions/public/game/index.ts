@@ -4,8 +4,8 @@ import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
-import { findGameByGameId } from "src/Service/GameService.js";
-import { findScoresByGameId } from "src/Service/ScoreSercice.js";
+import { GameService } from "src/Service/GameService.js";
+import { ScoreService } from "src/Service/ScoreSercice.js";
 import { TeamService } from "src/Service/TeamService.js";
 import z from "zod";
 
@@ -22,27 +22,42 @@ export const gameDetailPage = async (event:APIGatewayProxyEvent):Promise<Respons
   }
   logger.info('バリデーションOK');
 
+  if(!game_id){
+    return ResponseUtil.error().addError('game_id', 'ゲームIDがありません。');
+  }
+  logger.info('ゲームIDチェックOK');
+
   const pool = await getPool().connect();
-  const team = await TeamService.findTeamByPublicId(public_id!, pool);
-  if(!team){
-    return ResponseUtil.error().addError('public_id', 'チーム情報が存在しません。');
+  try {
+    const team = await TeamService.findTeamByPublicId(public_id!, pool);
+    if(!team){
+      return ResponseUtil.error().addError('public_id', 'チーム情報が存在しません。');
+    }
+    logger.info(`チーム情報取得完了 team_id:${team.team_id} team_name:${team.team_name}`);
+  
+    const game = await GameService.findGameByGameIdAndTeamId(team.team_id, game_id, pool);
+    logger.debugObj(game);
+    if(!game){
+      return ResponseUtil.error().addError('game_id', '該当する試合が存在しません。');
+    }
+
+    const scores = await ScoreService.findScoresByGameId(game_id, pool);
+  
+    logger.info('試合情報取得完了');
+  
+    const data:GameDetail = {game, scores} ;
+    logger.debugObj(data);
+  
+    return ResponseUtil.success().putData('data', data);
+    
+  } catch (error) {
+    
+    console.error(error);
+    return ResponseUtil.error().isServerError();
+
+  } finally {
+    pool.release();
   }
-  logger.info(`チーム情報取得完了 team_id:${team.team_id} team_name:${team.team_name}`);
-
-  const [game, scores] = await Promise.all([
-    findGameByGameId(game_id!, pool),
-    findScoresByGameId(game_id!, pool)
-  ])
-
-  if(!game){
-    return ResponseUtil.error().addError('game_id', '該当する試合が存在しません。');
-  }
-  logger.info('試合情報取得完了');
-
-  const data:GameDetail = {game, scores} ;
-  logger.debugObj(data);
-
-  return ResponseUtil.success().putData('data', data);
 }
 
 const schema = z.object({

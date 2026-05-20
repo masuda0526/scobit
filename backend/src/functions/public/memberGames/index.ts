@@ -24,29 +24,37 @@ export const memberGamesPage = async (event:APIGatewayProxyEvent):Promise<Respon
   logger.info('バリデーションOK');
 
   const pool = await getPool().connect();
-  const team = await TeamService.findTeamByPublicId(public_id!, pool)
-
-  if(!team){
-    return ResponseUtil.error().addError('public_id', '該当するチーム情報がありません。');
-  }
-  logger.info(`チーム情報の取得完了。 team_id:${team.team_id} team_name:${team.team_name}`);
-  logger.debugObj(team);
-
-  const [info, scores] = await Promise.all(
-    [
-      PlayerService.findPlayerAbilitty(team.team_id, player_id!, pool),
-      ScoreService.findScoresByPlayerId(player_id!, pool, SCORE_GET_LIMIT)
-    ]
-  )
-  if(!info){
-    return ResponseUtil.error().addError('player_id', '該当する選手情報がありません。');
-  }
-  logger.info(`選手情報、成績一覧取得完了 選手名:${info.disp_name} 取得した成績数:${scores.length}試合`);
+  try {
+    const team = await TeamService.findTeamByPublicId(public_id!, pool)
   
-  const data:MemberGamesForm = {info, scores};
-  logger.debugObj(data);
-
-  return ResponseUtil.success().putData('data', data);
+    if(!team){
+      return ResponseUtil.error().addError('public_id', '該当するチーム情報がありません。');
+    }
+    logger.info(`チーム情報の取得完了。 team_id:${team.team_id} team_name:${team.team_name}`);
+    logger.debugObj(team);
+  
+    const [info, scores] = await Promise.all(
+      [
+        PlayerService.findPlayerAbilitty(team.team_id, player_id!, pool),
+        ScoreService.findScoresByPlayerId(player_id!, pool, SCORE_GET_LIMIT)
+      ]
+    )
+    if(!info){
+      return ResponseUtil.error().addError('player_id', '該当する選手情報がありません。');
+    }
+    logger.info(`選手情報、成績一覧取得完了 選手名:${info.disp_name} 取得した成績数:${scores.length}試合`);
+    
+    const data:MemberGamesForm = {info, scores};
+    logger.debugObj(data);
+  
+    return ResponseUtil.success().putData('data', data);
+    
+  } catch (error) {
+    console.error(error);
+    return ResponseUtil.error().isServerError();
+  } finally {
+    pool.release();
+  }
 }
 
 const schema = z.object({
