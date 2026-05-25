@@ -86,7 +86,7 @@ CREATE TABLE players (
     name varchar(20) NOT NULL,
     disp_name varchar(4) NOT NULL,
     throw_distance integer NOT NULL,
-    positions varchar(9) NOT NULL
+    positions varchar(9) NOT NULL,
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now()
 
@@ -99,8 +99,8 @@ COMMENT ON COLUMN players.name IS '選手名';
 COMMENT ON COLUMN players.disp_name IS '表示名（最大4文字）';
 COMMENT ON COLUMN players.throw_distance IS '遠投距離';
 COMMENT ON COLUMN players.positions IS 'ポジションコード';
-COMMENT ON COLUMN Players.created_at IS '作成日'
-COMMENT ON COLUMN Players.updated_at IS '更新日'
+COMMENT ON COLUMN players.created_at IS '作成日';
+COMMENT ON COLUMN players.updated_at IS '更新日';
 
 
 -- =====================================================
@@ -249,8 +249,8 @@ COMMENT ON COLUMN games.my_point IS '自チーム得点';
 COMMENT ON COLUMN games.op_point IS '相手得点';
 COMMENT ON COLUMN games.result IS '試合結果';
 COMMENT ON COLUMN games.game_dt IS '試合日';
-COMMENT ON COLUMN games.created_at IS '作成日'
-COMMENT ON COLUMN games.updated_at IS '更新日'
+COMMENT ON COLUMN games.created_at IS '作成日';
+COMMENT ON COLUMN games.updated_at IS '更新日';
 
 
 -- =====================================================
@@ -286,5 +286,5 @@ COMMENT ON COLUMN scores.hit IS '安打';
 COMMENT ON COLUMN scores.hr IS '本塁打';
 COMMENT ON COLUMN scores.steal IS '盗塁';
 COMMENT ON COLUMN scores.err IS 'エラー';
-COMMENT ON COLUMN scores.created_at IS '作成日'
-COMMENT ON COLUMN scores.updated_at IS '更新日'
+COMMENT ON COLUMN scores.created_at IS '作成日';
+COMMENT ON COLUMN scores.updated_at IS '更新日';
