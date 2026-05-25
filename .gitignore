@@ -1,1 +1,6 @@
 node_modules
+samconfig*.toml
+template*.yaml
+.aws-sam
+.agents
+skills-lock.json

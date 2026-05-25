@@ -5,15 +5,17 @@ import { build } from "esbuild";
 import fs from "fs";
 import path from "path";
 
+const targetDir = process.argv[2];
 const distDir = "dist";
-const outFile = path.join(distDir, 'handler.cjs');
-const zipFile = path.join(distDir, 'lambda.zip');
-const lambdaFunctionName = "gantsuleFunc";
+const inputFile = path.join("src", "LambdaHandler", targetDir, "index.ts")
+const outFile = path.join(distDir, targetDir, 'index.js');
 
 const main = async () => {
-  console.log('ビルドスタート');
+  console.log('=============== ビルドスタート ===============');
+  console.log(`InputFile:${inputFile}`);
+  console.log(`-> OutputFile:${outFile}`);
   await build({
-    entryPoints: ["index.ts"],
+    entryPoints: [inputFile],
     bundle: true,              // 依存関係をすべてまとめる
     platform: "node",
     target: "node22",
@@ -22,44 +24,10 @@ const main = async () => {
     sourcemap: false,
     minify: true,
   });
+  }
   
-  if(!fs.existsSync(distDir)){
-    console.log(`${distDir}ディレクトリ作成`)
-    fs.mkdirSync(distDir, {recursive:true})
-  } 
-
-  console.log('ZIPファイルにまとめる');
-  const output = fs.createWriteStream(zipFile);
-  const archive = archiver("zip", {zlib:{level:9}});
-
-  archive.pipe(output);
-  archive.file(outFile, {name:"handler.cjs"});
-  await archive.finalize();
-
-  await new Promise((resolve, reject) => {
-    output.on("close", () => {
-      console.log(`✅ ZIPファイル完了 (${archive.pointer()} bytes)`);
-      resolve();
-    });
-    output.on("error", reject);
-  });
-
-  console.log('ZIPファイル作成完了');
-
-  console.log('AWSへのアップロード');
-  const client = new LambdaClient({region:'ap-northeast-1'});
-  const zipBuf = fs.readFileSync(zipFile);
-
-  const command = new UpdateFunctionCodeCommand({
-    FunctionName: lambdaFunctionName,
-    ZipFile:zipBuf
-  })
-
-  const response = await client.send(command);
-  console.log('デプロイ完了', response.FunctionArn);
-}
-
-main().catch(error => {
-  console.log(error);
-  console.log('ビルドに失敗しました');
-})
+  main().catch(error => {
+    console.log(error);
+    console.log('ビルドに失敗しました');
+});
+    console.log('================= ビルド成功 =================');

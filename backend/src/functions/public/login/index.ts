@@ -6,7 +6,7 @@ import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
 import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil.js";
 import { AccountService } from "src/Service/AccountService.js";
 import z from "zod";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { JwtUtil } from "src/libs/JwtUtil/JwtUtil.js";
 
 

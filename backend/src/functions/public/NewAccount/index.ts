@@ -1,6 +1,6 @@
 import { Account, AccountsPlayers, NewAccountDto, NewAccountDtoSchema, Player, PlayerForm } from "@scobit/types";
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { hashSync } from "bcrypt";
+import { hashSync } from "bcryptjs";
 import { Pool, PoolClient } from "pg";
 import { logger } from "src/libs/Logger/Logger.js";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";

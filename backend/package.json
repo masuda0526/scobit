@@ -6,6 +6,8 @@
   "main": "index.js",
   "scripts": {
     "bundle": "node build.mjs",
+    "build_admin": "npm run bundle -- admin && sam build -t template_admin.yaml && sam deploy --template-file template_admin.yaml --config-file samconfig_admin.toml || true",
+    "build_public": "npm run bundle -- public && sam build -t template_public.yaml && sam deploy --template-file template_public.yaml --config-file samconfig_public.toml || true",
     "build": "node --loader ts-node/esm scripts/buildLambda.ts",
     "builddev": "node ./scripts/build.ts",
     "test": "tsx --env-file=.env.local local/test.ts"
@@ -35,8 +37,9 @@
     "uuid": "^13.0.0"
   },
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.1053.0",
     "@scobit/types": "*",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.3.1",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
