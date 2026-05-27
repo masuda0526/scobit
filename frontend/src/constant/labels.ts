@@ -22,5 +22,7 @@ export const FRONT_LABELS:LabelDef[] = [
   {key:'name', label:'選手名', type:'string'},
   {key:'positions', label:'ポジション', type:'string'},
   {key:'email', label:'メールアドレス', type:'string'},
+  {key:'info', label:'メールアドレス', type:'string'},
+  {key:'pass', label:'パスワード', type:'string'},
   {key:'account_pub_id', label:'ユーザーID', type:'string'}
 ]

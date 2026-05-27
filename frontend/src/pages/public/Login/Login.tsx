@@ -7,18 +7,54 @@ import { Button } from "../../../parts/button/button";
 import { ContentBox } from "../../../parts/content/contentBox";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { AccessTokenUtil } from "../../../Util/TokenUtil/AccessTokenUtil";
+import { useNavigate } from "react-router-dom";
+import z from "zod";
+import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
+import { convertToErrorInfos } from "../../../Util/ZodUtils";
+import { ajaxPublicApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import type { ResponseFormat } from "@scobit/types";
+import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
+import { exceptionProcess } from "../../../Util/CommonUtil/CommonUtil";
 
 export const Login: React.FC = () => {
-    const [info, setInfo] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [pass, setPass] = useState<string>('');
     const loading = useLoading();
+    const navigator = useNavigate();
+    const err = useErrorArea();
 
     const doLogin = async () => {
         loading.startLoading('ログイン中...');
-        await sleep(2000);
-        const accessToken = 'test-access-token';
-        AccessTokenUtil.setToken(accessToken);
-        window.location.href = '/#/members'
+        err.reset();
+        const valid = schema.safeParse({email, pass});
+        if(!valid.success){
+            err.setErrors(convertToErrorInfos(valid.error));
+            loading.stopLoading();
+            return;
+        }
+        try {
+            await ajaxPublicApi.post('/login', {email, pass})
+            .then(res => {
+                const data = res.data as ResponseFormat;
+                console.log(data);
+                if(!data.isSuccess){
+                    err.setErrors(data.errors??[]);
+                    loading.stopLoading();
+                    return ;
+                }
+                const token = data.data.token;
+                AccessTokenUtil.setToken(token);
+                
+                loading.stopLoading();
+                navigator('/admin/mypage');
+            }).catch(err => {
+                exceptionProcess();
+                return;
+            })
+        } catch (error) {
+            exceptionProcess();
+            return;
+        }
     }
 
     useEffect(() => {
@@ -29,11 +65,12 @@ export const Login: React.FC = () => {
         <>
             <ContentBox>
                 <Title text="ログイン" />
+                <ErrorArea/>
                 <Input 
                     label="メールアドレス" 
                     attr="email"
-                    value={info} 
-                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => setInfo(e.target.value)} 
+                    value={email} 
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} 
                 />
                 <Input 
                     label="パスワード" 
@@ -54,10 +91,7 @@ export const Login: React.FC = () => {
     )
 }
 
-async function sleep(msTime:number) {
-    await new Promise(resolve => {
-        setTimeout(() => {
-            resolve('');
-        }, msTime)
-    });
-}
+const schema = z.object({
+    email: z.string().trim().toLowerCase().email(),
+    pass: z.string().min(1).max(20)
+})

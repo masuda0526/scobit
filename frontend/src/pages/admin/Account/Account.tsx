@@ -14,6 +14,7 @@ import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ajaxPublicApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import { exceptionProcess } from "../../../Util/CommonUtil/CommonUtil";
 
 export const Account: React.FC = () => {
   // パスパラメータ取得
@@ -91,17 +92,17 @@ export const Account: React.FC = () => {
       await ajaxPublicApi.post('new', data)
         .then((res) => {
           const data = res.data as ResponseFormat;
-          if(data.errors){
-            err.setErrors(data.errors)
+          if(!data.isSuccess){
+            err.setErrors(data.errors??[]);
             loading.stopLoading();
             return;
           }
         })
         .catch((error) => {
-          alert('予期せぬエラーが発生しました。\n時間をおいてからお試しください。');;
+          exceptionProcess()
         });
       } catch (error) {
-        alert('予期せぬエラーが発生しました。\n時間をおいてからお試しください。');;
+        exceptionProcess();
     }
     loading.stopLoading();
     navigator('/login')
