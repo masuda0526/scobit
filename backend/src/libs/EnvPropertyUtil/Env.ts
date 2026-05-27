@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const EnvSchema = z.object({
-  STAGE: z.enum(['local', 'dev', 'product', 'test']),
+  STAGE: z.enum(['local', 'dev', 'product', 'stage']),
   LOG_LEVEL: z.enum(['DEBUG', 'INFO', 'WARN', 'ERROR']),
   JWT_SECRET_KEY: z.string().min(10),
   RDB_NAME: z.string(),

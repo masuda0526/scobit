@@ -1,4 +1,4 @@
-import { AccountFormSchema, PlayerInputSchema, type AccountNewForm, type NewAccountDto, type PlayerInput } from "@scobit/types";
+import { AccountFormSchema, PlayerInputSchema, type AccountNewForm, type NewAccountDto, type PlayerInput, type ResponseFormat } from "@scobit/types";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { ContentBox } from "../../../parts/content/contentBox";
@@ -8,11 +8,12 @@ import { GroundPosition } from "../../../component/GroundPosition/GroundPosition
 import { ButtonArea } from "../../../parts/button/buttonArea";
 import { Button } from "../../../parts/button/button";
 import { Title } from "../../../parts/title/title";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
+import { ajaxPublicApi } from "../../../Util/AjaxUtil/AjaxUtil";
 
 export const Account: React.FC = () => {
   // パスパラメータ取得
@@ -21,6 +22,7 @@ export const Account: React.FC = () => {
   // コンテキスト
   const err = useErrorArea();
   const loading = useLoading();
+  const navigator = useNavigate();
 
   // 状態管理
   const initAccount = (): AccountNewForm => { return { account_pub_id: '', email: '', pass:'' } };
@@ -52,14 +54,13 @@ export const Account: React.FC = () => {
   useEffect(() => {
     loading.startLoading(); 
     if (tmpId) {
-      console.log(`tmpIdあり`);
       setAccount({ account_pub_id: 'aaaaaaa', email: 'test@test.com', pass:''});
       setPlayer({ name: 'テスト', disp_name: 'テスト１', throw_distance: '85', positions: '46789' })
     }
     loading.stopLoading();
   }, [])
 
-  const clickRegistButton = () => {
+  const clickRegistButton = async () => {
     loading.startLoading();
     err.reset();
 
@@ -75,18 +76,35 @@ export const Account: React.FC = () => {
     }
     if (Number.isNaN(Number.parseInt(player.throw_distance))) {
       err.addError({ field: 'throw_distance', message: '遠投距離を確認してください。' });
+      return ;
     }
 
-    if (err.isError()) {
+    if (!validAccount.success || !validPlayer.success) {
       loading.stopLoading();
       return;
     }
 
     // 登録処理
     const data:NewAccountDto = {...account, ...player};
-
-    
+    try {
+      err.reset();
+      await ajaxPublicApi.post('new', data)
+        .then((res) => {
+          const data = res.data as ResponseFormat;
+          if(data.errors){
+            err.setErrors(data.errors)
+            loading.stopLoading();
+            return;
+          }
+        })
+        .catch((error) => {
+          alert('予期せぬエラーが発生しました。\n時間をおいてからお試しください。');;
+        });
+      } catch (error) {
+        alert('予期せぬエラーが発生しました。\n時間をおいてからお試しください。');;
+    }
     loading.stopLoading();
+    navigator('/login')
   }
 
   return (

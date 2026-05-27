@@ -1,10 +1,10 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyEventV2 } from "aws-lambda";
 import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder.js";
 
 type Route = {
   method:'GET'|'POST';
   path:string;
-  execFunc:(event: APIGatewayProxyEvent) => Promise<ResponseBodyBuilder>;
+  execFunc:(event: APIGatewayProxyEventV2) => Promise<ResponseBodyBuilder>;
 }
 
 export class Router {

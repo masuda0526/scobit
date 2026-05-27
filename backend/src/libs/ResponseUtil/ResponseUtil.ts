@@ -13,7 +13,7 @@ export class ResponseUtil {
 
   static parseToAPIGatewayResponse(responseBody: ResponseBodyBuilder): APIGatewayProxyResult{
     return {
-      statusCode:responseBody.isError()?400:200,
+      statusCode:200,
       body:JSON.stringify(responseBody.toResponse())
     }
   }
