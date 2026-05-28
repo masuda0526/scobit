@@ -2,10 +2,10 @@ import type React from "react";
 import { Modal } from "../../../component/Modal/Modal";
 import { useEffect, useState } from "react";
 import { Select } from "../../../parts/select/Select";
-import { AccountFormSchema, type Ability, type AccountForm, type ScoreItemDto, type TeamForm } from "@scobit/types";
+import { AccountFormSchema, type Ability, type AccountForm, type MypageFormOfIndividualUser, type ResponseFormat, type ScoreItemDto, type TeamForm } from "@scobit/types";
 import { ButtonArea } from "../../../parts/button/buttonArea";
 import { Button } from "../../../parts/button/button";
-import { generateAdminMypageFetchKojinAccount, generateAdminMypageFetchTeams } from "../../../testdatas/testDataCreater";
+// import { generateAdminMypageFetchKojinAccount, generateAdminMypageFetchTeams } from "../../../testdatas/testDataCreater";
 import { useNavigate } from "react-router-dom";
 import { ContentBox } from "../../../parts/content/contentBox";
 import { SubTitle } from "../../../parts/subtitle/subtitle";
@@ -19,6 +19,8 @@ import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
+import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
 
 export const Mypage: React.FC = () => {
   // プロバイダー
@@ -41,29 +43,54 @@ export const Mypage: React.FC = () => {
   const [scores, setScores] = useState<ScoreItemDto[]>([]);
 
   useEffect(() => {
-    loading.startLoading();
-    const data = generateAdminMypageFetchTeams();
-    setTeams(data.teams);
+    const init = async () => {
+      try {
+        loading.startLoading();
+        const res = await ajaxAdminApi.post('/mypage/teams')
+        const data = res.data as ResponseFormat;
+        const teams = data.data.teams as TeamForm[];
+        setTeams(teams);
+      } catch (error) {
+        exceptionAdminProcess();
+      }
+      // const data = generateAdminMypageFetchTeams();
+      // setTeams(data.teams);
 
-    if (data.teams.length > 0) {
-      // チーム選択処理
-      setTeamSelectPage(true);
-      setIndividualPage(false);
-      setIsEditAccount(false);
-      // } else if (data.teams.length === 1) {
-      //   // 取得したチーム情報でマイページを構築
-      //   navigator('/admin/team');
-    } else {
-      // 個人アカウントページ
-      const kojinData = generateAdminMypageFetchKojinAccount();
-      setAccount(kojinData.account);
-      setEditAccount(kojinData.account);
-      setPlayer(kojinData.ability)
-      setScores(kojinData.scores);
-      setIndividualPage(true);
-      setTeamSelectPage(false);
+      if (teams.length > 0) {
+        // チーム選択処理
+        setTeamSelectPage(true);
+        setIndividualPage(false);
+        setIsEditAccount(false);
+        // } else if (data.teams.length === 1) {
+        //   // 取得したチーム情報でマイページを構築
+        //   navigator('/admin/team');
+      } else {
+        // 個人アカウントページ
+        try {
+          const res = await ajaxAdminApi.post('/mypage/kojin')
+          const data = res.data as ResponseFormat;
+          const kojinData = data.data.data as MypageFormOfIndividualUser;
+          setAccount(kojinData.account);
+          setEditAccount(kojinData.account);
+          setPlayer(kojinData.ability)
+          setScores(kojinData.scores);
+          setIndividualPage(true);
+          setTeamSelectPage(false);
+        } catch (error) {
+          loading.stopLoading();
+          exceptionAdminProcess();
+        }
+      }
+      // const kojinData = generateAdminMypageFetchKojinAccount();
+      // setAccount(kojinData.account);
+      // setEditAccount(kojinData.account);
+      // setPlayer(kojinData.ability)
+      // setScores(kojinData.scores);
+      // setIndividualPage(true);
+      // setTeamSelectPage(false);
+      loading.stopLoading();
     }
-    loading.stopLoading();
+    init();
   }, [])
 
   // アカウント情報編集
@@ -107,7 +134,9 @@ export const Mypage: React.FC = () => {
       <ContentBox>
         <CornerIcon icon={faPencil} onClick={() => setIsEditAccount(true)} />
         <SubTitle text="アカウント情報" />
-        <Info label='ユーザーID' info={account.account_pub_id} />
+        {account.account_pub_id?(
+          <Info label='ユーザーID' info={account.account_pub_id} />
+        ):''}
         <Info label='メールアドレス' info={account.email} />
       </ContentBox>
       {isIndividualPage ? (

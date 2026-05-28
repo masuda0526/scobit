@@ -11,7 +11,7 @@ export class PlayerService {
         p.disp_name,
         p.positions,
         p.throw_distance,
-        pt.team_id,
+        a.account_id as team_id,
         coalesce(SUM(s.hit), 0) as hit,
         coalesce(SUM(s.hr), 0) as hr,
         coalesce(SUM(s.steal), 0) as steal,
@@ -34,21 +34,17 @@ export class PlayerService {
         ) as steal_per_game
 
       from players p 
-      join players_teams pt 
-        on pt.player_id = p.player_id 
-      join scores s 
-        on s.player_id = p.player_id 
-      join games g  
-        on s.game_id = g.game_id 
-        and g.team_id = pt.team_id 
-      where pt.team_id = $1
+      join accounts_players ap on p.player_id = ap.player_id 
+      join account a on a.account_id = ap.account_id 
+      left join scores s on s.player_id = p.player_id 
+      where a.account_id = $1
       group by 
         p.player_id,
         p.name,
         p.disp_name,
         p.positions,
         p.throw_distance,
-        pt.team_id
+        a.account_id
       ;
     `, [account_id]
     )

@@ -18,7 +18,7 @@ export type JwtCheckResult = {
 export class JwtUtil {
 
   static ACCESS_TOKEN_KEY = 'access_token';
-  static TOKEN_LIMIT = 30;
+  static TOKEN_LIMIT = 60 * 60 * 24;
 
   static createAccessTokenBeforeSelectTeam(account_id:string){
     logger.info(`JWT作成処理`);
