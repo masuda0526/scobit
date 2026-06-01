@@ -113,6 +113,16 @@ export class PlayerService {
     return result.rows[0];
   }
 
+  static async findPlayerByAccountId(accountId:string, client:PoolClient):Promise<Player>{
+    const result = await client.query(`
+        SELECT p.player_id, p."name", p.disp_name, p.throw_distance, p.positions, p.created_at, p.updated_at
+        FROM players p join accounts_players ap on p.player_id = ap.player_id 
+        where ap.account_id = $1
+        ;
+      `, [accountId]);
+    return result.rows[0];
+  }
+
 }
 
 

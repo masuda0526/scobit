@@ -29,7 +29,14 @@ export const mypageFetchTeams = async (event:APIGatewayProxyEvent):Promise<Respo
     logger.info('チーム情報取得完了。');
     logger.debugObj(teams);
 
-    return ResponseUtil.success().putData('teams', teams);
+    const account = await AccountService.findAccountFormByAccountId(account_id, client);
+    logger.info('アカウント情報取得完了');
+    logger.debugObj(account);
+    if(!account){
+      return ResponseUtil.error().addError('account_id', '該当するアカウントが存在しません。');
+    }
+
+    return ResponseUtil.success().putData('teams', teams).putData('account', account);
     
   } catch (error) {
     console.log(error);

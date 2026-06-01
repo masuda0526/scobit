@@ -73,7 +73,7 @@ const run = async () => {
 
 };
 
-await run();
+run();
 // (async () => {
 //   console.log("=== ローカルテスト開始 ===");
   

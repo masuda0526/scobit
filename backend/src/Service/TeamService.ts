@@ -100,4 +100,31 @@ export class TeamService {
     `, params);
     return result.rows[0];
   }
+
+  static async createTeam(inputTeam:TeamForm, client:PoolClient): Promise<TeamForm>{
+    const params = [inputTeam.public_id, inputTeam.team_name, inputTeam.created_at, inputTeam.pref, inputTeam.area];
+    
+    if(inputTeam.description){
+      params.push(inputTeam.description);
+    }
+
+    const result = await client.query(`
+      INSERT INTO teams (
+        team_id, 
+        public_id, 
+        team_name, 
+        created_at, 
+        regist_at, 
+        updated_at, 
+        pref, 
+        area, 
+        ${inputTeam.description?'description ':''}
+      )
+      VALUES(gen_random_uuid(), $1, $2, $3, now(), now(), $4, $5 ${inputTeam.description?',$6 ': ''} ) 
+      returning * 
+      ;  
+    `, params)
+
+    return result.rows[0];
+  }
 }

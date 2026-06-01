@@ -1,3 +1,4 @@
+import { AdminCreateNewTeam } from "@func/admin/createTeam";
 import { AdminGameInit } from "@func/admin/game/index.js";
 import { AdminGameEditInit, editGame, editScores } from "@func/admin/gameEdit/index.js";
 import { AddNewGame, AdminGamesInit } from "@func/admin/Games/index.js";
@@ -14,6 +15,7 @@ adminRouter.post('/mypage/select', mypageSelectTeam);
 adminRouter.post('/mypage/kojin', mypageFetchKojinData);
 adminRouter.post('/team/init', AdminTeamInit);
 adminRouter.post('/team/update', updateTeamInfo);
+adminRouter.post('/team/new', AdminCreateNewTeam);
 adminRouter.post('/members/init', AdminMembersInit);
 adminRouter.post('/members/add', MembersAddMember);
 adminRouter.post('/member/init', AdminMemberInit);

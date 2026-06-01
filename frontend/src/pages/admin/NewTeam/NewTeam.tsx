@@ -1,6 +1,6 @@
-import { TeamFormSchema, type TeamForm } from "@scobit/types";
+import { TeamFormSchema, type ResponseFormat, type TeamForm } from "@scobit/types";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../../parts/input/Input";
 import { PrefSelect } from "../../../parts/select/PrefSelect";
 import { TextArea } from "../../../parts/textarea/TextArea";
@@ -13,12 +13,18 @@ import { useLoading } from "../../../component/Loading/LoadingContext";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { useNavigate } from "react-router-dom";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
+import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
 
 export const NewTeamPage: React.FC = () => {
   // フック
   const loading = useLoading();
   const err = useErrorArea();
   const navigator = useNavigate();
+
+  useEffect(() => {
+    err.reset();
+  },[]);
+
   // チーム状態
   const initTeam = (): TeamForm => {
     return {
@@ -37,7 +43,7 @@ export const NewTeamPage: React.FC = () => {
   }  
 
   // 作成処理
-  const clickCreateNewTeam =() => {
+  const clickCreateNewTeam = async () => {
     loading.startLoading();
     err.reset();
     // バリデーション
@@ -48,6 +54,14 @@ export const NewTeamPage: React.FC = () => {
       return
     }
     // 登録処理
+    const res = await ajaxAdminApi.post('/team/new', valid.data);
+    const data = res.data as ResponseFormat;
+    console.log(data);
+    if(!data.isSuccess){
+      err.setErrors(data.errors??[]);
+      loading.stopLoading();
+      return ;
+    }
 
     // 画面遷移
     navigator('/admin/mypage');

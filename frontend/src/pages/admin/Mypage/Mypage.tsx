@@ -1,7 +1,6 @@
 import type React from "react";
 import { Modal } from "../../../component/Modal/Modal";
 import { useEffect, useState } from "react";
-import { Select } from "../../../parts/select/Select";
 import { AccountFormSchema, type Ability, type AccountForm, type MypageFormOfIndividualUser, type ResponseFormat, type ScoreItemDto, type TeamForm } from "@scobit/types";
 import { ButtonArea } from "../../../parts/button/buttonArea";
 import { Button } from "../../../parts/button/button";
@@ -20,7 +19,10 @@ import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
-import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
+import { exceptionAdminProcess, exceptionProcess } from "../../../Util/CommonUtil/CommonUtil";
+import { AccessTokenUtil } from "../../../Util/TokenUtil/AccessTokenUtil";
+import { SelectOfObj } from "../../../parts/select/SelectForObj";
+import { parseOptionObjects } from "../../../parts/select/SelectBoxUtil";
 
 export const Mypage: React.FC = () => {
   // プロバイダー
@@ -35,6 +37,7 @@ export const Mypage: React.FC = () => {
 
   // チーム選択用
   const [teams, setTeams] = useState<TeamForm[]>([]);
+  const [selectTeam, setSelectTeam] = useState<string>('');
 
   // 個人アカウント用
   const [account, setAccount] = useState<AccountForm>({ email: '', account_pub_id: '' });
@@ -44,50 +47,48 @@ export const Mypage: React.FC = () => {
 
   useEffect(() => {
     const init = async () => {
+      let teams = [];
       try {
         loading.startLoading();
         const res = await ajaxAdminApi.post('/mypage/teams')
+
         const data = res.data as ResponseFormat;
-        const teams = data.data.teams as TeamForm[];
+        teams = data.data.teams as TeamForm[];
+        const account = data.data.account as AccountForm;
+
         setTeams(teams);
+        setAccount(account);
+
       } catch (error) {
+        console.error(error)
         exceptionAdminProcess();
       }
-      // const data = generateAdminMypageFetchTeams();
-      // setTeams(data.teams);
-
+      
       if (teams.length > 0) {
         // チーム選択処理
         setTeamSelectPage(true);
         setIndividualPage(false);
         setIsEditAccount(false);
-        // } else if (data.teams.length === 1) {
-        //   // 取得したチーム情報でマイページを構築
-        //   navigator('/admin/team');
       } else {
         // 個人アカウントページ
         try {
           const res = await ajaxAdminApi.post('/mypage/kojin')
           const data = res.data as ResponseFormat;
           const kojinData = data.data.data as MypageFormOfIndividualUser;
+
           setAccount(kojinData.account);
           setEditAccount(kojinData.account);
           setPlayer(kojinData.ability)
           setScores(kojinData.scores);
+
           setIndividualPage(true);
           setTeamSelectPage(false);
         } catch (error) {
+          console.log(error)
           loading.stopLoading();
           exceptionAdminProcess();
         }
       }
-      // const kojinData = generateAdminMypageFetchKojinAccount();
-      // setAccount(kojinData.account);
-      // setEditAccount(kojinData.account);
-      // setPlayer(kojinData.ability)
-      // setScores(kojinData.scores);
-      // setIndividualPage(true);
-      // setTeamSelectPage(false);
       loading.stopLoading();
     }
     init();
@@ -114,8 +115,19 @@ export const Mypage: React.FC = () => {
   const clickNewTeam = () => {
     navigator('/admin/new/team')
   }
-
-  const clickSelectTeam = () => {
+  
+  const clickSelectTeam = async () => {
+    if(selectTeam === ''){
+      alert('チームを選択してください。');
+      return ;
+    }
+    try {
+      const res = await ajaxAdminApi.post('/mypage/select', {team_id:selectTeam});
+      const data = res.data as ResponseFormat;
+      AccessTokenUtil.setToken(data.data.token);
+    } catch (error) {
+      exceptionProcess();
+    }
     navigator('/admin/team');
   }
 
@@ -124,7 +136,13 @@ export const Mypage: React.FC = () => {
       {isTeamSelectPage ? (
         <ContentBox>
           <SubTitle text="チーム選択" />
-          <Select label="チーム" options={teams.map(team => team.team_name)}></Select>
+          <SelectOfObj 
+            label="チーム" 
+            attr="team_id" 
+            value={selectTeam}
+            options={parseOptionObjects(teams, 'team_id', 'team_name')} 
+            onChange={(e) => setSelectTeam(e.target.value)}
+          />
           <ButtonArea position='between'>
             <Button label='チーム追加' onClick={clickNewTeam} />
             <Button label="選択" onClick={clickSelectTeam} />

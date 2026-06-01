@@ -1,20 +1,44 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyEventV2 } from "aws-lambda";
 
 export const createEvent = (
-  overrides: Partial<APIGatewayProxyEvent> = {}
-): APIGatewayProxyEvent => ({
-  body: null,
+  method:string,
+  path:string,
+  overrides: Partial<APIGatewayProxyEventV2> = {}
+): APIGatewayProxyEventV2 => ({
+
+  version: "2.0",
+
+  routeKey: "$default",
+
+  rawPath: path,
+
+  rawQueryString: "",
+
   headers: {},
-  multiValueHeaders: {},
-  httpMethod: "GET",
+
+  requestContext: {
+    accountId: "123456789012",
+    apiId: "api-id",
+    domainName: "example.com",
+    domainPrefix: "example",
+    http: {
+      method: method,
+      path: path,
+      protocol: "HTTP/1.1",
+      sourceIp: "127.0.0.1",
+      userAgent: "jest",
+    },
+    requestId: "request-id",
+    routeKey: "$default",
+    stage: "stage",
+    time: new Date().toISOString(),
+    timeEpoch: Date.now(),
+  },
+
   isBase64Encoded: false,
-  path: "/test",
-  resource: "/test",
-  pathParameters: null,
-  queryStringParameters: null,
-  multiValueQueryStringParameters: null,
-  stageVariables: null,
-  requestContext: {} as any, // ←ここは無視でOK（ローカルなら）
+
+  body: undefined,
+
   ...overrides,
 });
 

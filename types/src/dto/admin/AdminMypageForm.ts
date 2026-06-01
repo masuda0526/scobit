@@ -4,7 +4,8 @@ import { ScoreItemDto } from "../../entity/Score.js"
 import { TeamForm } from "../../entity/Team.js"
 
 export type MypageFormOfTeams = {
-  teams:TeamForm[]
+  teams:TeamForm[],
+  account:AccountForm
 }
 
 export type MypageFormOfIndividualUser = {
