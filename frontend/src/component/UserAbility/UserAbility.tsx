@@ -6,6 +6,8 @@ import type { Ability } from "@scobit/types";
 
 export const UserAbility: React.FC<{player:Ability}> = ({player}) => {
 
+    const battingAvrage = player.avr >= 1 ? (Math.floor(player.avr*1000)/1000).toFixed(3).toString():(Math.floor(player.avr*1000)/1000).toFixed(3).toString().slice(1);
+
     return (
         <div className={styles.member}>
             <div className={styles.member_box}>
@@ -18,7 +20,7 @@ export const UserAbility: React.FC<{player:Ability}> = ({player}) => {
                     <AbilityContainer label="守備力" value={getDefenseAlp(player.err_per_game)} />
                 </div>
             </div>
-            <div className={styles.score}>打率：{(Math.floor(player.avr*1000)/100).toFixed(2)}　本：{player.hr}本　盗：{player.steal}</div>
+            <div className={styles.score}>打率：{battingAvrage}　本：{player.hr}本　盗：{player.steal}</div>
         </div>
     );
 }

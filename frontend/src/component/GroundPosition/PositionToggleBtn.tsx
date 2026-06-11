@@ -13,7 +13,6 @@ export const PositionToggleBtn : React.FC<ButtonProps> = ({
     isOn,
     clickToggle,
     style,
-    ...rest
 }) => {
 
     return (

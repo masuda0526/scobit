@@ -107,7 +107,7 @@ export const AdminMembers: React.FC = () => {
           </ButtonArea>
         </Modal>
       ):''}
-      <Title text="選手一覧" />
+      <Title text={`${team?.team_name}選手一覧`} />
       {members.map(member => {
         return (
           <>

@@ -200,9 +200,7 @@ CREATE TABLE tournament (
     start_dt timestamp with time zone,
     end_dt timestamp with time zone,
     created_at timestamp with time zone DEFAULT now(),
-    updated_at timestamp with time zone DEFAULT now(),
-
-    FOREIGN KEY  (team_id) REFERENCES teams (team_id)
+    updated_at timestamp with time zone DEFAULT now()
 );
 
 COMMENT ON TABLE tournament IS '大会';
@@ -234,7 +232,6 @@ CREATE TABLE games (
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now(),
 
-    FOREIGN KEY  (team_id) REFERENCES teams (team_id),
     FOREIGN KEY (tournament_id) REFERENCES tournament(tournament_id)
 );
 

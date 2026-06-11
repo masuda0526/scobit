@@ -18,6 +18,8 @@ import { AdminMembers } from './pages/admin/Members/Members'
 import { Account } from './pages/admin/Account/Account'
 import { Mypage } from './pages/admin/Mypage/Mypage'
 import { NewTeamPage } from './pages/admin/NewTeam/NewTeam'
+import { AddGameForKojinUser } from './pages/admin/AddGameForKojin/AddGameForKojinUser'
+import { AdminMemberForKojinAccount } from './pages/admin/Member/MemberForKojinAccount'
 
 function App() {
 
@@ -45,6 +47,9 @@ function App() {
             <Route path='/admin/games'   element={<AdminGames/>} />
             <Route path='/admin/game'   element={<AdminGame/>} />
             <Route path='/admin/game/edit'   element={<AdminGameEdit/>} />
+            <Route path='/admin/game/kojin' element={<AddGameForKojinUser/>} />
+            <Route path='/admin/game/kojin/:gameId' element={<AddGameForKojinUser/>} />
+            <Route path='/admin/member/kojin' element={<AdminMemberForKojinAccount/>} />
           </Routes>
         </LayoutShell>
       </HashRouter>

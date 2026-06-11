@@ -10,7 +10,7 @@ export const AdminMemberLabelList: React.FC<{ players: PlayerForm[] }> = ({ play
         {(players.map(player => {
           return (
             <a href="/#/admin/member" className={styles.item}>
-              <MemberLabel name={player.disp_name} positions={player.positions} />
+              <MemberLabel key={player.player_id} name={player.disp_name} positions={player.positions} />
             </a>
           )
         }))}

@@ -9,7 +9,7 @@ export async function routerHandler(event: APIGatewayProxyEventV2): Promise<APIG
   const method = event.requestContext.http.method;
   const stage = env.STAGE;
   const rawPath = event.rawPath;
-  logger.info(`リクエスト処理開始[stage:${stage} method:${method} path:${rawPath}]`);
+  logger.info(`★★★★★リクエスト処理開始[stage:${stage} method:${method} path:${rawPath}]★★★★★`);
 
   // パスを整形（ステージ名が付与されるので合わせること）
   const path = rawPath.replace(`/${stage}`, '');

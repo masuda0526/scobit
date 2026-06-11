@@ -73,6 +73,31 @@ export class AccountService {
       [account.account_id, account.account_pub_id, account.email, account.hash_pass, account.created_at, account.updated_at]
     );
   }
+
+  static async updateAccount(account: AccountForm, accountId:string, pool: PoolClient):Promise<AccountForm>{
+    const result = await pool.query(
+      `
+        UPDATE account SET account_pub_id=$1, email=$2, updated_at = now() WHERE account_id=$3
+        returning account_pub_id, email ;
+      `,
+      [account.account_pub_id, account.email, accountId]
+    );
+    return result.rows[0];
+  }
+
+  static async getCountForPublicIdExcludeAccountId(publicId:string, accountId:string, client: PoolClient):Promise<number>{
+    const result = await client.query(`
+        select 1 from account where account_pub_id = $1 and account_id<>$2;
+      `, [publicId, accountId]);
+    return result.rows.length;
+  }
+
+  static async getCountForEmailExcludeAccountId(email:string, accountId:string, client: PoolClient):Promise<number>{
+    const result = await client.query(`
+        select 1 from account where email = $1 and account_id<>$2;
+      `, [email, accountId]);
+    return result.rows.length;
+  }
 }
 
 

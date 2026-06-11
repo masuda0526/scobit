@@ -48,6 +48,7 @@ export const Login: React.FC = () => {
                 loading.stopLoading();
                 navigator('/admin/mypage');
             }).catch(err => {
+                console.log(err);
                 exceptionProcess();
                 return;
             })

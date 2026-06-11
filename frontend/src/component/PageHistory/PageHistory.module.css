@@ -1,0 +1,18 @@
+.container{
+  display: flex;
+  margin: 0 0 20px 0;
+  padding: 0;
+  font-size: small;
+  gap:10px
+}
+.prefix{
+  color: #6C6C6C;
+  padding-right: 0.5rem;
+}
+.item{
+  text-decoration: underline;
+  color: #3a9df9;
+}
+.item:hover{
+  color: #3af9b9;
+}

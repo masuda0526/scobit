@@ -1,4 +1,4 @@
-import { ScoreForm, ScoreItemDto, ScorePerPlayer } from "@scobit/types";
+import { GameForm, ScoreForm, ScoreItemDto, ScorePerPlayer } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 import { DateUtil } from "src/libs/DateUtil.js";
 import { logger } from "src/libs/Logger/Logger.js";
@@ -67,24 +67,53 @@ export class ScoreService{
     return result.rows;
   }
 
+  static async saveScore(score:ScoreForm, game_id:string, client:PoolClient):Promise<ScoreForm>{
+    const result = await client.query(`
+      INSERT INTO public.scores
+      (score_id, player_id, game_id, is_turn, box, hit, hr, steal, err, created_at, updated_at)
+      VALUES(gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, now(), now())
+      returning *;
+      ;  
+    `, [score.player_id, game_id, score.is_turn, score.box, score.hit, score.hr, score.steal, score.err]);
+    return result.rows[0];
+  }
+
+  static async updateScoreForKojinAccount(
+  score: ScoreForm,
+  client: PoolClient
+): Promise<ScoreForm> {
+  const result = await client.query(
+    `
+    UPDATE scores
+    SET
+      player_id = $1,
+      is_turn = $2,
+      box = $3,
+      hit = $4,
+      hr = $5,
+      steal = $6,
+      err = $7,
+      updated_at = now()
+    WHERE score_id = $8
+    RETURNING *;
+    `,
+    [
+      score.player_id,
+      score.is_turn,
+      score.box,
+      score.hit,
+      score.hr,
+      score.steal,
+      score.err,
+      score.score_id
+    ]
+  );
+
+  return result.rows[0];
+}
+
   static async updateScores(scores:ScoreForm[], game_id:string, client:PoolClient):Promise<ScoreForm[]>{
     const now = DateUtil.getSysDate();
-    // const getCreateDtResult = await client.query(`
-    //   select s.player_id, s.created_at from scores s
-    //   where s.game_id = $1 
-    //   ;
-    // `, [game_id])
-    // const createDates:CreateDateStore[] = getCreateDtResult.rows;
-    // logger.debug('作成日時の取得完了');
-    // logger.debugObj(createDates);
-
-    // const deleteResult = await client.query(`
-    //   delete from scores 
-    //   where game_id = $1
-    //   ;
-    // `, [game_id]);
-    // logger.info(`削除処理完了 削除件数：${deleteResult.rowCount}件 成績数：${scores.length}件 一時保存済みの作成日時件数：${createDates.length}件`)
-
     const items:any[] = [];
     const paramSql:string[] = []
     let i = 1;
@@ -148,6 +177,18 @@ export class ScoreService{
 `, items);
 
     return result.rows;
+  }
+
+  static async duplicateGameTeamOrAccountId(teamOrAccountId:string, game:GameForm, score:ScoreForm, client:PoolClient):Promise<number>{
+    const result = await client.query(`
+      select 1 from scores s join games g on s.game_id = g.game_id 
+      where g.team_id = $1 
+      and g.game_dt = $2 
+      and g.seq = $3 
+      and s.score_id <> $4 
+      ;
+    `, [teamOrAccountId, game.game_dt, game.seq, score.score_id]);
+    return result.rows.length;
   }
 
 }

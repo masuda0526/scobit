@@ -200,7 +200,7 @@ export const generateAdminGameEditForm = ():AdminGameEditForm => {
 }
 
 export const generateAdminMypageFetchTeams = ():MypageFormOfTeams => {
-    return {teams:Array.from({length:randInt(0, 5)}).map((_) => makeTeam(crypto.randomUUID()))}
+    return {account:{account_pub_id:`publicId${randInt(0, 100)}`, email:`test${randInt(0, 100)}@test.com`},teams:Array.from({length:randInt(0, 5)}).map((_) => makeTeam(crypto.randomUUID()))}
 }
 
 export const generateAdminMypageFetchKojinAccount = ():MypageFormOfIndividualUser => {

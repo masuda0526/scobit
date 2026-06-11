@@ -3,7 +3,7 @@ import { AbstractEntitySchema } from "./Base/AbstractEntity.js";
 
 export const AccountSchema = AbstractEntitySchema.extend({
   account_id: z.uuid(),
-  account_pub_id: z.string().trim().toLowerCase().min(5).max(20).regex(/^(?=.*[a-z])[a-z0-9][a-z0-9-]*$/),
+  account_pub_id: z.string().trim().min(5).max(20).regex(/^(?=.*[a-zA-Z])[a-zA-Z0-9][a-zA-Z0-9-]*$/),
   email: z.string().trim().toLowerCase().email(),
   hash_pass: z.string().max(255)
 })

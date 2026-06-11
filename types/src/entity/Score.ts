@@ -8,11 +8,11 @@ export const ScoreBaseSchema = AbstractEntitySchema.extend({
     game_id: z.uuid().optional(), // バックエンドで付与。更新の場合はフロントからくる
     // 成績
     is_turn: z.boolean(),
-    box: z.number().int().min(0).default(0),
-    hit: z.number().int().min(0).default(0),
-    hr: z.number().int().min(0).default(0),
-    steal: z.number().int().min(0).default(0),
-    err: z.number().int().min(0).default(0),
+    box: z.coerce.number().int().min(0).default(0),
+    hit: z.coerce.number().int().min(0).default(0),
+    hr: z.coerce.number().int().min(0).default(0),
+    steal: z.coerce.number().int().min(0).default(0),
+    err: z.coerce.number().int().min(0).default(0),
     // 試合情報
     // game_dt: z.string().regex(/^\d{8}$/, "yyyymmdd形式で入力してください。").refine(v => !isNaN(Date.parse(
     //     `${v.slice(0,4)}-${v.slice(4,6)}-${v.slice(6,8)}`
@@ -49,6 +49,20 @@ export const ScoreFormSchema = ScoreBaseSchema.omit({
     created_at:true,
 })
 export type ScoreForm = z.infer<typeof ScoreFormSchema>
+
+export const ScoreInputSchema = z.object({
+    score_id: z.uuid(),
+    player_id: z.uuid(),
+    game_id: z.uuid().optional(), // バックエンドで付与。更新の場合はフロントからくる
+    // 成績
+    is_turn: z.boolean(),
+    box: z.string().min(1).default('0'),
+    hit: z.string().min(1).default('0'),
+    hr: z.string().min(1).default('0'),
+    steal: z.string().min(1).default('0'),
+    err: z.string().min(1).default('0'),
+})
+export type ScoreInput = z.infer<typeof ScoreInputSchema>
 
 export const ScoreItemDtoSchema = ScoreFormSchema.extend({
     ...GameFormSchema.shape

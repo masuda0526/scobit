@@ -99,6 +99,7 @@ export const Account: React.FC = () => {
           }
         })
         .catch((error) => {
+          console.log(error);
           exceptionProcess()
         });
       } catch (error) {

@@ -14,7 +14,7 @@ import { ScoreItem } from "../../../component/ScoreItem/ScoreItem";
 import { UserAbility } from "../../../component/UserAbility/UserAbility";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { CornerIcon } from "../../../component/Modal/CornerIcon";
-import { faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faFileCirclePlus, faPencil, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
@@ -23,6 +23,7 @@ import { exceptionAdminProcess, exceptionProcess } from "../../../Util/CommonUti
 import { AccessTokenUtil } from "../../../Util/TokenUtil/AccessTokenUtil";
 import { SelectOfObj } from "../../../parts/select/SelectForObj";
 import { parseOptionObjects } from "../../../parts/select/SelectBoxUtil";
+import { RelativeWrapper } from "../../../parts/RelativeWrapper/RelativeWrapper";
 
 export const Mypage: React.FC = () => {
   // プロバイダー
@@ -95,7 +96,7 @@ export const Mypage: React.FC = () => {
   }, [])
 
   // アカウント情報編集
-  const clickEditAccount = () => {
+  const clickEditAccount = async() => {
     loading.startLoading();
     err.reset();
     const valid = AccountFormSchema.safeParse(editAccount);
@@ -104,9 +105,23 @@ export const Mypage: React.FC = () => {
       loading.stopLoading();
       return;
     }
-    setAccount({ email: editAccount.email, account_pub_id: editAccount.account_pub_id });
-    setIsEditAccount(false);
-    loading.stopLoading();
+    try {
+      const r = await ajaxAdminApi.post('/account/edit', valid.data);
+      const response = r.data as ResponseFormat;
+      if(!response.isSuccess){
+        err.setErrors(response.errors??[]);
+        loading.stopLoading();
+        return;
+      }
+      const account = response.data.account as AccountForm;
+      console.log(account);
+      setAccount({ email: account.email, account_pub_id: account.account_pub_id });
+      setIsEditAccount(false);
+      loading.stopLoading();
+    } catch (error) {
+      loading.stopLoading();
+      exceptionAdminProcess();
+    }
   }
   const changeAccount = (key: keyof AccountForm, val: string) => {
     setEditAccount(prev => ({ ...prev, [key]: val }));
@@ -117,8 +132,10 @@ export const Mypage: React.FC = () => {
   }
   
   const clickSelectTeam = async () => {
+    loading.startLoading();
     if(selectTeam === ''){
       alert('チームを選択してください。');
+      loading.stopLoading();
       return ;
     }
     try {
@@ -126,9 +143,15 @@ export const Mypage: React.FC = () => {
       const data = res.data as ResponseFormat;
       AccessTokenUtil.setToken(data.data.token);
     } catch (error) {
+      loading.stopLoading();
       exceptionProcess();
     }
+    loading.stopLoading();
     navigator('/admin/team');
+  }
+
+  const editGame = (gameId:string) => {
+    navigator(`/admin/game/kojin/${gameId}`);
   }
 
   return (
@@ -161,17 +184,25 @@ export const Mypage: React.FC = () => {
         <>
           {player ? (
             <ContentBox>
+              <CornerIcon icon={faPencil} onClick={() => navigator('/admin/member/kojin')}/>
               <SubTitle text="能力値" />
               <UserAbility player={player} />
             </ContentBox>
           ) : ''}
           <ContentBox>
+            <CornerIcon icon={faFileCirclePlus} y={0} onClick={() => navigator('/admin/game/kojin')}/>
             <SubTitle text="試合成績" />
-            {scores.map(score => <ScoreItem {...score} />)}
+            {scores.map(score =>{return (
+              <RelativeWrapper>
+                <CornerIcon icon={faPencil} style={{fontSize:'18px'}} onClick={() => editGame(score.game_id)}/>
+                <ScoreItem {...score}/>
+              </RelativeWrapper>
+            )
+            })}
           </ContentBox>
-          <ButtonArea>
+          {/* <ButtonArea>
             <Button label="チーム作成" isRadius="isRadius" size="md" onClick={clickNewTeam} />
-          </ButtonArea>
+          </ButtonArea> */}
         </>
       ) : ''}
       {isEditAccount ? (

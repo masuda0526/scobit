@@ -1,4 +1,4 @@
-import { Ability, Player, PlayerForm } from "@scobit/types";
+import { Ability, GameForm, Player, PlayerForm, ScoreForm } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 import { DateUtil } from "src/libs/DateUtil.js";
 

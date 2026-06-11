@@ -110,3 +110,82 @@ export const updateMember = async (event:APIGatewayProxyEvent):Promise<ResponseB
   }
 
 }
+
+export const AdminMemberInitForKojin = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
+  logger.info('選手情報取得API（個人用）');
+
+  const payload = JwtUtil.checkJwtAndGetPayload(event);
+  if(!payload){
+    return ResponseUtil.error().addError('client', '不正なリクエストです。');
+  }
+  logger.info('JWTチェックOK');
+
+  const client = await getPool().connect();
+  try {
+    const info = await PlayerService.findPlayerAbilityByAccountId(payload.sub, client);
+    if(!info){
+      return ResponseUtil.error().addError('player', '選手情報が存在しません。');
+    }
+    logger.info(`選手情報存在チェックOK [player_id=${info.player_id}]`);
+
+    return ResponseUtil.success().putData('info', info);
+    
+  } catch (error) {
+    console.error(error);
+    return ResponseUtil.error().isServerError();
+  }finally{
+    client.release();
+  }
+}
+
+export const updateMemberForKojin = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
+  logger.info(`選手情報更新処理API(個人用)`);
+  const payload = JwtUtil.checkJwtAndGetPayload(event);
+  logger.info('JWT検証OK');
+
+  const body = event.body;
+  if(!body){
+    return ResponseUtil.error().addError('body', '必要な情報がありません。');
+  }
+  logger.info('bodyチェックOK');
+
+  const inputPlayer:PlayerForm = JSON.parse(body);
+  const valid = PlayerFormSchema.pick({disp_name:true,name:true,throw_distance:true}).safeParse({disp_name:inputPlayer.disp_name, name:inputPlayer.name, throw_distance:inputPlayer.throw_distance});
+  if(!valid.success){
+    return ResponseUtil.error().addErrors(convertToErrorInfos(valid.error));
+  }
+  logger.info(`バリデーションOK player_id:${inputPlayer.player_id}`);
+  logger.debugObj(inputPlayer)
+
+  const client = await getPool().connect();
+  try {
+    const player = await PlayerService.findPlayerByAccountId(payload.sub, client);
+    logger.debugObj(player);
+
+    if(!player){
+      return ResponseUtil.error().addError('player', '選手情報が存在しません。');
+    }
+    logger.info('選手情報存在チェックOK');
+
+    await client.query('BEGIN;');
+
+    const obj = await PlayerService.updatePlayer({...player, name:inputPlayer.name, disp_name:inputPlayer.disp_name, throw_distance:inputPlayer.throw_distance, positions:inputPlayer.positions}, client);
+    logger.info(`プレイヤー情報更新完了。`);
+    logger.debugObj(obj);
+    
+    await client.query('COMMIT;');
+    
+    const updatedPlayer = await PlayerService.findPlayerAbilityByAccountId(payload.sub, client);
+    logger.debugObj(updatedPlayer);
+
+    return ResponseUtil.success().putData('player', updatedPlayer);
+
+  } catch (error) {
+    await client.query('ROLLBACK;');
+    console.error(error);
+    return ResponseUtil.error().isServerError();
+  }finally{
+    client.release()
+  }
+
+}
