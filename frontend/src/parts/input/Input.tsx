@@ -18,7 +18,6 @@ export const Input : React.FC <InputProps> = ({
 }) => {
     const errorCtx = useErrorArea();
 
-
     return (
         <label className={styles.label}>
             <p className={styles.labelText}>

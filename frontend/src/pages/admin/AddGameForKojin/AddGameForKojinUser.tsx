@@ -178,9 +178,9 @@ export const AddGameForKojinUser: React.FC = () => {
         <SubTitle text="試合結果" />
         <Input type='date' attr='game_dt' label="試合日" value={game.game_dt} onChange={(e) => editGame('game_dt', e.target.value)} />
         <Input label="対戦相手" attr='opponent' value={game.opponent} onChange={(e) => editGame('opponent', e.target.value)} />
-        <Input type="number" min={0} attr='my_point' label="自チームの得点" value={game.my_point} onChange={(e) => editGame('my_point', e.target.value)} />
-        <Input type="number" min={0} attr='op_point' label="相手チームの得点" value={game.op_point} onChange={(e) => editGame('op_point', e.target.value)} />
-        <Input type="number" min={1} attr='seq' label="試合順" value={game.seq} onChange={(e) => editGame('seq', e.target.value)} />
+        <Input type="number" min={0} attr='my_point' label="自チームの得点" value={game.my_point} onChange={(e) => editGame('my_point', e.target.value)} onFocus={() => editGame('my_point', '')}/>
+        <Input type="number" min={0} attr='op_point' label="相手チームの得点" value={game.op_point} onChange={(e) => editGame('op_point', e.target.value)} onFocus={() => editGame('op_point', '')}/>
+        <Input type="number" min={1} attr='seq' label="試合順" value={game.seq} onChange={(e) => editGame('seq', e.target.value)} onFocus={() => editGame('seq', '')}/>
         <SelectOfObj attr="tournament_id" label="試合タイプ" value={game.tournament_id} options={parseOptionObjects(tournaments, 'tournament_id', 'name')} onChange={(e) => editGame('tournament_id', e.target.value)} />
       </ContentBox>
       <ContentBox>
@@ -188,23 +188,23 @@ export const AddGameForKojinUser: React.FC = () => {
         <div className={styles.formbox}>
           <div className={styles.formitem}>
             <label className={styles.label}>打席</label>
-            <input className={styles.form} type="number" value={score.box} onChange={(e) => editScore('box', e.target.value)} />
+            <input className={styles.form} type="number" value={score.box} onChange={(e) => editScore('box', e.target.value)} onFocus={() => editScore('box', '')} />
           </div>
           <div className={styles.formitem}>
             <label className={styles.label}>安打</label>
-            <input className={styles.form} type="number" value={score.hit} onChange={(e) => editScore('hit', e.target.value)} />
+            <input className={styles.form} type="number" value={score.hit} onChange={(e) => editScore('hit', e.target.value)} onFocus={() => editScore('hit', '')} />
           </div>
           <div className={styles.formitem}>
             <label className={styles.label}>本塁打</label>
-            <input className={styles.form} type="number" value={score.hr} onChange={(e) => editScore('hr', e.target.value)} />
+            <input className={styles.form} type="number" value={score.hr} onChange={(e) => editScore('hr', e.target.value)} onFocus={() => editScore('hr', '')} />
           </div>
           <div className={styles.formitem}>
             <label className={styles.label}>盗塁</label>
-            <input className={styles.form} type="number" value={score.steal} onChange={(e) => editScore('steal', e.target.value)} />
+            <input className={styles.form} type="number" value={score.steal} onChange={(e) => editScore('steal', e.target.value)} onFocus={() => editScore('steal', '')} />
           </div>
           <div className={styles.formitem}>
             <label className={styles.label}>エラー</label>
-            <input className={styles.form} type="number" value={score.err} onChange={(e) => editScore('err', e.target.value)} />
+            <input className={styles.form} type="number" value={score.err} onChange={(e) => editScore('err', e.target.value)} onFocus={() => editScore('err', '')} />
           </div>
         </div>
       </ContentBox>
