@@ -1,3 +1,4 @@
+import { GameFormSchema } from "@scobit/types";
 export class ScobitFunction {
     static getGameResult(my_point, op_point, isNoGame = false) {
         if (isNoGame) {
@@ -54,6 +55,23 @@ export class ScobitFunction {
             game_dt: `${date.getFullYear().toString().padStart(4, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
         };
         return gameInput;
+    }
+    static convertToGameForms(beforeGames) {
+        const games = [];
+        for (const g of beforeGames) {
+            const v = GameFormSchema.safeParse(g);
+            if (v.success) {
+                games.push(v.data);
+            }
+        }
+        return games;
+    }
+    static convertToGameForm(beforeGame) {
+        const v = GameFormSchema.safeParse(beforeGame);
+        if (v.success) {
+            return v.data;
+        }
+        return null;
     }
 }
 //# sourceMappingURL=ScobitFunction.js.map

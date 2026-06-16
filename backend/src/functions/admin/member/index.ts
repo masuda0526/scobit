@@ -98,8 +98,9 @@ export const updateMember = async (event:APIGatewayProxyEvent):Promise<ResponseB
     logger.debugObj(updatedPlayer);
 
     await client.query('COMMIT;');
+    const resPlayer = await PlayerService.findPlayerAbilitty(payload.team_id, updatedPlayer.player_id, client);
 
-    return ResponseUtil.success().putData('player', updatedPlayer);
+    return ResponseUtil.success().putData('player', resPlayer);
 
   } catch (error) {
     await client.query('ROLLBACK;');

@@ -53,6 +53,7 @@ export const Account: React.FC = () => {
   }
 
   useEffect(() => {
+    err.reset();
     loading.startLoading(); 
     if (tmpId) {
       setAccount({ account_pub_id: 'aaaaaaa', email: 'test@test.com', pass:''});

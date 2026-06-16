@@ -19,10 +19,13 @@ import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
+import { useNavigate } from "react-router-dom";
+import { ScobitFunction } from "@scobit/common";
 
 export const AdminTeam: React.FC = () => {
   const err = useErrorArea();
   const load = useLoading();
+  const navigator = useNavigate();
 
   const [team, setTeam] = useState<TeamForm | null>(null);
   const [games, setGames] = useState<GameForm[]>([]);
@@ -44,7 +47,7 @@ export const AdminTeam: React.FC = () => {
         }
         const form = data.data.data as TeamTopForm;
         setTeam(form.info);
-        setGames(form.games);
+        setGames(ScobitFunction.convertToGameForms(form.games));
         setPlayers(form.players);
         load.stopLoading();
       } catch (error) {
@@ -147,8 +150,8 @@ export const AdminTeam: React.FC = () => {
         ) : (
           <>
             <p>試合情報の登録はありません。</p>
-            <ButtonArea>
-              <Button label="試合結果を登録へ" isRadius='isRadius' />
+            <ButtonArea position='center'>
+              <Button label="試合結果を登録へ" isRadius='isRadius' onClick={()=>{navigator('/admin/games')}} />
             </ButtonArea>
           </>
         )}

@@ -59,6 +59,7 @@ export const Mypage: React.FC = () => {
 
         setTeams(teams);
         setAccount(account);
+        setEditAccount(account);
 
       } catch (error) {
         console.error(error)
@@ -193,7 +194,7 @@ export const Mypage: React.FC = () => {
             <CornerIcon icon={faFileCirclePlus} y={0} onClick={() => navigator('/admin/game/kojin')}/>
             <SubTitle text="試合成績" />
             {scores.map(score =>{return (
-              <RelativeWrapper>
+              <RelativeWrapper key={score.score_id}>
                 <CornerIcon icon={faPencil} style={{fontSize:'18px'}} onClick={() => editGame(score.game_id)}/>
                 <ScoreItem {...score}/>
               </RelativeWrapper>

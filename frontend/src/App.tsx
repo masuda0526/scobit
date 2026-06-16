@@ -42,6 +42,7 @@ function App() {
             <Route path='/admin/mypage' element={<Mypage/>}/>
             <Route path='/admin/new/team' element={<NewTeamPage/>}/>
             <Route path='/admin/team'   element={<AdminTeam/>} />
+            <Route path='/admin/member/:playerId'   element={<AdminMember/>} />
             <Route path='/admin/member'   element={<AdminMember/>} />
             <Route path='/admin/members' element={<AdminMembers/>}/>
             <Route path='/admin/games'   element={<AdminGames/>} />

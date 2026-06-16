@@ -1,17 +1,17 @@
-import { GameFormSchema, type GameForm, type TeamForm, type Tournament } from "@scobit/types";
+import { GameFormSchema, type AdminGamesForms, type GameForm, type ResponseFormat, type TeamForm, type Tournament } from "@scobit/types";
 import type React from "react";
 import { GameItem } from "../../../component/GameItem/GameItem";
 import { Title } from "../../../parts/title/title";
 import { Button } from "../../../parts/button/button";
 import { ButtonArea } from "../../../parts/button/buttonArea";
-import { generateAdminGamesForm } from "../../../testdatas/testDataCreater";
+// import { generateAdminGamesForm } from "../../../testdatas/testDataCreater";
 import { ContentBox } from "../../../parts/content/contentBox";
 import { SubTitle } from "../../../parts/subtitle/subtitle";
 import { useEffect, useState } from "react";
 import { Modal } from "../../../component/Modal/Modal";
 import { Input } from "../../../parts/input/Input";
 import { CornerIcon } from "../../../component/Modal/CornerIcon";
-import { faChevronRight, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faPlusCircle, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { parseOptionObjects } from "../../../parts/select/SelectBoxUtil";
 import { SelectOfObj } from "../../../parts/select/SelectForObj";
 import { parseStringFromDate } from "../../../Util/DateUtil/DateUtil";
@@ -20,24 +20,53 @@ import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { ScobitFunction } from "@scobit/common";
 import { useNavigate } from "react-router-dom";
+import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import { useLoading } from "../../../component/Loading/LoadingContext";
+import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
 
 export const AdminGames: React.FC = () => {
+    // 状態管理
+    const load = useLoading();
+    const err = useErrorArea();
+    const navigator = useNavigate();
+
     // 初期表示
     const [games, setGames] = useState<GameForm[]>([]);
     const [team, setTeam] = useState<TeamForm | null>(null);
     const [tournaments, setTournaments] = useState<Tournament[]>([]);
+    const [initCompFlg, setInitializeComp] = useState<boolean>(false);
+
     useEffect(() => {
-        const data = generateAdminGamesForm();
-        setTeam(data.team);
-        setTournaments(data.tournaments);
-        setGames(data.games);
+        const init = async () => {
+            err.reset();
+            load.startLoading();
+            try {
+                const r = await ajaxAdminApi.post('/games/init');
+                const res = r.data as ResponseFormat;
+                
+                if(!res.isSuccess){
+                    load.stopLoading();
+                    return ;
+                }
+                const data = res.data.data as AdminGamesForms;
+                setGames(data.games)
+                setTeam(data.team);
+                setTournaments(data.tournaments);
+                setInitializeComp(true);
+                load.stopLoading();
+            } catch (error) {
+                exceptionAdminProcess();
+            }
+        }
+        // const data = generateAdminGamesForm();
+        // setTeam(data.team);
+        // setTournaments(data.tournaments);
+        // setGames(data.games);
+        init();
     }, [])
 
     // 試合情報の保持
     const tournamentObjs = parseOptionObjects(tournaments, 'tournament_id', 'name');
-
-    const err = useErrorArea();
-    const navigator = useNavigate();
 
     // モーダル編集用
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -49,7 +78,6 @@ export const AdminGames: React.FC = () => {
     const [op_point, setOpPoint] = useState<string>('0');
     const [seq, setSeq] = useState<string>('1');
     const [tournament_id, setTournamentId] = useState<string>('');
-
 
     const clickAddGame = () => {
         setIsEdit(true);
@@ -68,8 +96,10 @@ export const AdminGames: React.FC = () => {
         setIsEdit(false);
         // }
     }
-    const clickAddNewGame = () => {
+    const clickAddNewGame = async () => {
+        load.startLoading();
         err.reset();
+
         // 追加する処理
         const input_my_point = Number.parseInt(my_point);
         const input_op_point = Number.parseInt(op_point);
@@ -86,19 +116,22 @@ export const AdminGames: React.FC = () => {
         if (!valid.success) {
             const errors = convertToErrorInfos(valid.error);
             err.setErrors(errors);
+            load.stopLoading();
             return;
         }
-        const game:GameForm = {
-            game_dt, 
-            game_id:crypto.randomUUID(), 
-            tournament_id, opponent, 
-            op_point:Number.parseInt(op_point), 
-            my_point:Number.parseInt(my_point), 
-            result:'win', 
-            seq:Number.parseInt(seq)
-        };
-        setGames([game, ...games]);
+
+        const r = await ajaxAdminApi.post('/games/new', valid.data);
+        const res = r.data as ResponseFormat;
+        if(!res.isSuccess){
+            err.setErrors(res.errors??[]);
+            load.stopLoading();
+            return 
+        }
+        
+        const games:GameForm[] = res.data.games;
+        setGames(games);
         closeModal()
+        load.stopLoading();
     }
 
     const clickMoveGamePage = ()=>{
@@ -125,28 +158,34 @@ export const AdminGames: React.FC = () => {
             <Title text="試合結果一覧" />
             <ContentBox>
                 {team ? (
-                    <SubTitle text={`${team.team_name}`} />
+                    <>
+                        <SubTitle text={`${team.team_name}`} />
+                        <CornerIcon icon={faPlusCircle} onClick={clickAddGame} y={2}/>
+                    </>
                 ) : ''}
-                <ButtonArea
-                    position="right"
-                >
-                    <Button
-                        label="試合結果を追加"
-                        size="sm"
-                        isRadius="isRadius"
-                        onClick={clickAddGame}
-                    ></Button>
-                </ButtonArea>
-                {games.map((game) => (
-                    <div style={{position:'relative'}}>
-                        <CornerIcon icon={faChevronRight} y={25} onClick={clickMoveGamePage}/>
-                        <GameItem
-                            key={game.game_id}
-                            game={game}
-                        >
-                        </GameItem>
-                    </div>
-                ))}
+                {games.length > 0?'':(
+                    <>
+                        {initCompFlg?'試合結果の登録はありません。':'読み込み中...'}
+                    </>
+                )}
+                {games.map((g) => {
+                    let v = GameFormSchema.safeParse(g);
+                    if(v.error){
+                        return ;
+                    }
+                    let game = v.data;
+                    return (
+                        <div style={{position:'relative'}} key={game.game_id}>
+                            <CornerIcon icon={faChevronRight} y={25} onClick={clickMoveGamePage}/>
+                            <GameItem
+                                key={game.game_id}
+                                game={game}
+                            >
+                            </GameItem>
+                        </div>
+                    )
+                }
+                )}
             </ContentBox>
         </div>
     );

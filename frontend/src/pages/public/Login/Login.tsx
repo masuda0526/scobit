@@ -59,6 +59,7 @@ export const Login: React.FC = () => {
     }
 
     useEffect(() => {
+        err.reset();
         loading.stopLoading();
     }, [])
 
@@ -74,6 +75,7 @@ export const Login: React.FC = () => {
                     onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} 
                 />
                 <Input 
+                    type="password"
                     label="パスワード" 
                     attr="pass"
                     value={pass} 
@@ -84,7 +86,7 @@ export const Login: React.FC = () => {
                 </ButtonArea>
 
                 <ButtonArea position="right">
-                    <a href="/#/new-team"> 新規登録はコチラ ＞</a>
+                    <a href="/#/new"> 新規登録はコチラ ＞</a>
                 </ButtonArea>
 
             </ContentBox>

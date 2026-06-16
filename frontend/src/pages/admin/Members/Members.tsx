@@ -1,7 +1,7 @@
-import { type TeamForm, type Ability, type PlayerForm, PlayerFormSchema } from "@scobit/types";
+import { type TeamForm, type Ability, type PlayerForm, PlayerFormSchema, type ResponseFormat } from "@scobit/types";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { generateMembersForm } from "../../../testdatas/testDataCreater";
+// import { generateMembersForm } from "../../../testdatas/testDataCreater";
 import { Title } from "../../../parts/title/title";
 import { UserAbility } from "../../../component/UserAbility/UserAbility";
 import { CornerIcon } from "../../../component/Modal/CornerIcon";
@@ -17,11 +17,14 @@ import { SubTitle } from "../../../parts/subtitle/subtitle";
 import { useErrorArea } from "../../../component/ErrorArea/ErrorAreaContext";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
+import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import { useLoading } from "../../../component/Loading/LoadingContext";
 
 export const AdminMembers: React.FC = () => {
   // フック
   const navigate = useNavigate();
   const err = useErrorArea();
+  const load = useLoading();
 
   // 状態
   const [team, setTeam] = useState<TeamForm | null>();
@@ -29,9 +32,27 @@ export const AdminMembers: React.FC = () => {
 
   // 初期表示
   useEffect(() => {
-    const data = generateMembersForm();;
-    setTeam(data.info);
-    setMembers(data.members);
+    const init = async () => {
+      load.startLoading();
+      const r = await ajaxAdminApi.post('/members/init');
+      const res = r.data as ResponseFormat;
+      // const data = generateMembersForm();
+      try {
+        if(!res.isSuccess){
+          load.stopLoading();
+          return;
+        }
+        const data = res.data.data;
+        setTeam(data.info);
+        setMembers(data.members);
+        load.stopLoading();
+        return
+      } catch (error) {
+        console.log(error);
+    load.stopLoading();
+      }
+    }
+    init();
   }, [])
 
   const defaultMember =():PlayerForm => {
@@ -78,18 +99,35 @@ export const AdminMembers: React.FC = () => {
     setThrowDistance('');
   }
   
-  const clickMemberEditIcon = () => {
-    navigate('/admin/member');
+  const clickMemberEditIcon = (playerId:string) => {
+    navigate(`/admin/member/${playerId}`);
   }
   
-  const addNewMember = () => {
+  const addNewMember = async () => {
+    load.startLoading();
     err.reset();
     const valid = PlayerFormSchema.safeParse({...newMember, throw_distance:Number.parseInt(throwDistance)})
     if(!valid.success){
       err.setErrors(convertToErrorInfos(valid.error));
+      load.stopLoading();
       return 
     }
+    try {
+      const r = await ajaxAdminApi.post('/members/add', valid.data);
+      const res = r.data as ResponseFormat;
+
+      if(!res.isSuccess){
+        err.setErrors(res.errors??[]);
+        load.stopLoading();
+        return;
+      }
+      const players:Ability[] = res.data.players;
+      setMembers(players)
+    } catch (error) {
+      console.log(error);
+    }
     closeModal();
+    load.stopLoading();
   }
   return (
     <>
@@ -107,13 +145,15 @@ export const AdminMembers: React.FC = () => {
           </ButtonArea>
         </Modal>
       ):''}
-      <Title text={`${team?.team_name}選手一覧`} />
+      {team?(
+        <Title text={`${team?.team_name}選手一覧`} />
+      ):''}
       {members.map(member => {
         return (
           <>
             <div style={{ position: "relative" }}>
               <UserAbility player={member} />
-              <CornerIcon icon={faPen} position='bottom-left' style={{ fontSize: 18 }} x={15} onClick={clickMemberEditIcon} />
+              <CornerIcon icon={faPen} position='bottom-left' style={{ fontSize: 18 }} x={15} onClick={() => clickMemberEditIcon(member.player_id)} />
             </div>
           </>
         )

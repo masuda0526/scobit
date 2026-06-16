@@ -11,7 +11,7 @@ export const ScoreItem: React.FC<ScoreItemDto> = (score) => {
 
         <div className={styles.item}>
             <div className={styles.info}>
-                <div className={styles.date}>{dispDateFromDate(parseScore.game_dt)}</div>
+                <div className={styles.date}>{`${dispDateFromDate(parseScore.game_dt)}（${parseScore.seq}試合目）`}</div>
                 <div className={styles.opponent}>vs {parseScore.opponent}</div>
             </div>
             <div className={styles.data}>

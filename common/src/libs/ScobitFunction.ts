@@ -1,4 +1,4 @@
-import { ErrorInfo, GameForm, GameInput, GameResultConsts, ScoreForm } from "@scobit/types";
+import { ErrorInfo, GameForm, GameFormSchema, GameInput, GameResultConsts, ScoreForm } from "@scobit/types";
 import { PoolClient } from "pg";
 
 export class ScobitFunction {
@@ -64,5 +64,24 @@ export class ScobitFunction {
       game_dt: `${date.getFullYear().toString().padStart(4, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
     }
     return gameInput;
+  }
+
+  static convertToGameForms(beforeGames:any[]):GameForm[]{
+    const games:GameForm[] = [];
+    for(const g of beforeGames){
+      const v = GameFormSchema.safeParse(g);
+      if(v.success){
+        games.push(v.data);
+      }
+    }
+    return games;
+  }
+
+  static convertToGameForm(beforeGame:any):GameForm|null{
+    const v = GameFormSchema.safeParse(beforeGame);
+    if(v.success){
+      return v.data;
+    }
+    return null;
   }
 }
