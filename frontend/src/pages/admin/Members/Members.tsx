@@ -19,6 +19,7 @@ import { convertToErrorInfos } from "../../../Util/ZodUtils";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
 import { useLoading } from "../../../component/Loading/LoadingContext";
+import { PageHistory, type PageHistoryItem } from "../../../component/PageHistory/PageHistory";
 
 export const AdminMembers: React.FC = () => {
   // フック
@@ -29,6 +30,11 @@ export const AdminMembers: React.FC = () => {
   // 状態
   const [team, setTeam] = useState<TeamForm | null>();
   const [members, setMembers] = useState<Ability[]>([]);
+
+  // ページヒストリー
+  const pageHistories:PageHistoryItem[] = [
+    {display:'チーム情報', url:'/admin/team'}
+  ]
 
   // 初期表示
   useEffect(() => {
@@ -131,6 +137,7 @@ export const AdminMembers: React.FC = () => {
   }
   return (
     <>
+      <PageHistory pages={pageHistories}/>
       {isNewMemberMode?(
         <Modal title="選手追加">
           <ErrorArea/>

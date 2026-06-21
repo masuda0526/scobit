@@ -36,7 +36,7 @@ export const Login: React.FC = () => {
             await ajaxPublicApi.post('/login', {email, pass})
             .then(res => {
                 const data = res.data as ResponseFormat;
-                console.log(data);
+                // console.log(data);
                 if(!data.isSuccess){
                     err.setErrors(data.errors??[]);
                     loading.stopLoading();

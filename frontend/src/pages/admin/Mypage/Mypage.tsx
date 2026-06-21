@@ -115,7 +115,7 @@ export const Mypage: React.FC = () => {
         return;
       }
       const account = response.data.account as AccountForm;
-      console.log(account);
+      // console.log(account);
       setAccount({ email: account.email, account_pub_id: account.account_pub_id });
       setIsEditAccount(false);
       loading.stopLoading();
@@ -201,9 +201,9 @@ export const Mypage: React.FC = () => {
             )
             })}
           </ContentBox>
-          {/* <ButtonArea>
+          <ButtonArea>
             <Button label="チーム作成" isRadius="isRadius" size="md" onClick={clickNewTeam} />
-          </ButtonArea> */}
+          </ButtonArea>
         </>
       ) : ''}
       {isEditAccount ? (

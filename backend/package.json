@@ -6,8 +6,10 @@
   "main": "index.js",
   "scripts": {
     "bundle": "node build.mjs",
-    "build_admin": "npm run bundle -- admin && sam build -t template_admin.yaml && sam deploy --template-file template_admin.yaml --config-file samconfig_admin.toml || true",
-    "build_public": "npm run bundle -- public && sam build -t template_public.yaml && sam deploy --template-file template_public.yaml --config-file samconfig_public.toml || true",
+    "build_stage_admin": "npm run bundle -- admin && sam build -t template_admin.yaml && sam deploy --template-file template_admin.yaml --config-file samconfig_admin.toml || true",
+    "build_product_admin": "npm run bundle -- admin && sam build -t template_product_admin.yaml && sam deploy --template-file template_product_admin.yaml --config-file samconfig_product_admin.toml || true",
+    "build_stage_public": "npm run bundle -- public && sam build -t template_public.yaml && sam deploy --template-file template_public.yaml --config-file samconfig_public.toml || true",
+    "build_product_public": "npm run bundle -- public && sam build -t template_product_public.yaml && sam deploy --template-file template_product_public.yaml --config-file samconfig_product_public.toml || true",
     "build": "node --loader ts-node/esm scripts/buildLambda.ts",
     "builddev": "node ./scripts/build.ts",
     "test": "tsx --env-file=.env.local local/test.ts"

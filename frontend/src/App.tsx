@@ -20,6 +20,8 @@ import { Mypage } from './pages/admin/Mypage/Mypage'
 import { NewTeamPage } from './pages/admin/NewTeam/NewTeam'
 import { AddGameForKojinUser } from './pages/admin/AddGameForKojin/AddGameForKojinUser'
 import { AdminMemberForKojinAccount } from './pages/admin/Member/MemberForKojinAccount'
+import { AdminScorePerMemberPage } from './pages/admin/Member/ScorePerMember'
+import { Agreement } from './pages/public/Agreement/Agreement'
 
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
             <Route path='/member'       element={<Member />} />
             <Route path='/member/games' element={<MemberGames />} />
             <Route path='/login'        element={<Login />} />
+            <Route path='/agreement' element={<Agreement/>}/>
             {/* <Route path='/new-team'     element={<NewTeam />} /> */}
             <Route path='/team'         element={<TeamPage />} />
             <Route path='/new/'          element={<Account/>}/>
@@ -43,11 +46,13 @@ function App() {
             <Route path='/admin/new/team' element={<NewTeamPage/>}/>
             <Route path='/admin/team'   element={<AdminTeam/>} />
             <Route path='/admin/member/:playerId'   element={<AdminMember/>} />
+            <Route path='/admin/member/scores/:playerId'   element={<AdminScorePerMemberPage/>} />
             <Route path='/admin/member'   element={<AdminMember/>} />
             <Route path='/admin/members' element={<AdminMembers/>}/>
             <Route path='/admin/games'   element={<AdminGames/>} />
             <Route path='/admin/game'   element={<AdminGame/>} />
             <Route path='/admin/game/edit'   element={<AdminGameEdit/>} />
+            <Route path='/admin/game/edit/:gameId'   element={<AdminGameEdit/>} />
             <Route path='/admin/game/kojin' element={<AddGameForKojinUser/>} />
             <Route path='/admin/game/kojin/:gameId' element={<AddGameForKojinUser/>} />
             <Route path='/admin/member/kojin' element={<AdminMemberForKojinAccount/>} />

@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
+import { PageHistory, type PageHistoryItem } from "../../../component/PageHistory/PageHistory";
 
 export const AdminGames: React.FC = () => {
     // 状態管理
@@ -35,6 +36,11 @@ export const AdminGames: React.FC = () => {
     const [team, setTeam] = useState<TeamForm | null>(null);
     const [tournaments, setTournaments] = useState<Tournament[]>([]);
     const [initCompFlg, setInitializeComp] = useState<boolean>(false);
+
+    // ページヒストリー
+    const pageHistorys:PageHistoryItem[] = [
+        {display:'チーム情報', url:'/admin/team'}
+    ]
 
     useEffect(() => {
         const init = async () => {
@@ -134,12 +140,13 @@ export const AdminGames: React.FC = () => {
         load.stopLoading();
     }
 
-    const clickMoveGamePage = ()=>{
-        navigator('/admin/game/edit');
+    const clickMoveGamePage = (gameId:string)=>{
+        navigator(`/admin/game/edit/${gameId}`);
     }
 
     return (
         <div>
+            <PageHistory pages={pageHistorys}/>
             {isEdit ? (
                 <Modal title="試合結果を追加">
                     <CornerIcon x={15} y={15} onClick={() => closeModal()} position='top-right' icon={faXmark} />
@@ -176,7 +183,7 @@ export const AdminGames: React.FC = () => {
                     let game = v.data;
                     return (
                         <div style={{position:'relative'}} key={game.game_id}>
-                            <CornerIcon icon={faChevronRight} y={25} onClick={clickMoveGamePage}/>
+                            <CornerIcon icon={faChevronRight} y={25} onClick={() => clickMoveGamePage(game.game_id)}/>
                             <GameItem
                                 key={game.game_id}
                                 game={game}

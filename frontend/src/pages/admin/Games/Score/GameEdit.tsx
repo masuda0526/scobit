@@ -1,8 +1,8 @@
 import type React from "react";
 import styles from './GameEdit.module.css';
-import { generateAdminGameEditForm } from "../../../../testdatas/testDataCreater";
+// import { generateAdminGameEditForm } from "../../../../testdatas/testDataCreater";
 import { useEffect, useState } from "react";
-import { type PlayerForm, type ScoreForm, type GameForm, type Tournament, GameFormSchema, type ErrorInfo, ScoreFormSchema } from "@scobit/types";
+import { type PlayerForm, type ScoreForm, type GameForm, type Tournament, GameFormSchema, type ErrorInfo, ScoreFormSchema, type ResponseFormat, type AdminGameEditForm } from "@scobit/types";
 import { Toggle } from "../../../../parts/toggle/toggle";
 import { MemberLabel } from "../../../../component/UserAbility/MemberLabel";
 import { SubTitle } from "../../../../parts/subtitle/subtitle";
@@ -21,17 +21,29 @@ import { useErrorArea } from "../../../../component/ErrorArea/ErrorAreaContext";
 import { useLoading } from "../../../../component/Loading/LoadingContext";
 import { ErrorArea } from "../../../../component/ErrorArea/ErrorArea";
 import { validConstantScore } from "../../../../Util/Validation/ScoreValid";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ajaxAdminApi } from "../../../../Util/AjaxUtil/AjaxUtil";
+import { ScobitFunction } from "@scobit/common";
+import { PageHistory, type PageHistoryItem } from "../../../../component/PageHistory/PageHistory";
 
 type PlayerAndScore = {
   score: ScoreForm;
   errors:ErrorInfo[];  
 } & PlayerForm
+
+type ExtErrorInfo = {
+  player_id:string,
+  errors:ErrorInfo[]
+}
+
 export const AdminGameEdit: React.FC = () => {
   // プロバイダー
   const navigate = useNavigate();
   const err = useErrorArea();
   const loading = useLoading();
+
+  // パラメータ
+  const {gameId} = useParams();
 
   // 状態
   const [isModalEdit, setIsModalEdit] = useState<boolean>(false);
@@ -39,6 +51,12 @@ export const AdminGameEdit: React.FC = () => {
   const [editGame, setEditGame] = useState<GameForm | null>(null);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [players, setPlayers] = useState<PlayerAndScore[]>([]);
+
+  // ページヒストリ
+  const pageHistorys:PageHistoryItem[] = [
+    {display:'チーム情報', url:'/admin/team'},
+    {display:'試合結果一覧', url:'/admin/games'}
+  ]
 
   const defaultScore = (playerId: string, scoreId: string, gameId?: string): ScoreForm => {
     return {
@@ -56,16 +74,50 @@ export const AdminGameEdit: React.FC = () => {
 
   // 初期表示処理
   useEffect(() => {
-    const data = generateAdminGameEditForm();
-    setGame(data.game);
-    setEditGame(data.game);
-    const playerAndScores: PlayerAndScore[] = [];
-    data.members.forEach(player => {
-      const score = data.scores.find(sc => sc.player_id === player.player_id);
-      playerAndScores.push({ ...player, score: score ? score : defaultScore(player.player_id, crypto.randomUUID(), game?.game_id), errors:[] })
-    })
-    setPlayers(playerAndScores);
-    setTournaments(data.tournaments);
+    const init = async () => {
+      err.reset()
+      loading.startLoading();
+      if(!gameId){
+        alert('試合情報が存在しません。\n試合結果一覧へ遷移します。');
+        loading.stopLoading();
+        navigate('/admin/games')
+        return ;
+      }
+
+      try {
+        const r = await ajaxAdminApi.post('/game/edit/init', {game_id:gameId});
+        const res = r.data as ResponseFormat;
+        if(!res.isSuccess){
+          const es = res.errors??[];
+          const messages = es.map(e => e.message);
+          if(messages.length === 0){
+            alert('試合情報の取得に失敗しました。\n試合結果一覧画面へ戻ります。');
+          }else{
+            alert(messages.join('\n'));
+          }
+          loading.stopLoading();
+          navigate('/admin/games');
+          return;
+        }else{
+          // const data = generateAdminGameEditForm();
+          const data = res.data.data as AdminGameEditForm;
+          setGame(ScobitFunction.convertToGameForm(data.game));
+          setEditGame(ScobitFunction.convertToGameForm(data.game));
+          const playerAndScores: PlayerAndScore[] = [];
+          data.members.forEach(player => {
+            const score = data.scores.find(sc => sc.player_id === player.player_id);
+            playerAndScores.push({ ...player, score: score ? score : defaultScore(player.player_id, crypto.randomUUID(), game?.game_id), errors:[] })
+          })
+          setPlayers(playerAndScores);
+          setTournaments(data.tournaments);
+        }
+        loading.stopLoading();
+      } catch (error) {
+        console.log(error);
+        loading.stopLoading();
+      }
+    }
+    init();
   }, [])
 
   const tournamentObjs = parseOptionObjects(tournaments, 'tournament_id', 'name');
@@ -74,6 +126,7 @@ export const AdminGameEdit: React.FC = () => {
   //　試合編集関連処理
   //============================================
   const clickEditGame = () => {
+    err.reset();
     setIsModalEdit(prev => {
       if (prev) {
         setEditGame(game);
@@ -87,8 +140,9 @@ export const AdminGameEdit: React.FC = () => {
     setEditGame(prev => prev ? { ...prev, [key]: value } : prev);
   }
 
-  const clickEditButton = () => {
+  const clickEditButton = async () => {
     loading.startLoading();
+    err.reset()
     const valid = GameFormSchema.safeParse(editGame)
     if (!valid.success) {
       const errors = convertToErrorInfos(valid.error);
@@ -96,10 +150,23 @@ export const AdminGameEdit: React.FC = () => {
       loading.stopLoading();
       return;
     }
-    setGame(editGame);
-    err.reset();
+    try {
+      const r = await ajaxAdminApi.post('/game/edit/update', valid.data);
+      const res = await r.data as ResponseFormat;
+      if(!res.isSuccess){
+        err.setErrors(res.errors??[]);
+      }else{
+        const updatedGame = ScobitFunction.convertToGameForm(res.data.data);
+        setGame(updatedGame);
+        setEditGame(updatedGame);
+      }
+      loading.stopLoading();
+    } catch (error) {
+      console.log(error);
+      loading.stopLoading();
+      return
+    }
     setIsModalEdit(false);
-    loading.stopLoading();
   }
 
   //=========================================
@@ -150,19 +217,62 @@ export const AdminGameEdit: React.FC = () => {
     return errorCount > 0;
   }
 
-  const editCompButton = () => {
+  const putExtErrors = (errors:ExtErrorInfo[]) => {
+    let newPlayers = [...players];1
+    errors.forEach(e => {
+      const pl = newPlayers.find(p => p.player_id === e.player_id);
+      if(pl){
+        pl.errors = e.errors;
+        newPlayers = [...newPlayers, pl]
+      }
+    })
+  }
+
+  const editCompButton = async () => {
     loading.startLoading();
     const isError = validScore();
     if(isError){
       loading.stopLoading();
       return;
     }
-    loading.stopLoading();
-    navigate('/admin/game');
+    const scores = players.map(p => {
+      p.score.game_id = game?.game_id;
+      return p.score;
+    });
+    try {
+      const r = await ajaxAdminApi.post('/scores/update', scores);
+      const res = r.data as ResponseFormat;
+      if(!res.isSuccess){
+        const exerrs = res.data.extErrors as ExtErrorInfo[];
+        if(exerrs){
+          putExtErrors(exerrs);
+        }else{
+          const es = res.errors??[]
+          alert(es.length > 0?es.map(e => e.message).join('\n') :'予期せぬエラーが発生しました。');
+        }
+        loading.stopLoading();
+      }else{
+        const fetchScores:ScoreForm[] = res.data.updatedScores;
+        let newPlayers = [...players];
+        for(const s of fetchScores){
+          const p = newPlayers.find(p => p.player_id === s.player_id);
+          if(p){
+            newPlayers = [...newPlayers, p];
+          }
+        }
+        setPlayers(newPlayers);
+        loading.stopLoading();
+        navigate('/admin/games');
+      }
+    } catch (error) {
+      console.log(error);
+      loading.stopLoading();
+    }
   } 
 
   return (
     <>
+      <PageHistory pages={pageHistorys}/>
       {game ? (
         <>
           {isModalEdit && editGame ? (
@@ -203,7 +313,7 @@ export const AdminGameEdit: React.FC = () => {
         <div className={styles.list}>
           {players.map((player) => {
             return (
-              <div className={styles.card}>
+              <div className={styles.card} >
                 <div className={styles.header}>
                   <MemberLabel name={player.disp_name} positions={player.positions} />
                   <Toggle isOn={player.score.is_turn} onClick={() => toggleTurn(player.player_id)} />

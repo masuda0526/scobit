@@ -1,10 +1,21 @@
 .footer{
+    padding: 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #5D6AF6;
-    color: #fff;
-    width: 100%;
-    height: 50px;
     text-align: center;
+}
+.container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.txt{
+    color: #fff;
+}
+.link{
+    font-size: small;
+    color: #efefef;
 }

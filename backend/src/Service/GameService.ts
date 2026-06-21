@@ -2,6 +2,7 @@ import { ScobitFunction } from "@scobit/common";
 import { GameForm } from "@scobit/types";
 import { Pool, PoolClient } from "pg";
 import { DateUtil } from "src/libs/DateUtil.js";
+import { logger } from "src/libs/Logger/Logger";
 
 export class GameService {
   static async findGamesByTeamId(team_id:string, pool:PoolClient, limit?:number):Promise<GameForm[]>{
@@ -106,4 +107,27 @@ export class GameService {
     return result.rows[0];
   }
 
+  static async overwriteAccountIdToTeamId(accountId:string, teamId:string, client:PoolClient):Promise<void>{
+    const resultGame = await client.query(`
+      update games 
+      set team_id = $2
+      where team_id = $1 
+      returning * 
+      ;
+    `, [accountId, teamId]);
+
+    // const resultScore = await client.query(`
+    //   update scores 
+    //   set team_id = $2
+    //   where team_id = $1
+    //   returning * 
+    //   ;
+    // `, [accountId, teamId]);
+    
+    logger.debug(`ゲーム情報更新完了`);
+    logger.debugObj(resultGame.rows);
+
+    // logger.debug(`スコア情報更新完了`);
+    // logger.debugObj(resultScore.rows);
+  }
 }

@@ -7,7 +7,7 @@ import { AccessTokenUtil } from "../TokenUtil/AccessTokenUtil";
 export const ajaxAdminApi = axios.create({baseURL:ADMIN_BASE_URL});
 
 ajaxAdminApi.interceptors.request.use((config) => {
-  console.log('AJAX-START');
+  // console.log('AJAX-START');
   const token = AccessTokenUtil.getToken();
   if(!token){
     location.href = '#/login';
@@ -23,6 +23,6 @@ ajaxAdminApi.interceptors.request.use((config) => {
 export const ajaxPublicApi = axios.create({baseURL:PUBLIC_BASE_URL});
 
 ajaxPublicApi.interceptors.request.use((config) => {
-  console.log('PUBLIC_API_START');
+  // console.log('PUBLIC_API_START');
   return config;
 }, (error) =>{return Promise.reject(error);});

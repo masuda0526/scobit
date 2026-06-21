@@ -8,7 +8,7 @@ import { ContentBox } from "../../../parts/content/contentBox";
 import { Input } from "../../../parts/input/Input";
 import { ButtonArea } from "../../../parts/button/buttonArea";
 import { Button } from "../../../parts/button/button";
-import { AbilitySchema, PlayerFormSchema, type Ability, type PlayerForm, type ResponseFormat, type ScoreItemDto } from "@scobit/types";
+import { PlayerFormSchema, type Ability, type PlayerForm, type ResponseFormat, type ScoreItemDto } from "@scobit/types";
 import { ScoreItem } from "../../../component/ScoreItem/ScoreItem";
 // import { generateMemberForm } from "../../../testdatas/testDataCreater";
 import { useParams } from "react-router-dom";
@@ -17,6 +17,7 @@ import { ajaxAdminApi } from "../../../Util/AjaxUtil/AjaxUtil";
 import { useLoading } from "../../../component/Loading/LoadingContext";
 import { ErrorArea } from "../../../component/ErrorArea/ErrorArea";
 import { convertToErrorInfos } from "../../../Util/ZodUtils";
+import { PageHistory, type PageHistoryItem } from "../../../component/PageHistory/PageHistory";
 
 export const AdminMember: React.FC = () => {
     const { playerId } = useParams();
@@ -32,6 +33,11 @@ export const AdminMember: React.FC = () => {
     const [player_name, setPlayerName] = useState<string>('');
     const [disp_name, setDispName] = useState<string>('');
     const [throw_distance, setThrowDistance] = useState<string>('');
+
+    let pageHistories:PageHistoryItem[] = [
+        {display:'チーム情報', url:'/admin/team'},
+        {display:'選手一覧', url:'/admin/members'}
+    ]
 
     const setPlayerForm = (p:Ability) => {
         setPlayer(p);
@@ -129,6 +135,7 @@ export const AdminMember: React.FC = () => {
 
     return (
         <>
+            <PageHistory pages={pageHistories}/>
             <ErrorArea />
             {player ? (
                 <>
@@ -185,7 +192,7 @@ export const AdminMember: React.FC = () => {
                             <>
                                 {scores.map(score => <ScoreItem key={score.game_id} {...score}></ScoreItem>)}
                                 <ButtonArea position="right">
-                                    <a href="#/member/games">一覧を見る</a>
+                                    <a href={`#/admin/member/scores/${playerId}`}>一覧を見る</a>
                                 </ButtonArea>
                             </>
                         )

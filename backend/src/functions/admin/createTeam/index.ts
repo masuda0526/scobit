@@ -1,4 +1,4 @@
-import { TeamForm, TeamFormSchema } from "@scobit/types";
+import { TeamFormSchema } from "@scobit/types";
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { JwtUtil } from "src/libs/JwtUtil/JwtUtil";
 import { logger } from "src/libs/Logger/Logger";
@@ -6,6 +6,7 @@ import { ResponseBodyBuilder } from "src/libs/ResponseUtil/ResponseBuilder";
 import { ResponseUtil } from "src/libs/ResponseUtil/ResponseUtil";
 import { getPool } from "src/libs/SqlUtil/SqlUtil";
 import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil";
+import { GameService } from "src/Service/GameService";
 import { PlayerService } from "src/Service/PlayerService";
 import { PlayersTeamsLinkService } from "src/Service/PlayersTeamsLinkService";
 import { TeamService } from "src/Service/TeamService";
@@ -50,6 +51,9 @@ export const AdminCreateNewTeam = async (event:APIGatewayProxyEvent):Promise<Res
 
     await TournamentService.registDefaultTournament(createdTeam.team_id, client);
     logger.info('大会情報登録完了');
+
+    await GameService.overwriteAccountIdToTeamId(payload.sub, createdTeam.team_id, client);
+    logger.info('アカウントID->チームID更新完了');
 
     await client.query('COMMIT ;');
 

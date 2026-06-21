@@ -56,7 +56,7 @@ export const NewTeamPage: React.FC = () => {
     // 登録処理
     const res = await ajaxAdminApi.post('/team/new', valid.data);
     const data = res.data as ResponseFormat;
-    console.log(data);
+    // console.log(data);
     if(!data.isSuccess){
       err.setErrors(data.errors??[]);
       loading.stopLoading();

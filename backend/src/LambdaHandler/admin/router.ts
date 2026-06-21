@@ -6,6 +6,7 @@ import { kojinAccountRegistGameInit, registNewGameForKojin, updateGameForKojinAc
 import { AdminMemberInit, AdminMemberInitForKojin, updateMember, updateMemberForKojin } from "@func/admin/member/index.js";
 import { AdminMembersInit, MembersAddMember } from "@func/admin/members/index.js";
 import { editAccount, mypageFetchKojinData, mypageFetchTeams, mypageSelectTeam } from "@func/admin/mypage/index.js";
+import { AdminScoresPerMember } from "@func/admin/score";
 import { AdminTeamInit, updateTeamInfo } from "@func/admin/team/index.js";
 import { Router } from "src/Router/router.js";
 
@@ -30,6 +31,7 @@ adminRouter.post('/game/new/kojin/add', registNewGameForKojin);
 adminRouter.post('/game/update/kojin', updateGameForKojinAccount);
 adminRouter.post('/game/edit/init', AdminGameEditInit);
 adminRouter.post('/game/edit/update', editGame);
+adminRouter.post('/score/init', AdminScoresPerMember);
 adminRouter.post('/scores/update', editScores);
 adminRouter.post('/member/kojin/init', AdminMemberInitForKojin);
 adminRouter.post('/member/kojin/update', updateMemberForKojin);

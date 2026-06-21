@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy:stage": "npm run build && aws s3 sync dist/ s3://scobit-stage --delete && aws cloudfront create-invalidation --distribution-id E22OBFBIOFLLOG --paths '/*' "
+    "deploy:stage": "npm run build && aws s3 sync dist/ s3://scobit-stage --delete && aws cloudfront create-invalidation --distribution-id E22OBFBIOFLLOG --paths '/*' ",
+    "deploy:product": "npm run build && aws s3 sync dist/ s3://scobit-product --delete && aws cloudfront create-invalidation --distribution-id E22OBFBIOFLLOG --paths '/*' "
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",

@@ -1,6 +1,7 @@
 import { PlayerRoleType, PlayersTeams, StatusType } from "@scobit/types";
 import { PoolClient } from "pg";
 import { DateUtil } from "src/libs/DateUtil.js";
+import { logger } from "src/libs/Logger/Logger";
 
 type InitRole = typeof PlayerRoleType[number];
 type InitStatus = typeof StatusType[number];
