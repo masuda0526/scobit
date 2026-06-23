@@ -9,7 +9,7 @@ export const MemberLabelList: React.FC<{ players: PlayerForm[] }> = ({ players }
       <div className={styles.list} >
         {(players.map(player => {
           return (
-            <a href="/#/member" className={styles.item}>
+            <a href="/member" className={styles.item}>
               <MemberLabel name={player.disp_name} positions={player.positions} />
             </a>
           )

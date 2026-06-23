@@ -144,7 +144,7 @@ export const AdminTeam: React.FC = () => {
           <>
             {games.map(game => <GameItem key={game.game_id} game={game} />)}
             <ButtonArea position='right'>
-              <a href="#/admin/games">一覧を見る</a>
+              <a href="/admin/games">一覧を見る</a>
             </ButtonArea>
           </>
         ) : (
@@ -161,7 +161,7 @@ export const AdminTeam: React.FC = () => {
         <SubTitle text="選手一覧" />
         <AdminMemberLabelList players={players} />
         <ButtonArea position='right'>
-          <a href="#/admin/members">一覧を見る</a>
+          <a href="/admin/members">一覧を見る</a>
         </ButtonArea>
       </ContentBox>
     </>

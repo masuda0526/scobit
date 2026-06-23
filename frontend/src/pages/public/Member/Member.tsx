@@ -55,7 +55,7 @@ export const Member: React.FC = () => {
                     return (<ScoreItem key={score.game_id} {...score}></ScoreItem>)
                 })}
                 <ButtonArea position="right">
-                    <a href="#/member/games">一覧を見る</a>
+                    <a href="/member/games">一覧を見る</a>
                 </ButtonArea>
             </ContentBox>
 

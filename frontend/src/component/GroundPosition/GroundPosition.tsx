@@ -23,7 +23,7 @@ export const GroundPosition : React.FC<Props> = ({
             <PositionToggleBtn isOn={positions.includes("7")} label="レフト" clickToggle={()=>clickToggle("7")} style={POSITION_STYLE["7"]}/>
             <PositionToggleBtn isOn={positions.includes("8")} label="センター" clickToggle={()=>clickToggle("8")} style={POSITION_STYLE["8"]}/>
             <PositionToggleBtn isOn={positions.includes("9")} label="ライト" clickToggle={()=>clickToggle("9")} style={POSITION_STYLE["9"]}/>
-            <img src="ground.png" className={styles.groundImg} alt="" />
+            <img src="/ground.png" className={styles.groundImg} alt="" />
         </div>
     )
 }

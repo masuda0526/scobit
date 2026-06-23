@@ -86,7 +86,7 @@ export const Login: React.FC = () => {
                 </ButtonArea>
 
                 <ButtonArea position="right">
-                    <a href="/#/new"> 新規登録はコチラ ＞</a>
+                    <a href="/new"> 新規登録はコチラ ＞</a>
                 </ButtonArea>
 
             </ContentBox>

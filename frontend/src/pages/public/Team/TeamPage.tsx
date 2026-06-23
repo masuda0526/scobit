@@ -43,14 +43,14 @@ export const TeamPage: React.FC = () => {
                     return (<GameItem game={g}></GameItem>)
                 })}
                 <ButtonArea position={'right'}>
-                    <a href="#/games">一覧を見る</a>
+                    <a href="/games">一覧を見る</a>
                 </ButtonArea>
             </ContentBox>
             <ContentBox>
                 <SubTitle text="選手一覧" />
                 <MemberLabelList players={players} />
                 <ButtonArea position="right">
-                    <a href="#/members">詳細を一覧で表示</a>
+                    <a href="/members">詳細を一覧で表示</a>
                 </ButtonArea>
             </ContentBox>
         </>

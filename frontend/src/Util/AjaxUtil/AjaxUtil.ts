@@ -10,7 +10,7 @@ ajaxAdminApi.interceptors.request.use((config) => {
   // console.log('AJAX-START');
   const token = AccessTokenUtil.getToken();
   if(!token){
-    location.href = '#/login';
+    location.href = '/login';
   }
   config.headers.Authorization = `Bearer ${token}`;
 

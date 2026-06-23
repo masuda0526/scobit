@@ -9,5 +9,5 @@ export const exceptionAdminProcess = () => {
   const EXCEPTION_ADMIN_ERROR_MESSAGE = '予期せぬエラーが発生しました。\nもう一度ログインしてからお試しください。';
   alert(EXCEPTION_ADMIN_ERROR_MESSAGE);
   AccessTokenUtil.removeToken();
-  window.location.href ='#/login';
+  window.location.href ='/login';
 }

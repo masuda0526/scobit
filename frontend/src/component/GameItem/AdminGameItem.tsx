@@ -25,7 +25,7 @@ export const GameItem: React.FC<{ game: GameForm }> = ({ game }) => {
       </div>
 
       {/* 右：矢印リンク */}
-      <a href="/#/admin/game" className={style.link}>{"›"}</a>
+      <a href="/admin/game" className={style.link}>{"›"}</a>
     </div>
   );
 };

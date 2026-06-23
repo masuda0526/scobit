@@ -192,7 +192,7 @@ export const AdminMember: React.FC = () => {
                             <>
                                 {scores.map(score => <ScoreItem key={score.game_id} {...score}></ScoreItem>)}
                                 <ButtonArea position="right">
-                                    <a href={`#/admin/member/scores/${playerId}`}>一覧を見る</a>
+                                    <a href={`/admin/member/scores/${playerId}`}>一覧を見る</a>
                                 </ButtonArea>
                             </>
                         )

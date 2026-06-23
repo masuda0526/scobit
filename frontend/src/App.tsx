@@ -1,6 +1,6 @@
 import './App.css'
 import { GameList } from './pages/public/gamelist/GameList'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Members } from './pages/public/Members/Members'
 import { Loading } from './component/Loading/Loading'
 import { Member } from './pages/public/Member/Member'
@@ -28,7 +28,7 @@ function App() {
   return (
     <>
       <Loading />
-      <HashRouter>
+      <BrowserRouter>
         <LayoutShell>
           <Routes>
             <Route path='/games'        element={<GameList />} />
@@ -58,7 +58,7 @@ function App() {
             <Route path='/admin/member/kojin' element={<AdminMemberForKojinAccount/>} />
           </Routes>
         </LayoutShell>
-      </HashRouter>
+      </BrowserRouter>
     </>
   )
 }
