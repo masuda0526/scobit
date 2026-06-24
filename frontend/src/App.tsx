@@ -22,6 +22,7 @@ import { AddGameForKojinUser } from './pages/admin/AddGameForKojin/AddGameForKoj
 import { AdminMemberForKojinAccount } from './pages/admin/Member/MemberForKojinAccount'
 import { AdminScorePerMemberPage } from './pages/admin/Member/ScorePerMember'
 import { Agreement } from './pages/public/Agreement/Agreement'
+import { RootPage } from './pages/public/Login/RootPage/RootPage'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
       <BrowserRouter>
         <LayoutShell>
           <Routes>
+            <Route path='/'        element={<RootPage />} />
             <Route path='/games'        element={<GameList />} />
             <Route path='/game'         element={<GameDetail />} />
             <Route path='/members'      element={<Members />} />

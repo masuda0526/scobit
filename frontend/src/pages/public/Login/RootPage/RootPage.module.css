@@ -1,0 +1,125 @@
+.cta{
+  display: grid;
+  margin-bottom: 50px;
+}
+.ctactn{
+  margin-bottom: 20px;
+}
+.topMessage{
+  text-decoration:solid underline #5D6AF6 5px;
+  margin-bottom: 10px;
+}
+.mainTitle{
+  font-size: x-large;
+  position: relative;
+  margin-bottom: 30px;
+}
+.mainTitle::after{
+  content: '';
+  display: block;
+  width: 100%;
+  height: 5px;
+  background-color: #5D6AF6;
+  position: absolute;
+  bottom: -5px;
+}
+.subTitle{
+  padding-left: 0.5rem;
+  margin-bottom: 10px;
+  border-left: solid #5D6AF6 5px;
+}
+.lead{
+  font-size: larger;
+  padding: 10px 0 50px 0;
+  font-weight: bold;
+}
+.btn_primary{
+  text-align: center;
+  color: #fff;
+  background-color: #5D6AF6;
+  padding: 5px 15px;
+  border-radius: 24px;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+.btn_secondary{
+  text-align: center;;
+  color: #676767;
+  background-color: #ffffff;
+  border: 1px solid #5D6AF6 ;
+  padding: 5px 15px;
+  border-radius: 24px;
+  text-decoration: none;
+  transition: all 0.5s;
+}
+.btn_primary:hover,.btn_secondary:hover{
+  transform: scale(1.1);
+  transition: all 0.5s;
+}
+.btnbox{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+.cards{
+  display: grid;
+  column-gap: 10px;
+  row-gap: 10px;
+  margin-bottom: 30px;
+}
+.card{
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+.featureGrid{
+  display: grid;
+  row-gap: 20px;
+  column-gap: 20px;
+  margin-bottom: 70px;
+}
+.feature{
+}
+.feature p{
+  padding-left: 1.5rem;
+}
+.disc{
+  padding: 5px;
+  background-color: #5D6AF6;
+  color: #fff;
+  border-radius: 19px;
+}
+.mgn{
+  margin-bottom: 8px;
+}
+.step{
+  margin-bottom: 20px;
+}
+.step p{
+  padding-left: 2rem;
+}
+
+
+@media (min-width:768px) {
+  .cta{
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ctactn{
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+  .btnbox{
+    grid-column-start: 2;
+    grid-column-end: 4;
+    flex-direction: row;
+    justify-content: right;
+    max-width: none;
+  }
+  .cards{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .featureGrid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
