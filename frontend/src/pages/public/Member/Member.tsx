@@ -7,7 +7,7 @@ import { ContentBox } from "../../../parts/content/contentBox";
 import { ButtonArea } from "../../../parts/button/buttonArea";
 import type { Ability, MemberForm, ResponseFormat, ScoreItemDto } from "@scobit/types";
 import { ScoreItem } from "../../../component/ScoreItem/ScoreItem";
-import { generateMemberForm } from "../../../testdatas/testDataCreater";
+// import { generateMemberForm } from "../../../testdatas/testDataCreater";
 import { Info } from "../../../component/Info/info";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";

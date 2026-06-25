@@ -12,9 +12,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { exceptionProcess } from "../../../Util/CommonUtil/CommonUtil";
 import { ScobitFunction } from "@scobit/common";
 import { PageHistory, type PageHistoryItem } from "../../../component/PageHistory/PageHistory";
-import { RelativeWrapper } from "../../../parts/RelativeWrapper/RelativeWrapper";
-import { CornerIcon } from "../../../component/Modal/CornerIcon";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const GameList: React.FC = () => {
     const load = useLoading();
