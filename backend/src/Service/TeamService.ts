@@ -58,7 +58,8 @@ export class TeamService {
           t.pref, 
           t.area, 
           t.description,
-          t.public_id 
+          t.public_id ,
+          t.created_at
         from teams t 
         where 
           t.public_id = $1;

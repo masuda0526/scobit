@@ -1,4 +1,4 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEventV2 } from "aws-lambda";
 import { ResponseBodyBuilder } from "../../../libs/ResponseUtil/ResponseBuilder.js";
 import { logger } from "src/libs/Logger/Logger.js";
 import { getPool } from "src/libs/SqlUtil/SqlUtil.js";
@@ -8,13 +8,14 @@ import { GameService } from "src/Service/GameService.js";
 import { TeamService } from "src/Service/TeamService.js";
 import { PlayerService } from "src/Service/PlayerService.js";
 
-export const getTeam = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
+export const getTeam = async (event: APIGatewayProxyEventV2): Promise<ResponseBodyBuilder> => {
   logger.info(`チーム情報取得処理開始`);
-  const param = event.pathParameters;
+
+  const param = event.queryStringParameters;
   const public_id = param?.public_id;
   logger.debug(`public_id : ${public_id}`);
 
-  if (!validTeamId(public_id ?? '')) {
+  if (!public_id) {
     return ResponseUtil.error().addError('public_id', 'チームが存在しません。');
   }
   logger.info('バリデーションOK');
@@ -22,24 +23,23 @@ export const getTeam = async (event: APIGatewayProxyEvent): Promise<ResponseBody
   const pool = await getPool().connect();
 
   try {
-  const info: TeamForm = await TeamService.findTeamByPublicId(public_id!, pool);
-  if(!info){
-    return ResponseUtil.error().addError('public_id', 'チームが存在しません。')
-  }
-  logger.info('チーム情報取得');
+    const info: TeamForm = await TeamService.findTeamByPublicId(public_id, pool);
+    logger.debugObj(info);
+    if (!info) {
+      return ResponseUtil.error().addError('public_id', 'チームが存在しません。')
+    }
+    logger.info('チーム情報取得');
 
-  const [games, players] = await Promise.all([
-    GameService.findGamesByTeamId(info.team_id, pool),
-    PlayerService.findPlayersAbilittyByTeamId(info.team_id, pool)
-  ])
-  logger.info('情報取得完了');
+    const games = await GameService.findGamesByTeamId(info.team_id, pool);
+    const players = await PlayerService.findPlayersAbilittyByTeamId(info.team_id, pool);
+    logger.info('情報取得完了');
 
-  const result: TeamTopForm = {
-    info, games, players
-  }
-  logger.debugObj(result)
+    const result: TeamTopForm = {
+      info, games, players
+    }
+    logger.debugObj(result)
 
-  return ResponseUtil.success().putData('data', result);
+    return ResponseUtil.success().putData('data', result);
 
   } catch (error) {
     console.error(error);

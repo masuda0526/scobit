@@ -10,7 +10,7 @@ import { TeamService } from "src/Service/TeamService.js";
 export const membersPage = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
   logger.info(`選手一覧画面表示処理開始`);
 
-  const param = event.pathParameters;
+  const param = event.queryStringParameters;
   const public_id = param?.public_id;
   logger.debug(`public_id : ${public_id}`);
 

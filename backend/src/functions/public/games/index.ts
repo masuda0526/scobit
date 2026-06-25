@@ -12,7 +12,7 @@ export const gamesPage = async (event:APIGatewayProxyEvent):Promise<ResponseBody
   logger.info('試合結果一覧処理開始');
 
   const GAME_SHOW_LIMIT = 50;
-  const param = event.pathParameters;
+  const param = event.queryStringParameters;
   const public_id = param?.public_id;
   logger.info(`public_id:${public_id}`);
 

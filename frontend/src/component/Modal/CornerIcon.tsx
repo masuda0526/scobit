@@ -8,6 +8,7 @@ type CornerIconType = {
   position?:PositionType,
   x?:number,
   y?:number,
+
 } & FontAwesomeIconProps
 
 export const CornerIcon:React.FC<CornerIconType> = ({

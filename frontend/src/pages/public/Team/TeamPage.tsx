@@ -6,21 +6,45 @@ import { Info } from "../../../component/Info/info";
 import { dispDateFromDate } from "../../../Util/DateUtil/DateUtil";
 import { GameItem } from "../../../component/GameItem/GameItem";
 import { ButtonArea } from "../../../parts/button/buttonArea";
-import { generateTeamForms } from "../../../testdatas/testDataCreater";
+// import { generateTeamForms } from "../../../testdatas/testDataCreater";
 import { MemberLabelList } from "../../../component/MemberLabelList/MemberLabelList";
 import { useEffect, useState } from "react";
-import type { GameForm, PlayerForm, TeamForm } from "@scobit/types";
+import type { GameForm, PlayerForm, ResponseFormat, TeamForm, TeamTopForm } from "@scobit/types";
+import { ajaxPublicApi } from "../../../Util/AjaxUtil/AjaxUtil";
+import { useParams } from "react-router-dom";
+import { exceptionProcess } from "../../../Util/CommonUtil/CommonUtil";
+import { ScobitFunction } from "@scobit/common";
+import { useLoading } from "../../../component/Loading/LoadingContext";
 
 export const TeamPage: React.FC = () => {
+    const load = useLoading();
+    const {publicId} = useParams();
+
     const [team, setTeam] = useState<TeamForm | null>(null);
     const [games, setGames] = useState<GameForm[]>([]);
     const [players, setPlayers] = useState<PlayerForm[]>([])
 
+
     useEffect(() => {
-        const data = generateTeamForms();
-        setTeam(data.info);
-        setGames(data.games);
-        setPlayers(data.players);
+        const init = async () => {
+            load.startLoading();
+            try {
+                const r = await ajaxPublicApi.get(`/team?public_id=${publicId}`);
+                const res = r.data as ResponseFormat;
+                const data = res.data.data as TeamTopForm;
+                setTeam(ScobitFunction.convertToTeamForm(data.info));
+                setGames(ScobitFunction.convertToGameForms(data.games));
+                setPlayers(data.players);
+                load.stopLoading();
+            } catch (error) {
+                console.log(error);
+                load.stopLoading();
+                exceptionProcess();
+            }
+
+        }
+        // const data = generateTeamForms();
+        init();
     }, [])
     return (
         <>
@@ -40,17 +64,17 @@ export const TeamPage: React.FC = () => {
             <ContentBox>
                 <SubTitle text="直近の試合結果" />
                 {games.map(g => {
-                    return (<GameItem game={g}></GameItem>)
+                    return (<GameItem game={g} key={g.game_id}></GameItem>)
                 })}
                 <ButtonArea position={'right'}>
-                    <a href="/games">一覧を見る</a>
+                    <a href={`/games/${publicId}`}>一覧を見る</a>
                 </ButtonArea>
             </ContentBox>
             <ContentBox>
                 <SubTitle text="選手一覧" />
                 <MemberLabelList players={players} />
                 <ButtonArea position="right">
-                    <a href="/members">詳細を一覧で表示</a>
+                    <a href={`/members/${publicId}`}>詳細を一覧で表示</a>
                 </ButtonArea>
             </ContentBox>
         </>

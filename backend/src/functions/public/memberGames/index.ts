@@ -13,7 +13,7 @@ export const memberGamesPage = async (event:APIGatewayProxyEvent):Promise<Respon
   logger.info('選手試合成績一覧処理開始');
 
   const SCORE_GET_LIMIT = 50;
-  const param = event.pathParameters;
+  const param = event.queryStringParameters;
   const public_id = param?.public_id;
   const player_id = param?.player_id;
   logger.info(`public_id:${public_id} player_id:${player_id}`);

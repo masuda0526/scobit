@@ -7,7 +7,7 @@ import { Member } from './pages/public/Member/Member'
 import { Login } from './pages/public/Login/Login'
 import { TeamPage } from './pages/public/Team/TeamPage'
 import { MemberGames } from './pages/public/Member/game/MemberGames'
-import { GameDetail } from './pages/public/gamelist/Score/GameDetail'
+import { GameDetailPage } from './pages/public/gamelist/Score/GameDetail'
 import { LayoutShell } from './component/Layout/LayoutShell'
 import { AdminTeam } from './pages/admin/Team/AdminTeam'
 import { AdminMember } from './pages/admin/Member/Member'
@@ -33,15 +33,15 @@ function App() {
         <LayoutShell>
           <Routes>
             <Route path='/'        element={<RootPage />} />
-            <Route path='/games'        element={<GameList />} />
-            <Route path='/game'         element={<GameDetail />} />
-            <Route path='/members'      element={<Members />} />
-            <Route path='/member'       element={<Member />} />
-            <Route path='/member/games' element={<MemberGames />} />
+            <Route path='/games/:publicId'        element={<GameList />} />
+            <Route path='/game/:publicId/:gameId'         element={<GameDetailPage />} />
+            <Route path='/members/:publicId'      element={<Members />} />
+            <Route path='/member/:publicId/:playerId'       element={<Member />} />
+            <Route path='/member/games/:publicId/:playerId' element={<MemberGames />} />
             <Route path='/login'        element={<Login />} />
             <Route path='/agreement' element={<Agreement/>}/>
             {/* <Route path='/new-team'     element={<NewTeam />} /> */}
-            <Route path='/team'         element={<TeamPage />} />
+            <Route path='/team/:publicId'         element={<TeamPage />} />
             <Route path='/new/'          element={<Account/>}/>
             <Route path='/new/:tmpId'          element={<Account/>}/>
             <Route path='/admin/mypage' element={<Mypage/>}/>

@@ -4,9 +4,13 @@ import style from "./GameItem.module.css";
 import { dispDateFromDate } from "../../Util/DateUtil/DateUtil";
 // import { useNavigate } from "react-router-dom";
 
-export const GameItem: React.FC<{ game: GameForm }> = ({ game }) => {
+type Prop = {
+  game:GameForm
+}&React.HtmlHTMLAttributes<HTMLDivElement>
+
+export const GameItem: React.FC<Prop> = ({game,...prop}) => {
   return (
-    <div className={style.gameItem}>
+    <div className={style.gameItem} {...prop}>
       {/* 左：日付 */}
       <div className={style.gameDate}>
         {dispDateFromDate(game.game_dt, "dot")}

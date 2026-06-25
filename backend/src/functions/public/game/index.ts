@@ -12,7 +12,7 @@ import z from "zod";
 export const gameDetailPage = async (event:APIGatewayProxyEvent):Promise<ResponseBodyBuilder> => {
   logger.info('試合詳細情報取得処理開始');
   
-  const param =event.pathParameters;
+  const param =event.queryStringParameters;
   const public_id = param?.public_id;
   const game_id = param?.game_id;
   logger.info(`public_id:${public_id} game_id:${game_id}`);

@@ -1,4 +1,4 @@
-import { ErrorInfo, GameForm, GameFormSchema, GameInput, GameResultConsts, ScoreForm } from "@scobit/types";
+import { ErrorInfo, GameForm, GameFormSchema, GameInput, GameResultConsts, ScoreForm, TeamForm, TeamFormSchema } from "@scobit/types";
 import { PoolClient } from "pg";
 
 export class ScobitFunction {
@@ -84,4 +84,13 @@ export class ScobitFunction {
     }
     return null;
   }
+
+  static convertToTeamForm(beforeTeam:any):TeamForm|null{
+    const v = TeamFormSchema.safeParse(beforeTeam);
+    if(v.success){
+      return v.data;
+    }
+    return null;
+  }
+
 }

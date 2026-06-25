@@ -1,4 +1,4 @@
-import { GameFormSchema } from "@scobit/types";
+import { GameFormSchema, TeamFormSchema } from "@scobit/types";
 export class ScobitFunction {
     static getGameResult(my_point, op_point, isNoGame = false) {
         if (isNoGame) {
@@ -68,6 +68,13 @@ export class ScobitFunction {
     }
     static convertToGameForm(beforeGame) {
         const v = GameFormSchema.safeParse(beforeGame);
+        if (v.success) {
+            return v.data;
+        }
+        return null;
+    }
+    static convertToTeamForm(beforeTeam) {
+        const v = TeamFormSchema.safeParse(beforeTeam);
         if (v.success) {
             return v.data;
         }

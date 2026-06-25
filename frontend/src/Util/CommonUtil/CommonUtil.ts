@@ -3,6 +3,7 @@ import { AccessTokenUtil } from "../TokenUtil/AccessTokenUtil";
 export const exceptionProcess = () => {
   const EXCEPTION_ERROR_MESSAGE = '予期せぬエラーが発生しました。\nしばらく時間を置いてからお試しください。';
   alert(EXCEPTION_ERROR_MESSAGE);
+  window.location.href = '/';
 }
 
 export const exceptionAdminProcess = () => {

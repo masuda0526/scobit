@@ -11,8 +11,8 @@ import z from "zod";
 
 export const memberPage = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
   logger.info(`選手詳細ページ取得処理開始`);
-  const SCORE_SHOW_COUNT = 5;
-  const param = event.pathParameters;
+  const SCORE_SHOW_COUNT = 50;
+  const param = event.queryStringParameters;
   const public_id = param?.public_id;
   const player_id = param?.player_id;
 
