@@ -22,14 +22,15 @@ export class TournamentService{
 
   static async registDefaultTournament(team_id:string, client:PoolClient):Promise<void>{
     const endDate = new Date(9999, 12, 31, 23, 59, 59);
+    const startDate = new Date(2000, 1, 1, 0, 0, 0);
     const result = await client.query(`
       INSERT INTO public.tournament
       (tournament_id, team_id, "name", "type", start_dt, end_dt, created_at, updated_at)
       VALUES
-      (gen_random_uuid(), $1, '公式戦', 'official', now(), $2, now(), now()),
-      (gen_random_uuid(), $1, '練習試合', 'practice', now(), $2, now(), now())
+      (gen_random_uuid(), $1, '公式戦', 'official', $2, $3, now(), now()),
+      (gen_random_uuid(), $1, '練習試合', 'practice', $2, $3, now(), now())
       ;  
-    `, [team_id, endDate]);
+    `, [team_id, startDate, endDate]);
     logger.debugObj(result.rows);
   }
 }
