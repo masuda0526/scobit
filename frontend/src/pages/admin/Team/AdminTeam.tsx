@@ -21,6 +21,8 @@ import { useLoading } from "../../../component/Loading/LoadingContext";
 import { exceptionAdminProcess } from "../../../Util/CommonUtil/CommonUtil";
 import { useNavigate } from "react-router-dom";
 import { ScobitFunction } from "@scobit/common";
+import { PUBLIC_BASE_URL } from "../../../constant/ApiUrls";
+import { ShareLinkUrl } from "../../../component/ShareLinkUrl/ShareLinkUrl";
 
 export const AdminTeam: React.FC = () => {
   const err = useErrorArea();
@@ -136,6 +138,10 @@ export const AdminTeam: React.FC = () => {
           <Info label="チーム説明" info={team.description} />
         ) : ''}
         <CornerIcon icon={faPencil} x={5} y={5} onClick={editClick} />
+      </ContentBox>
+
+      <ContentBox>
+        <ShareLinkUrl shareUrl={`${import.meta.env.VITE_SHARE_LINK_BASE_URL}team/${team.public_id}`} />
       </ContentBox>
 
       <ContentBox>

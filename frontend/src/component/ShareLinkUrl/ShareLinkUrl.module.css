@@ -1,0 +1,40 @@
+.container{
+  display: grid;
+  grid-template-columns: calc(100% - 32px - 10px) 32px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  gap: 10px;
+  position: relative;
+}
+.box{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.url{
+  overflow-x: scroll;
+}
+.icon_box{
+  position: relative;
+}
+.icon{
+  font-size: 25px;
+}
+.msg{
+  padding: 5px;
+  border-radius: 5px;
+  width:max-content;
+  position: absolute;
+  font-size: small;
+  background: #fff;
+  top: -40px;
+  right: 0px;
+  box-shadow: 5px 5px 5px #999;
+}
+.label{
+  font-size: small; 
+  position: absolute;
+  top: -17px;
+  left: 10px;
+}
