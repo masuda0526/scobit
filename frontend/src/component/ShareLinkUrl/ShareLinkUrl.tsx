@@ -40,7 +40,7 @@ export const ShareLinkUrl : React.FC<Prop> = ({
     }
   }
   return (
-    <div className={style.container}>
+    <div className={style.container} {...prop}>
       <div className={style.box}>
         <p className={style.url}>
           {shareUrl}
