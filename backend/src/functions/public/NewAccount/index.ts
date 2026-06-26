@@ -10,6 +10,7 @@ import { convertToErrorInfos } from "src/libs/ZodUtil/ZodUtil.js";
 import { saveNewAccountPlayerLink } from "src/Service/AccountPlayerLinkService.js";
 import { AccountService } from "src/Service/AccountService.js";
 import { PlayerService } from "src/Service/PlayerService.js";
+import { TournamentService } from "src/Service/TournamentService";
 
 export const registAccount = async (event: APIGatewayProxyEvent): Promise<ResponseBodyBuilder> => {
   if (!event.body) {
@@ -99,8 +100,10 @@ async function registNewAccount(dto: NewAccountDto, client: PoolClient) {
   };
   await saveNewAccountPlayerLink(account_player_link, client);
 
+  const tournaments = await TournamentService.registDefaultTournament(account.account_id, client);
+
   logger.debug('登録内容');
-  logger.debugObj({ account, player, account_player_link });
+  logger.debugObj({ account, player, account_player_link, tournaments });
 
   return { account, player, account_player_link }
 }
