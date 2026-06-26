@@ -11,7 +11,7 @@ export const AdminMemberLabelList: React.FC<{ players: PlayerForm[] }> = ({ play
       <div className={styles.list} >
         {(players.map(player => {
           return (
-            <a className={styles.item} onClick={() => nav(`/admin/member/${player.player_id}`)}>
+            <a className={styles.item} onClick={() => nav(`/admin/member/${player.player_id}`)} key={player.player_id}>
               <MemberLabel key={player.player_id} name={player.disp_name} positions={player.positions} />
             </a>
           )
